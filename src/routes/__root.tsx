@@ -76,7 +76,9 @@ export const Route = createRootRoute({
       links: [
         { rel: "stylesheet", href: appCss },
         { rel: "icon", href: "/favicon.ico" },
-        ...meta.links,
+        // Canonical is per-route: a root-level one would be emitted alongside
+        // each route's own, leaving every page with two conflicting canonicals.
+        ...meta.links.filter((l) => l.rel !== "canonical"),
       ],
       scripts: [ldJsonScript(organizationJsonLd()), ldJsonScript(websiteJsonLd())],
     };
@@ -108,8 +110,10 @@ function RootComponent() {
 
   // The founders.click home route renders its own self-contained chrome
   // (founders-home.tsx provides its own Header + Footer). Skip the legacy
-  // pool-rental SiteHeader/SiteFooter to avoid double chrome.
-  const isFoundersHome = pathname === "/";
+  // pool-rental SiteHeader/SiteFooter to avoid double chrome. The /templates
+  // storefront reuses that same Header + Footer.
+  const isFoundersHome =
+    pathname === "/" || pathname === "/templates" || pathname.startsWith("/templates/");
 
   const content = (
     <>

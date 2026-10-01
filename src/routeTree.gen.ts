@@ -22,8 +22,10 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AppRouteImport } from './routes/app'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as TemplatesIndexRouteImport } from './routes/templates.index'
 import { Route as HelpCenterIndexRouteImport } from './routes/help-center.index'
 import { Route as VerifyUidRouteImport } from './routes/verify.$uid'
+import { Route as TemplatesSlugRouteImport } from './routes/templates.$slug'
 import { Route as PSlugRouteImport } from './routes/p.$slug'
 import { Route as EmailUnsubscribeRouteImport } from './routes/email/unsubscribe'
 import { Route as AuthResetPasswordRouteImport } from './routes/auth.reset-password'
@@ -144,6 +146,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TemplatesIndexRoute = TemplatesIndexRouteImport.update({
+  id: '/templates/',
+  path: '/templates/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const HelpCenterIndexRoute = HelpCenterIndexRouteImport.update({
   id: '/help-center/',
   path: '/help-center/',
@@ -152,6 +159,11 @@ const HelpCenterIndexRoute = HelpCenterIndexRouteImport.update({
 const VerifyUidRoute = VerifyUidRouteImport.update({
   id: '/verify/$uid',
   path: '/verify/$uid',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TemplatesSlugRoute = TemplatesSlugRouteImport.update({
+  id: '/templates/$slug',
+  path: '/templates/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PSlugRoute = PSlugRouteImport.update({
@@ -483,8 +495,10 @@ export interface FileRoutesByFullPath {
   '/auth/reset-password': typeof AuthResetPasswordRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/p/$slug': typeof PSlugRoute
+  '/templates/$slug': typeof TemplatesSlugRoute
   '/verify/$uid': typeof VerifyUidRoute
   '/help-center/': typeof HelpCenterIndexRoute
+  '/templates/': typeof TemplatesIndexRoute
   '/admin/learning/$userId': typeof AdminLearningUserIdRoute
   '/api/billing/webhook': typeof ApiBillingWebhookRoute
   '/api/public/backfill-content-pages': typeof ApiPublicBackfillContentPagesRoute
@@ -554,8 +568,10 @@ export interface FileRoutesByTo {
   '/auth/reset-password': typeof AuthResetPasswordRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/p/$slug': typeof PSlugRoute
+  '/templates/$slug': typeof TemplatesSlugRoute
   '/verify/$uid': typeof VerifyUidRoute
   '/help-center': typeof HelpCenterIndexRoute
+  '/templates': typeof TemplatesIndexRoute
   '/admin/learning/$userId': typeof AdminLearningUserIdRoute
   '/api/billing/webhook': typeof ApiBillingWebhookRoute
   '/api/public/backfill-content-pages': typeof ApiPublicBackfillContentPagesRoute
@@ -626,8 +642,10 @@ export interface FileRoutesById {
   '/auth/reset-password': typeof AuthResetPasswordRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/p/$slug': typeof PSlugRoute
+  '/templates/$slug': typeof TemplatesSlugRoute
   '/verify/$uid': typeof VerifyUidRoute
   '/help-center/': typeof HelpCenterIndexRoute
+  '/templates/': typeof TemplatesIndexRoute
   '/admin/learning/$userId': typeof AdminLearningUserIdRoute
   '/api/billing/webhook': typeof ApiBillingWebhookRoute
   '/api/public/backfill-content-pages': typeof ApiPublicBackfillContentPagesRoute
@@ -699,8 +717,10 @@ export interface FileRouteTypes {
     | '/auth/reset-password'
     | '/email/unsubscribe'
     | '/p/$slug'
+    | '/templates/$slug'
     | '/verify/$uid'
     | '/help-center/'
+    | '/templates/'
     | '/admin/learning/$userId'
     | '/api/billing/webhook'
     | '/api/public/backfill-content-pages'
@@ -770,8 +790,10 @@ export interface FileRouteTypes {
     | '/auth/reset-password'
     | '/email/unsubscribe'
     | '/p/$slug'
+    | '/templates/$slug'
     | '/verify/$uid'
     | '/help-center'
+    | '/templates'
     | '/admin/learning/$userId'
     | '/api/billing/webhook'
     | '/api/public/backfill-content-pages'
@@ -841,8 +863,10 @@ export interface FileRouteTypes {
     | '/auth/reset-password'
     | '/email/unsubscribe'
     | '/p/$slug'
+    | '/templates/$slug'
     | '/verify/$uid'
     | '/help-center/'
+    | '/templates/'
     | '/admin/learning/$userId'
     | '/api/billing/webhook'
     | '/api/public/backfill-content-pages'
@@ -882,8 +906,10 @@ export interface RootRouteChildren {
   AccountLearningRoute: typeof AccountLearningRoute
   EmailUnsubscribeRoute: typeof EmailUnsubscribeRoute
   PSlugRoute: typeof PSlugRoute
+  TemplatesSlugRoute: typeof TemplatesSlugRoute
   VerifyUidRoute: typeof VerifyUidRoute
   HelpCenterIndexRoute: typeof HelpCenterIndexRoute
+  TemplatesIndexRoute: typeof TemplatesIndexRoute
   ApiBillingWebhookRoute: typeof ApiBillingWebhookRoute
   ApiPublicBackfillContentPagesRoute: typeof ApiPublicBackfillContentPagesRoute
   ApiPublicTrackCityClickRoute: typeof ApiPublicTrackCityClickRoute
@@ -994,6 +1020,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/templates/': {
+      id: '/templates/'
+      path: '/templates'
+      fullPath: '/templates/'
+      preLoaderRoute: typeof TemplatesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/help-center/': {
       id: '/help-center/'
       path: '/help-center'
@@ -1006,6 +1039,13 @@ declare module '@tanstack/react-router' {
       path: '/verify/$uid'
       fullPath: '/verify/$uid'
       preLoaderRoute: typeof VerifyUidRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/templates/$slug': {
+      id: '/templates/$slug'
+      path: '/templates/$slug'
+      fullPath: '/templates/$slug'
+      preLoaderRoute: typeof TemplatesSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/p/$slug': {
@@ -1511,8 +1551,10 @@ const rootRouteChildren: RootRouteChildren = {
   AccountLearningRoute: AccountLearningRoute,
   EmailUnsubscribeRoute: EmailUnsubscribeRoute,
   PSlugRoute: PSlugRoute,
+  TemplatesSlugRoute: TemplatesSlugRoute,
   VerifyUidRoute: VerifyUidRoute,
   HelpCenterIndexRoute: HelpCenterIndexRoute,
+  TemplatesIndexRoute: TemplatesIndexRoute,
   ApiBillingWebhookRoute: ApiBillingWebhookRoute,
   ApiPublicBackfillContentPagesRoute: ApiPublicBackfillContentPagesRoute,
   ApiPublicTrackCityClickRoute: ApiPublicTrackCityClickRoute,

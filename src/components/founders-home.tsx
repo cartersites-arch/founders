@@ -26,7 +26,7 @@ export function FoundersHome() {
 }
 
 // ─── Header ─────────────────────────────────────────────────────────────────
-function Header() {
+export function Header() {
   return (
     <header className="sticky top-0 z-40 w-full border-b border-border bg-background/95 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
@@ -36,19 +36,25 @@ function Header() {
         </Link>
         <nav className="hidden items-center gap-6 md:flex">
           <a
-            href="#features"
+            href="/#features"
             className="text-sm font-medium text-muted-foreground hover:text-foreground"
           >
             Features
           </a>
+          <Link
+            to="/templates"
+            className="text-sm font-medium text-muted-foreground hover:text-foreground"
+          >
+            Templates
+          </Link>
           <a
-            href="#pricing"
+            href="/#pricing"
             className="text-sm font-medium text-muted-foreground hover:text-foreground"
           >
             Pricing
           </a>
           <a
-            href="#faq"
+            href="/#faq"
             className="text-sm font-medium text-muted-foreground hover:text-foreground"
           >
             FAQ
@@ -119,7 +125,7 @@ function Hero() {
             Start free trial — no developers required
           </Link>
           <a
-            href="#features"
+            href="/#features"
             className="inline-flex h-12 w-full items-center justify-center rounded-full border border-border px-8 text-base font-medium hover:bg-muted sm:w-auto"
           >
             See what's inside
@@ -803,7 +809,7 @@ function ClosingCta() {
 }
 
 // ─── Footer ─────────────────────────────────────────────────────────────────
-function Footer() {
+export function Footer() {
   return (
     <footer>
       <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-6 py-10 text-sm text-muted-foreground sm:flex-row">
@@ -812,13 +818,16 @@ function Footer() {
           <span>founders.click</span>
         </div>
         <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
-          <a href="#features" className="hover:text-foreground">
+          <a href="/#features" className="hover:text-foreground">
             Features
           </a>
-          <a href="#pricing" className="hover:text-foreground">
+          <a href="/templates" className="hover:text-foreground">
+            Templates
+          </a>
+          <a href="/#pricing" className="hover:text-foreground">
             Pricing
           </a>
-          <a href="#faq" className="hover:text-foreground">
+          <a href="/#faq" className="hover:text-foreground">
             FAQ
           </a>
           <a href="/privacy-policy" className="hover:text-foreground">

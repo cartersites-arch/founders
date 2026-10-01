@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SITE_URL } from "@/lib/seo";
+import { MARKETPLACE_TEMPLATES } from "@/lib/templates";
 import { buildUrlsetXml, sitemapResponse, type SitemapUrl } from "@/lib/sitemap";
 
 /**
@@ -15,6 +16,8 @@ const STATIC_URLS: Array<{ path: string; lastmod?: Date }> = [
   { path: "/become-a-host" },
   { path: "/become-a-swimming-pool-host" },
   { path: "/privacy-policy" },
+  { path: "/templates" },
+  ...MARKETPLACE_TEMPLATES.map((t) => ({ path: `/templates/${t.slug}` })),
   { path: "/terms-of-service" },
   { path: "/p/about" },
   { path: "/p/hosting" },
