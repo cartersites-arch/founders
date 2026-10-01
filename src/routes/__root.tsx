@@ -76,7 +76,9 @@ export const Route = createRootRoute({
       links: [
         { rel: "stylesheet", href: appCss },
         { rel: "icon", href: "/favicon.ico" },
-        ...meta.links,
+        // Canonical is per-route: a root-level one would be emitted alongside
+        // each route's own, leaving every page with two conflicting canonicals.
+        ...meta.links.filter((l) => l.rel !== "canonical"),
       ],
       scripts: [ldJsonScript(organizationJsonLd()), ldJsonScript(websiteJsonLd())],
     };

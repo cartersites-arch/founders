@@ -1,6 +1,6 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { Footer, Header } from "@/components/founders-home";
-import { SITE_URL } from "@/lib/seo";
+import { buildMeta, SITE_URL } from "@/lib/seo";
 import {
   getTemplate,
   TEMPLATE_PAGES,
@@ -18,15 +18,15 @@ export const Route = createFileRoute("/templates/$slug")({
     const t = loaderData?.template;
     if (!t) return {};
     const title = `${t.name} — ${t.tagline} | Sharetribe Template`;
+    const { meta, links } = buildMeta({
+      title,
+      description: t.description,
+      path: `/templates/${t.slug}`,
+      image: null,
+    });
     return {
-      meta: [
-        { title },
-        { name: "description", content: t.description },
-        { property: "og:title", content: title },
-        { property: "og:description", content: t.description },
-        { property: "og:url", content: `${SITE_URL}/templates/${t.slug}` },
-        { name: "robots", content: "index,follow" },
-      ],
+      meta,
+      links,
       scripts: [
         {
           type: "application/ld+json",

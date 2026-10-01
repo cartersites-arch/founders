@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Footer, Header } from "@/components/founders-home";
-import { SITE_URL } from "@/lib/seo";
+import { buildMeta } from "@/lib/seo";
 import {
   MARKETPLACE_TEMPLATES,
   TEMPLATE_PAGES,
@@ -10,24 +10,14 @@ import {
 } from "@/lib/templates";
 
 export const Route = createFileRoute("/templates/")({
-  head: () => ({
-    meta: [
-      { title: "Sharetribe Marketplace Templates — founders.click" },
-      {
-        name: "description",
-        content:
-          "Ready-to-launch marketplace designs built on the Sharetribe Web Template. Every screen maps to a real Sharetribe page — rentals, services, resale and venue booking.",
-      },
-      { property: "og:title", content: "Sharetribe Marketplace Templates — founders.click" },
-      {
-        property: "og:description",
-        content:
-          "Designs that start from the Sharetribe Web Template, not a blank canvas. Pick a niche, launch faster.",
-      },
-      { property: "og:url", content: `${SITE_URL}/templates` },
-      { name: "robots", content: "index,follow" },
-    ],
-  }),
+  head: () =>
+    buildMeta({
+      title: "Sharetribe Marketplace Templates — founders.click",
+      description:
+        "Ready-to-launch marketplace designs built on the Sharetribe Web Template. Every screen maps to a real Sharetribe page — rentals, services, resale and venue booking.",
+      path: "/templates",
+      image: null,
+    }),
   component: TemplatesPage,
 });
 
