@@ -1,6 +1,7 @@
+import { AuthCaptcha, CAPTCHA_ENABLED, type AuthCaptchaHandle } from "@/components/auth-captcha";
 import { MIN_NEW_PASSWORD_LENGTH, MAX_NEW_PASSWORD_LENGTH } from "@/lib/password-policy";
 import { createFileRoute, useNavigate, redirect, Link, Outlet, useRouterState } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { z } from "zod";
 import { supabase } from "@/integrations/supabase/client";
 import { SiteHeader, SiteFooter } from "@/components/site-layout";
@@ -59,6 +60,8 @@ function AuthPage() {
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
   const [busy, setBusy] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState("");
+  const captchaRef = useRef<AuthCaptchaHandle>(null);
 
   useEffect(() => setMode(search.mode), [search.mode]);
 
@@ -78,7 +81,7 @@ function AuthPage() {
 
   async function handleEmail(e: React.FormEvent) {
     e.preventDefault();
-    if (busy) return;
+    if (busy || (CAPTCHA_ENABLED && !captchaToken)) return;
     setBusy(true);
     try {
       if (mode === "signup") {
@@ -90,6 +93,7 @@ function AuthPage() {
           email,
           password,
           options: {
+            captchaToken: CAPTCHA_ENABLED ? captchaToken : undefined,
             emailRedirectTo: `${window.location.origin}${search.redirect}`,
             data: { full_name: fullName.trim(), display_name: fullName.trim() },
           },
@@ -100,7 +104,7 @@ function AuthPage() {
         }
         toast.success("Check your email to confirm your account.");
       } else {
-        const { error } = await supabase.auth.signInWithPassword({ email, password });
+        const { error } = await supabase.auth.signInWithPassword({ email, password, options: { captchaToken: CAPTCHA_ENABLED ? captchaToken : undefined } });
         if (error) {
           toast.error(error.message);
           return;
@@ -108,7 +112,10 @@ function AuthPage() {
         toast.success("Signed in.");
         navigate({ to: search.redirect as never });
       }
+    } catch {
+      toast.error("Could not connect. Please try again.");
     } finally {
+      captchaRef.current?.reset();
       setBusy(false);
     }
   }
@@ -209,7 +216,8 @@ function AuthPage() {
                 required
               />
             </div>
-            <Button type="submit" disabled={busy} className="w-full">
+            <AuthCaptcha key={mode} ref={captchaRef} onToken={setCaptchaToken} />
+            <Button type="submit" disabled={busy || (CAPTCHA_ENABLED && !captchaToken)} className="w-full">
               {busy ? "Working…" : mode === "signup" ? "Create account" : "Sign in"}
             </Button>
           </form>

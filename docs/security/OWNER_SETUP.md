@@ -73,3 +73,7 @@ The owner SQL installs trigger-only database checks for thread/reply creation an
 ## Account-switching follow-up
 
 Forum limits now also share site-wide caps of 60 accepted writes/minute and 600/hour, alongside the per-author limits. A confirmed, non-anonymous, unbanned Auth user must exist for the author. See `STAGING_ACCEPTANCE.md` for the consolidated release checklist, Auth dashboard paths, CAPTCHA prerequisites and outbound-network acceptance criteria. Global caps bound persisted writes but can be exhausted by an attacker; they do not replace platform abuse protection. No Auth dashboard setting was changed in this pass.
+
+## Optional Auth CAPTCHA activation
+
+Cloudflare Turnstile support is prepared for signup, password sign-in and reset-email requests. Follow `CAPTCHA_SETUP.md` to set the public `VITE_TURNSTILE_SITE_KEY` build variable, deploy on staging, then enable the matching secret in Supabase Authentication → Attack Protection. Default builds preserve existing behavior without a widget. No new runtime Worker secret or replacement Supabase token is needed. Live provider enforcement and admin reset delivery require staged verification before production.

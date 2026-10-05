@@ -65,7 +65,7 @@ const securityHeadersMiddleware = createMiddleware().server(async ({ next, reque
     }
     const scriptPolicy = import.meta.env.DEV
       ? "script-src 'self' 'unsafe-inline' 'unsafe-eval'"
-      : `script-src 'self' 'nonce-${nonce}' https://widget.intercom.io https://js.intercomcdn.com`;
+      : `script-src 'self' 'nonce-${nonce}' https://widget.intercom.io https://js.intercomcdn.com https://challenges.cloudflare.com`;
     response.headers.set("Content-Security-Policy", SECURITY_HEADERS["Content-Security-Policy"]!.replace("script-src 'self'", scriptPolicy));
     const host = await resolveWorkspaceHost(request.headers, process.env.FOUNDERS_PROXY_SECRET);
     if (isNonProductionHost(host)) {

@@ -1,6 +1,7 @@
+import { AuthCaptcha, CAPTCHA_ENABLED, type AuthCaptchaHandle } from "@/components/auth-captcha";
 import { MIN_NEW_PASSWORD_LENGTH, MAX_NEW_PASSWORD_LENGTH } from "@/lib/password-policy";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { SiteHeader, SiteFooter } from "@/components/site-layout";
 import { Button } from "@/components/ui/button";
@@ -26,6 +27,8 @@ function ResetPasswordPage() {
   const [recoveryError, setRecoveryError] = useState<string | null>(null);
   const [newPassword, setNewPassword] = useState("");
   const [busy, setBusy] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState("");
+  const captchaRef = useRef<AuthCaptchaHandle>(null);
 
   useEffect(() => {
     let active = true;
@@ -73,15 +76,19 @@ function ResetPasswordPage() {
 
   async function sendResetEmail(e: React.FormEvent) {
     e.preventDefault();
-    if (busy) return;
+    if (busy || (CAPTCHA_ENABLED && !captchaToken)) return;
     setBusy(true);
     try {
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        captchaToken: CAPTCHA_ENABLED ? captchaToken : undefined,
         redirectTo: `${window.location.origin}/auth/reset-password`,
       });
       if (error) toast.error(error.message);
       else toast.success("Check your email for a reset link.");
+    } catch {
+      toast.error("Could not connect. Please try again.");
     } finally {
+      captchaRef.current?.reset();
       setBusy(false);
     }
   }
@@ -163,7 +170,8 @@ function ResetPasswordPage() {
                   required
                 />
               </div>
-              <Button type="submit" disabled={busy} className="w-full">
+              <AuthCaptcha ref={captchaRef} onToken={setCaptchaToken} />
+              <Button type="submit" disabled={busy || (CAPTCHA_ENABLED && !captchaToken)} className="w-full">
                 {busy ? "Sending…" : "Send reset link"}
               </Button>
               <Button type="button" variant="ghost" className="w-full" onClick={() => setUseCode(true)}>Enter a recovery code</Button>
