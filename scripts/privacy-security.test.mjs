@@ -47,7 +47,8 @@ assert.equal((await db.query('SELECT count(*)::int AS count FROM public.suppress
 for(const role of ['anon','authenticated']){await db.exec(`RESET ROLE;SET ROLE ${role}`);await assert.rejects(()=>db.query('SELECT public.apply_email_unsubscribe($1)',[token]),/permission denied/);}
 }finally{await db.close();}});
 
-async function forumFixture(){const db=await fixture();await db.exec(`CREATE TABLE public.submission_rate_limits(key text PRIMARY KEY,attempts integer NOT NULL,expires_at timestamptz NOT NULL);ALTER TABLE public.submission_rate_limits ENABLE ROW LEVEL SECURITY;`);await db.exec(readFileSync(new URL('../docs/security/forum-abuse.sql',import.meta.url),'utf8'));return db;}
+async function forumFixture(){const db=await fixture();await db.exec(`CREATE TABLE auth.users(id uuid PRIMARY KEY,email text,email_confirmed_at timestamptz,is_anonymous boolean DEFAULT false,banned_until timestamptz);
+INSERT INTO auth.users(id,email,email_confirmed_at) VALUES('${a}','a@example.invalid',now()),('${b}','b@example.invalid',now());CREATE TABLE public.submission_rate_limits(key text PRIMARY KEY,attempts integer NOT NULL,expires_at timestamptz NOT NULL);ALTER TABLE public.submission_rate_limits ENABLE ROW LEVEL SECURITY;`);await db.exec(readFileSync(new URL('../docs/security/forum-abuse.sql',import.meta.url),'utf8'));return db;}
 test('forum database limits content sizes even for service and direct browser writes',async()=>{const db=await forumFixture();try{
  await db.exec(`SET ROLE authenticated;SET test.user_id='${a}'`);
  for(const [title,body] of [['X','Valid body'],['T'.repeat(201),'Valid body'],['Valid','B'.repeat(10001)],['Valid','']])
@@ -72,4 +73,26 @@ test('forum shared posting limit covers threads replies edits and survives delet
  await db.query('INSERT INTO public.mb_replies(user_id,thread_id,body) VALUES($1,$2,$3)',[a,id,'Fresh minute']);
  await db.exec(`RESET ROLE;UPDATE public.submission_rate_limits SET attempts=20 WHERE key='forum:hour:${a}';SET ROLE authenticated`);
  await assert.rejects(db.query('INSERT INTO public.mb_replies(user_id,thread_id,body) VALUES($1,$2,$3)',[a,id,'Hourly cap']),/posting limit/);
+}finally{await db.close();}});
+
+test('forum global caps cannot be bypassed by switching accounts and rejected writes roll back counters',async()=>{const db=await forumFixture();try{
+ await db.exec(`INSERT INTO public.submission_rate_limits VALUES('forum:all:minute',59,now()+interval '1 minute');SET ROLE authenticated;SET test.user_id='${a}'`);
+ await db.query('INSERT INTO public.mb_threads(user_id,title,body) VALUES($1,$2,$3)',[a,'Normal','Normal body']);
+ await db.exec(`SET test.user_id='${b}'`);
+ await assert.rejects(db.query('INSERT INTO public.mb_threads(user_id,title,body) VALUES($1,$2,$3)',[b,'Other account','Normal body']),/posting limit/);
+ await db.exec(`RESET ROLE`);assert.equal((await db.query("SELECT attempts FROM public.submission_rate_limits WHERE key='forum:all:hour'")).rows[0].attempts,1);
+ await db.exec(`UPDATE public.submission_rate_limits SET expires_at=now()-interval '1 second' WHERE key='forum:all:minute';SET ROLE authenticated`);
+ await db.query('INSERT INTO public.mb_threads(user_id,title,body) VALUES($1,$2,$3)',[b,'Fresh minute','Normal body']);
+ await db.exec(`RESET ROLE;UPDATE public.submission_rate_limits SET attempts=600 WHERE key='forum:all:hour';SET ROLE authenticated`);
+ await assert.rejects(db.query('INSERT INTO public.mb_threads(user_id,title,body) VALUES($1,$2,$3)',[b,'Hourly blocked','Normal body']),/posting limit/);
+}finally{await db.close();}});
+test('forum rejects unconfirmed anonymous banned and deleted authors even on service writes',async()=>{const db=await forumFixture();try{
+ for(const state of ["email_confirmed_at=NULL","is_anonymous=true","banned_until=now()+interval '1 hour'"]){
+  await db.exec(`UPDATE auth.users SET email_confirmed_at=now(),is_anonymous=false,banned_until=NULL WHERE id='${a}';UPDATE auth.users SET ${state} WHERE id='${a}';SET ROLE service_role`);
+  await assert.rejects(db.query('INSERT INTO public.mb_threads(user_id,title,body) VALUES($1,$2,$3)',[a,'Blocked','Normal body']),/confirmed account/);
+  await db.exec('RESET ROLE');
+ }
+ await db.exec(`DELETE FROM auth.users WHERE id='${a}';SET ROLE service_role`);
+ await assert.rejects(db.query('INSERT INTO public.mb_threads(user_id,title,body) VALUES($1,$2,$3)',[a,'Deleted','Normal body']),/confirmed account/);
+ await db.exec(`RESET ROLE`);assert.equal((await db.query('SELECT count(*)::int AS count FROM public.submission_rate_limits')).rows[0].count,0);
 }finally{await db.close();}});

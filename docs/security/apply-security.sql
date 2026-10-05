@@ -372,6 +372,12 @@ DECLARE
   accepted integer;
 BEGIN
   IF NEW.user_id IS NULL THEN RAISE EXCEPTION 'Forum author required' USING ERRCODE='23514'; END IF;
+  IF NOT EXISTS (SELECT 1 FROM auth.users u WHERE u.id=NEW.user_id
+    AND u.email IS NOT NULL AND u.email_confirmed_at IS NOT NULL
+    AND NOT coalesce(u.is_anonymous,false)
+    AND (u.banned_until IS NULL OR u.banned_until<=request_time)) THEN
+    RAISE EXCEPTION 'A confirmed account is required to post.' USING ERRCODE='42501';
+  END IF;
   IF NEW.body IS NULL OR char_length(NEW.body) > 10000
     OR char_length(NEW.body) < (CASE WHEN TG_TABLE_NAME='mb_threads' THEN 5 ELSE 2 END)
     OR char_length(coalesce(NEW.author_name,'')) > 120 THEN
@@ -385,6 +391,8 @@ BEGIN
   END IF;
   -- Stable lock order; conflict updates serialize concurrent requests per author.
   FOR item IN SELECT * FROM (VALUES
+    ('forum:all:hour'::text, 600, 3600),
+    ('forum:all:minute'::text, 60, 60),
     ('forum:hour:' || NEW.user_id::text, 20, 3600),
     ('forum:minute:' || NEW.user_id::text, 5, 60)
   ) AS limits(key,maximum,seconds) ORDER BY key LOOP

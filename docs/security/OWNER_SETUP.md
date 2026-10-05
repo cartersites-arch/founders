@@ -69,3 +69,7 @@ The provider security SQL also removes direct browser listing INSERT access (inc
 ## Forum abuse controls
 
 The owner SQL installs trigger-only database checks for thread/reply creation and content edits. Each author shares five accepted writes per minute and twenty per hour across both tables; deleting posts does not refund the budget. Bodies are limited to 10,000 characters, thread titles to 200, and author labels/categories to 120. Both direct authenticated API writes and service-role Worker writes are checked. Counter and moderation maintenance do not consume posting allowance. Existing content is not rewritten; editing legacy oversized content requires shortening it. No additional Worker binding or secret is required. These per-account controls do not replace signup abuse protection, moderation or network-level denial-of-service protection.
+
+## Account-switching follow-up
+
+Forum limits now also share site-wide caps of 60 accepted writes/minute and 600/hour, alongside the per-author limits. A confirmed, non-anonymous, unbanned Auth user must exist for the author. See `STAGING_ACCEPTANCE.md` for the consolidated release checklist, Auth dashboard paths, CAPTCHA prerequisites and outbound-network acceptance criteria. Global caps bound persisted writes but can be exhausted by an attacker; they do not replace platform abuse protection. No Auth dashboard setting was changed in this pass.
