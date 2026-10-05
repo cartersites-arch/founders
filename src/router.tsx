@@ -3,7 +3,7 @@ import { cspNonceForRequest } from "@/lib/csp-nonce";
 import { createRouter, useRouter } from "@tanstack/react-router";
 import { routeTree } from "./routeTree.gen";
 
-function DefaultErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
+function DefaultErrorComponent({ error, reset }: { error: unknown; reset: () => void }) {
   const router = useRouter();
 
   return (
@@ -29,9 +29,9 @@ function DefaultErrorComponent({ error, reset }: { error: Error; reset: () => vo
         <p className="mt-2 text-sm text-muted-foreground">
           An unexpected error occurred. Please try again.
         </p>
-        {import.meta.env.DEV && error.message && (
+        {import.meta.env.DEV && error instanceof Error && error.message && (
           <pre className="mt-4 max-h-40 overflow-auto rounded-md bg-muted p-3 text-left font-mono text-xs text-destructive">
-            {error.message}
+            {error instanceof Error ? error.message : "Unexpected error"}
           </pre>
         )}
         <div className="mt-6 flex items-center justify-center gap-3">

@@ -52,3 +52,9 @@ Review this branch against the audit commit. Do not merge development-only shutd
 A source inspection exposed the driver credential in tool output during the audit. Its value is omitted here. Treat it as compromised and coordinate remediation with its owner; the fork does not authorize changing the original deployment.
 
 Validation completed: three isolation tests, nine source security tests, and one in-memory PostgreSQL privilege test passed; the client and server build succeeded. With scoped socket permission, the local server returned HTTP 200 with six nonce-bearing scripts, and the maintenance route returned 503. Server fetch used a fixture that blocks hosted requests. No hosted database was contacted by these tests. Type checking reported the same four route-search `redirect` errors as the original audit commit, with no additional errors. Full browser and hosted end-to-end tests remain outstanding.
+
+## Dependency and mobile follow-up
+
+Compatible dependency updates remove all advisories reported by `npm audit`, including development dependencies, at this review. Seroval resolves to 1.6.8. An Axios 1.20.0 override prevents the nested Firecrawl dependency retaining a vulnerable Axios version. This audit is a point-in-time check, not proof that no undisclosed vulnerabilities exist.
+
+The closed mobile navigation panel was extending the page width. Its wrapper now clips the translated panel, and the closed menu is inert. Chromium smoke checks at 390 by 844 pixels show no horizontal overflow or uncaught errors for home, authentication, password reset and help center, with non-loopback browser requests blocked. Authentication input accepted sample text; real sign-in, submissions and deployed database compatibility remain untested. Updated router error handling accepts unknown errors; the four original redirect-search type errors remain.
