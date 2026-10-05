@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate, redirect, Link } from "@tanstack/react-router";
+import { createFileRoute, useNavigate, redirect, Link, Outlet, useRouterState } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { z } from "zod";
 import { supabase } from "@/integrations/supabase/client";
@@ -24,13 +24,15 @@ const SearchSchema = z.object({
 
 export const Route = createFileRoute("/auth")({
   validateSearch: (search) => SearchSchema.parse(search),
-  beforeLoad: async ({ search }) => {
+  beforeLoad: async ({ search, location }) => {
+    // Recovery routes must render and restore their session independently.
+    if (location.pathname !== "/auth" && location.pathname !== "/auth/") return;
     const { data } = await supabase.auth.getUser();
     if (data.user) {
       throw redirect({ to: search.redirect as never });
     }
   },
-  component: AuthPage,
+  component: AuthRoute,
   head: () => ({
     meta: [
       { title: "Sign in or create an account — founders.click" },
@@ -42,6 +44,11 @@ export const Route = createFileRoute("/auth")({
     ],
   }),
 });
+
+function AuthRoute() {
+  const pathname = useRouterState({ select: (state) => state.location.pathname });
+  return pathname === "/auth" || pathname === "/auth/" ? <AuthPage /> : <Outlet />;
+}
 
 function AuthPage() {
   const navigate = useNavigate();
