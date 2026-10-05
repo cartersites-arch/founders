@@ -64,3 +64,18 @@ test("browser relative URLs resolve locally and external URLs remain blocked", (
     else globalThis.window = originalWindow;
   }
 });
+
+test("hosted preview requires explicit flag and only allows its exact origin", () => {
+  const previous = process.env.VITE_DEVELOPMENT_PREVIEW;
+  try {
+    delete process.env.VITE_DEVELOPMENT_PREVIEW;
+    assert.throws(() => assertAllowedRequest("https://founders-dev-preview.cartersites.workers.dev/_serverFn/test"));
+    process.env.VITE_DEVELOPMENT_PREVIEW = "1";
+    assert.doesNotThrow(() => assertAllowedRequest("https://founders-dev-preview.cartersites.workers.dev/_serverFn/test"));
+    assert.throws(() => assertAllowedRequest("https://another.cartersites.workers.dev/_serverFn/test"));
+    assert.throws(() => assertAllowedRequest("https://founders-dev-preview.cartersites.workers.dev.evil.invalid/test"));
+  } finally {
+    if (previous === undefined) delete process.env.VITE_DEVELOPMENT_PREVIEW;
+    else process.env.VITE_DEVELOPMENT_PREVIEW = previous;
+  }
+});

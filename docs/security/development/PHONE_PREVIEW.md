@@ -17,3 +17,19 @@ Target application: a new `founders-dev-preview` Worker in the fork owner's Clou
 There is no Cloudflare connector or Cloudflare credential binding in this task, and no verified preview hostname or Access policy. Cloudflare network access is not in the environment's current allowlist. The built app therefore cannot be safely published from this session yet. Configure any deployment credential through the environment's secret settings, never chat; scope it only to the confirmed development account/Worker. Alternatively use the owner's dashboard to configure and deploy the reviewed preview after the above code changes and verification.
 
 The existing PR remains draft. Neither main nor Derek's services are changed by this plan.
+
+## Prepared preview build
+
+The fork now includes `wrangler.preview.jsonc` and `npm run build:preview`. The expected exact origin is `https://founders-dev-preview.cartersites.workers.dev`; confirm the actual Cloudflare URL matches before deployment. The normal local build/configuration is unchanged. Preview builds require an explicit `VITE_DEVELOPMENT_PREVIEW=1` flag and the checked-out `security-hardening` branch; detached/main checkouts are intentionally refused.
+
+Cloudflare build settings after branch verification:
+
+- Build command: `npm run build:preview`
+- Deploy command: `npx wrangler deploy --config dist/server/wrangler.json`
+- Preview builds: disabled; alternate preview URLs are also disabled in configuration.
+- Access: All traffic, Cloudflare account policy, path `/`.
+- Build variables: `VITE_DEVELOPMENT_PREVIEW=1`, `SUPABASE_URL` and `VITE_SUPABASE_URL` set to the founders-dev HTTPS URL, and `VITE_SUPABASE_PUBLISHABLE_KEY` set to that project's publishable key.
+
+Never place the service-role key in a VITE variable, screenshot or chat. The server runtime eventually needs development-only `SUPABASE_SERVICE_ROLE_KEY` and `SUPABASE_PUBLISHABLE_KEY` secret bindings. First verify Access denies an unauthenticated session on the primary URL and all alternate URLs before adding the service-role binding. Initial pages that need server database access may fail until that binding is installed; that is expected during this protection-first setup. No original account ID, routes, cron triggers or external integration secrets are included.
+
+After Cloudflare shows the exact origin, set development-only Auth redirect/site URLs in Supabase as reviewed. This preparation has not deployed anything; Git branch selection and the effective Access policy still need dashboard verification.

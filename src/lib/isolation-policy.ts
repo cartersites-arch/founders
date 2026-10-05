@@ -1,4 +1,5 @@
 export const DEVELOPMENT_PROJECT = "vpewpybdvtnhwxhzyubc";
+export const DEVELOPMENT_PREVIEW_ORIGIN = "https://founders-dev-preview.cartersites.workers.dev";
 export const DEVELOPMENT_HOST = `${DEVELOPMENT_PROJECT}.supabase.co`;
 
 export function assertDevelopmentSupabaseUrl(value: string | undefined): void {
@@ -21,6 +22,9 @@ export function assertDevelopmentSupabaseUrl(value: string | undefined): void {
 export function assertAllowedRequest(input: string | URL | Request): void {
   const raw = input instanceof Request ? input.url : String(input);
   const url = new URL(raw, typeof window === "undefined" ? undefined : window.location.href);
+  const previewEnabled = import.meta.env?.VITE_DEVELOPMENT_PREVIEW === "1" ||
+    (typeof process !== "undefined" && process.env.VITE_DEVELOPMENT_PREVIEW === "1");
+  if (previewEnabled && url.origin === DEVELOPMENT_PREVIEW_ORIGIN && !url.username && !url.password && !url.pathname.includes("%")) return;
   if (url.pathname.includes("%")) {
     throw new Error("Isolation: encoded endpoint paths are disabled.");
   }

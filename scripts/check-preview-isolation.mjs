@@ -1,0 +1,9 @@
+import {readFileSync} from 'node:fs';
+import {assertDevelopmentSupabaseUrl} from '../src/lib/isolation-policy.ts';
+if(readFileSync('.git/HEAD','utf8').trim()!=='ref: refs/heads/security-hardening')throw new Error('Preview requires security-hardening checkout; detached/main builds are refused.');
+if(process.env.VITE_DEVELOPMENT_PREVIEW!=='1')throw new Error('Preview build flag must be explicitly configured.');
+for(const name of ['SUPABASE_URL','VITE_SUPABASE_URL'])assertDevelopmentSupabaseUrl(process.env[name]);
+if(!process.env.VITE_SUPABASE_PUBLISHABLE_KEY)throw new Error('Development publishable key is required at build time.');
+const c=JSON.parse(readFileSync('wrangler.preview.jsonc','utf8'));
+if(c.name!=='founders-dev-preview'||c.account_id||c.routes||c.triggers||c.preview_urls!==false)throw new Error('Preview target/configuration mismatch.');
+console.log('Preview build preflight passed; deployment and Access protection require separate verification.');

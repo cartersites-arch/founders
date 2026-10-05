@@ -11,7 +11,8 @@
     "lint": "eslint .",
     "format": "prettier --write .",
     "test:isolation": "node scripts/isolation.test.mjs",
-    "test:security": "node scripts/security.test.mjs && node scripts/database-security.test.mjs"
+    "test:security": "node scripts/security.test.mjs && node scripts/database-security.test.mjs",
+    "build:preview": "node scripts/check-preview-isolation.mjs && node --import ./scripts/local-isolation-preload.mjs ./node_modules/vite/bin/vite.js build"
   },
   "dependencies": {
     "@cloudflare/vite-plugin": "^1.25.5",

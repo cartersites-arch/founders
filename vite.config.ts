@@ -11,6 +11,7 @@ export default defineConfig(async ({ command }) => {
       ? [
           (await import("@cloudflare/vite-plugin")).cloudflare({
             viteEnvironment: { name: "ssr" },
+            ...(process.env.VITE_DEVELOPMENT_PREVIEW === "1" ? { configPath: "wrangler.preview.jsonc" } : {}),
           }),
         ]
       : [];
