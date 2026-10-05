@@ -13,7 +13,9 @@ test('public provider projection revokes legacy table and private column reads w
    CREATE TABLE public.providers(${[...publicColumns,...privateColumns].map(c=>`${c} ${c==='is_published'?'boolean':'text'}`).join(',')});
    ALTER TABLE public.providers ENABLE ROW LEVEL SECURITY;
    CREATE POLICY public_published ON public.providers FOR SELECT TO anon,authenticated USING (is_published=true);
-   GRANT SELECT ON public.providers TO PUBLIC,anon,authenticated;
+   GRANT SELECT,INSERT ON public.providers TO PUBLIC,anon,authenticated;
+   GRANT INSERT(id,slug,name,is_published) ON public.providers TO anon,authenticated;
+   CREATE POLICY pending_insert ON public.providers FOR INSERT TO anon,authenticated WITH CHECK (is_published=false);
    GRANT SELECT(submitter_email,submission_notes) ON public.providers TO anon,authenticated;
    INSERT INTO public.providers(id,slug,name,is_published,submitter_email,new_private_field) VALUES ('public','public','Published business',true,'PRIVATE','PRIVATE'),('draft','draft','Unpublished business',false,'PRIVATE','PRIVATE');`);
   await db.exec(sql);
@@ -23,9 +25,12 @@ test('public provider projection revokes legacy table and private column reads w
    assert.deepEqual(rows,[{slug:'public',name:'Published business'}]);
    for(const column of privateColumns)await assert.rejects(db.query(`SELECT ${column} FROM public.providers`),/permission denied/);
    await assert.rejects(db.query('SELECT * FROM public.providers'),/permission denied/);
+   await assert.rejects(db.query("INSERT INTO public.providers(id,slug,name,is_published) VALUES('bypass','bypass','Bypass',false)"),/permission denied/);
    await db.exec('RESET ROLE');
   }
   await db.exec('SET ROLE service_role');
   assert.equal((await db.query('SELECT submitter_email,new_private_field FROM public.providers')).rows.length,2);
+  await db.exec("INSERT INTO public.providers(id,slug,name,is_published) VALUES('guarded','guarded','Guarded listing',false)");
+  assert.equal((await db.query('SELECT count(*)::int AS count FROM public.providers')).rows[0].count,3);
  } finally {await db.close();}
 });
