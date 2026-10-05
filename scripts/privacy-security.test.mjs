@@ -46,3 +46,30 @@ assert.equal((await db.query('SELECT public.apply_email_unsubscribe($1) AS resul
 assert.equal((await db.query('SELECT count(*)::int AS count FROM public.suppressed_emails')).rows[0].count,1);
 for(const role of ['anon','authenticated']){await db.exec(`RESET ROLE;SET ROLE ${role}`);await assert.rejects(()=>db.query('SELECT public.apply_email_unsubscribe($1)',[token]),/permission denied/);}
 }finally{await db.close();}});
+
+async function forumFixture(){const db=await fixture();await db.exec(`CREATE TABLE public.submission_rate_limits(key text PRIMARY KEY,attempts integer NOT NULL,expires_at timestamptz NOT NULL);ALTER TABLE public.submission_rate_limits ENABLE ROW LEVEL SECURITY;`);await db.exec(readFileSync(new URL('../docs/security/forum-abuse.sql',import.meta.url),'utf8'));return db;}
+test('forum database limits content sizes even for service and direct browser writes',async()=>{const db=await forumFixture();try{
+ await db.exec(`SET ROLE authenticated;SET test.user_id='${a}'`);
+ for(const [title,body] of [['X','Valid body'],['T'.repeat(201),'Valid body'],['Valid','B'.repeat(10001)],['Valid','']])
+  await assert.rejects(db.query('INSERT INTO public.mb_threads(user_id,title,body) VALUES($1,$2,$3)',[a,title,body]),/Invalid forum/);
+ const id=(await db.query('INSERT INTO public.mb_threads(user_id,title,body) VALUES($1,$2,$3) RETURNING id',[a,'Normal','Normal body'])).rows[0].id;
+ await assert.rejects(db.query('UPDATE public.mb_threads SET body=$1 WHERE id=$2',['B'.repeat(10001),id]),/Invalid forum/);
+ await db.exec('RESET ROLE;SET ROLE service_role');
+ await assert.rejects(db.query('INSERT INTO public.mb_replies(user_id,thread_id,body) VALUES($1,$2,$3)',[b,id,'B'.repeat(10001)]),/Invalid forum/);
+ await db.exec('RESET ROLE;SET ROLE authenticated');await assert.rejects(db.exec('SELECT public.guard_forum_content()'),/permission denied/);
+}finally{await db.close();}});
+test('forum shared posting limit covers threads replies edits and survives deletion',async()=>{const db=await forumFixture();try{
+ await db.exec(`SET ROLE authenticated;SET test.user_id='${a}'`);
+ const id=(await db.query('INSERT INTO public.mb_threads(user_id,title,body) VALUES($1,$2,$3) RETURNING id',[a,'Normal','Normal body'])).rows[0].id;
+ for(let i=0;i<3;i++)await db.query('INSERT INTO public.mb_replies(user_id,thread_id,body) VALUES($1,$2,$3)',[a,id,'Reply']);
+ await db.query('UPDATE public.mb_threads SET title=$1 WHERE id=$2',['Edited',id]);
+ await assert.rejects(db.query('INSERT INTO public.mb_replies(user_id,thread_id,body) VALUES($1,$2,$3)',[a,id,'Burst']),/posting limit/);
+ await db.exec('DELETE FROM public.mb_replies');
+ await assert.rejects(db.query('INSERT INTO public.mb_replies(user_id,thread_id,body) VALUES($1,$2,$3)',[a,id,'After delete']),/posting limit/);
+ await db.exec(`SET test.user_id='${b}'`);await db.query('INSERT INTO public.mb_replies(user_id,thread_id,body) VALUES($1,$2,$3)',[b,id,'Other author']);
+ await db.exec('RESET ROLE');assert.equal((await db.query('SELECT reply_count FROM public.mb_threads')).rows[0].reply_count,1);
+ await db.exec(`UPDATE public.submission_rate_limits SET expires_at=now()-interval '1 second' WHERE key='forum:minute:${a}';SET ROLE authenticated;SET test.user_id='${a}'`);
+ await db.query('INSERT INTO public.mb_replies(user_id,thread_id,body) VALUES($1,$2,$3)',[a,id,'Fresh minute']);
+ await db.exec(`RESET ROLE;UPDATE public.submission_rate_limits SET attempts=20 WHERE key='forum:hour:${a}';SET ROLE authenticated`);
+ await assert.rejects(db.query('INSERT INTO public.mb_replies(user_id,thread_id,body) VALUES($1,$2,$3)',[a,id,'Hourly cap']),/posting limit/);
+}finally{await db.close();}});

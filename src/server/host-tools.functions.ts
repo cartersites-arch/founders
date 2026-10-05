@@ -79,7 +79,7 @@ export const createThread = createServerFn({ method: "POST" })
       .select("display_name, full_name")
       .eq("user_id", context.userId)
       .maybeSingle();
-    const author_name = profile?.display_name || profile?.full_name || "Pool Host";
+    const author_name = (profile?.display_name || profile?.full_name || "Pool Host").slice(0, 120);
     const { data: thread, error } = await supabaseAdmin
       .from("mb_threads")
       .insert({
@@ -108,7 +108,7 @@ export const createReply = createServerFn({ method: "POST" })
       .select("display_name, full_name")
       .eq("user_id", context.userId)
       .maybeSingle();
-    const author_name = profile?.display_name || profile?.full_name || "Pool Host";
+    const author_name = (profile?.display_name || profile?.full_name || "Pool Host").slice(0, 120);
     const { data: reply, error } = await supabaseAdmin
       .from("mb_replies")
       .insert({

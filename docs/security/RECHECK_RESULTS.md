@@ -72,3 +72,11 @@ Provider listings still had browser INSERT grants, allowing callers to skip the 
 The 44 local tests passed again, including legacy column-grant bypass coverage and preserved service insertion. All 159 hosted authorization regressions and 43 provider/privacy/host-AI checks passed against founders-dev, including three new rejected direct-listing insert attempts. Temporary fixtures were removed. A read-only verification found zero public tables without RLS and zero browser INSERT grants on the seven guarded form tables. Previously passing password, build and mobile My Learning checks were not rerun for this SQL-only change.
 
 Authenticated forum content writes remain available under ownership policies. This review does not establish comprehensive per-account forum spam protection; volume and abuse monitoring remain release considerations alongside the existing staging requirements.
+
+## Forum abuse follow-up
+
+Database triggers now enforce content-size checks and shared per-author posting limits across threads, replies and content edits. Direct API writes and service-role writes cannot bypass the guard; counters survive deletion, and browser roles cannot execute the privileged trigger function. The Worker truncates author labels to the supported 120-character bound. Existing content is preserved; count/moderation maintenance does not consume quota.
+
+All 46 local security tests passed. Fourteen founders-dev tests passed for invalid/oversized direct content, service-role size enforcement, ordinary posting, parallel writes sharing the final slots, edit/deletion bypass denial, independent users, correct reply counters, direct trigger-call denial and minute/hour enforcement. Temporary accounts, posts and rate rows were removed. This closes the specific forum posting-volume gap; many-account abuse, signup protection and platform-level traffic limits remain staging/release concerns.
+
+The 159 hosted authorization regressions also passed with the forum guard installed. TypeScript, build and the isolated mobile My Learning check passed. Regression-created forum rate counters were explicitly cleaned up after the temporary accounts were removed. Production remains unchanged.
