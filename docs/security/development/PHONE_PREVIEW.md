@@ -42,3 +42,12 @@ Cloudflare's selected Git branch is checked out as a detached commit. The prefli
 ### Worker redirect compatibility
 
 Cloudflare Workers rejects Fetch redirect mode `error`. The isolated fetch wrapper now uses `manual` and rejects redirect responses (including browser opaque redirects) before following any destination. This resolves the signing-key fetch failure that surfaced as invalid-token responses on authenticated server functions. Verified with the Workers runtime, isolation regression tests, and TypeScript checking; hosted sign-in verification remains pending after deployment.
+
+
+### Recovery code fallback
+
+Hosted Auth logs showed recovery emails sent and verification succeeded, while earlier reused/invalid links reported expiration. Successful verification alone does not prove the browser retained the recovery session across the Cloudflare Access handoff. The reset page now listens for verified recovery sessions, displays invalid-link errors, and supports explicit `verifyOtp` with email/code and type `recovery`. New passwords require 12 characters, matching the owner-confirmed development Auth setting. No URL parameter alone authorizes a password change.
+
+In founders-dev Authentication > Emails > Reset password, replace the body with `recovery-email.html` from this directory. The template displays `{{ .Token }}` and links only to the reset page, so a GET does not consume the code. This template is prepared but has not been applied through the connector; dashboard configuration is required. Do not put recovery codes in chat or logs. Existing link recovery remains supported.
+
+TypeScript and six isolation checks pass. A 390x844 browser test with hosted calls mocked covered URL error display, invalid code rejection, verified-session transition and the 12-character minimum. Actual email code delivery and password change remain pending.
