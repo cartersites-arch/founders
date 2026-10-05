@@ -1,3 +1,4 @@
+import { assertDevelopmentSupabaseUrl, createIsolatedFetch } from "@/lib/isolation-policy";
 import { createMiddleware } from "@tanstack/react-start";
 import { getRequest } from "@tanstack/react-start/server";
 import { createClient } from "@supabase/supabase-js";
@@ -18,6 +19,7 @@ export const requireSupabaseAuth = createMiddleware({ type: "function" }).server
       throw new Response(message, { status: 500 });
     }
 
+    assertDevelopmentSupabaseUrl(SUPABASE_URL);
     const request = getRequest();
 
     if (!request?.headers) {
@@ -41,6 +43,7 @@ export const requireSupabaseAuth = createMiddleware({ type: "function" }).server
 
     const supabase = createClient<Database>(SUPABASE_URL!, SUPABASE_PUBLISHABLE_KEY!, {
       global: {
+        fetch: createIsolatedFetch(fetch),
         headers: {
           Authorization: `Bearer ${token}`,
         },

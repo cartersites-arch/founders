@@ -1,3 +1,4 @@
+import { assertDevelopmentSupabaseUrl, createIsolatedFetch } from "@/lib/isolation-policy";
 import { createClient } from "@supabase/supabase-js";
 import type { Database } from "./types";
 
@@ -18,7 +19,9 @@ function createSupabaseClient() {
     throw new Error(message);
   }
 
+  assertDevelopmentSupabaseUrl(SUPABASE_URL);
   return createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
+    global: { fetch: createIsolatedFetch(fetch) },
     auth: {
       storage: typeof window !== "undefined" ? localStorage : undefined,
       persistSession: true,

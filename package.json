@@ -4,12 +4,13 @@
   "sideEffects": false,
   "type": "module",
   "scripts": {
-    "dev": "vite dev",
-    "build": "vite build",
-    "build:dev": "vite build --mode development",
-    "preview": "vite preview",
+    "dev": "node scripts/check-local-isolation.mjs && node --import ./scripts/local-isolation-preload.mjs ./node_modules/vite/bin/vite.js dev",
+    "build": "node scripts/check-local-isolation.mjs && node --import ./scripts/local-isolation-preload.mjs ./node_modules/vite/bin/vite.js build",
+    "build:dev": "npm run build -- --mode development",
+    "preview": "node scripts/check-local-isolation.mjs && node --import ./scripts/local-isolation-preload.mjs ./node_modules/vite/bin/vite.js preview",
     "lint": "eslint .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "test:isolation": "node scripts/isolation.test.mjs"
   },
   "dependencies": {
     "@cloudflare/vite-plugin": "^1.25.5",

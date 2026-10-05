@@ -1,3 +1,4 @@
+import { isLocalIsolation } from "@/lib/isolation-policy";
 // ─────────────────────────────────────────────────────────────────────────────
 // Server-only Stripe client.
 //
@@ -10,6 +11,9 @@ import Stripe from "stripe";
 let _stripe: Stripe | undefined;
 
 function buildStripe(): Stripe {
+  if (isLocalIsolation()) {
+    throw new Error("Billing is disabled in isolated local testing.");
+  }
   const key = process.env.STRIPE_SECRET_KEY;
   if (!key) {
     throw new Error(

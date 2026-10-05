@@ -1,3 +1,4 @@
+import { isLocalIsolation } from "@/lib/isolation-policy";
 import { useEffect } from "react";
 import { useRouterState } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
@@ -40,6 +41,7 @@ export function IntercomWidget() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
 
   useEffect(() => {
+    if (isLocalIsolation()) return;
     let cancelled = false;
     let unsub: (() => void) | undefined;
     let booted = false;
