@@ -170,3 +170,37 @@ test("dedicated Edge driver credentials reject missing, oversized and incorrect 
   assert.equal(await matchesSecret("wrong credential", secret), false);
   assert.equal(await matchesSecret(secret, secret), true);
 });
+
+test("webhook text remains unchanged for signature verification and is size bounded", async () => {
+  const { readLimitedText } = await import("../src/lib/limited-json.ts");
+  const body = '{ "message": "signed payload" }\n';
+  assert.equal(await readLimitedText(new Request("https://fixture.test", {method:"POST",body})), body);
+  await assert.rejects(() => readLimitedText(new Request("https://fixture.test", {method:"POST",body:"x".repeat(11)}),10), error => error instanceof Response && error.status===413);
+});
+
+test("admin seeding and course generation reject GET before credentials or side effects", async () => {
+  const { readFileSync } = await import("node:fs");
+  const { default: ts } = await import("typescript");
+  for (const path of ["seed-academy-courses", "generate-course-content"]) {
+    let handler;
+    const source = readFileSync(new URL(`../supabase/functions/${path}/index.ts`, import.meta.url), "utf8");
+    const js = ts.transpileModule(source, {compilerOptions:{module:ts.ModuleKind.ESNext,target:ts.ScriptTarget.ESNext}}).outputText.replace(/^import .*;\s*$/gm, "").replace(/^export {};\s*$/gm, "");
+    new Function("Deno", "createClient", "seed", js)({serve:fn=>{handler=fn;},env:{get:()=>{throw new Error("Unexpected credential access");}}},()=>{throw new Error("Unexpected database access");},[]);
+    assert.equal((await handler(new Request("https://fixture.test", {method:"GET"}))).status,405);
+  }
+});
+
+test("Auth webhook signatures reject tampering and expired timestamps", async () => {
+  const { readFileSync } = await import("node:fs");
+  const { createHmac } = await import("node:crypto");
+  const { default: ts } = await import("typescript");
+  const { readLimitedText } = await import("../src/lib/limited-json.ts");
+  const source=readFileSync(new URL("../src/integrations/webhooks/standard.ts",import.meta.url),"utf8");
+  const js=ts.transpileModule(source,{compilerOptions:{module:ts.ModuleKind.ESNext,target:ts.ScriptTarget.ESNext}}).outputText.replace(/^import .*;\s*$/gm,"").replace(/export /g,"");
+  const verify=new Function("readLimitedText",js+"; return verifyStandardWebhook;")(readLimitedText);
+  const key=Buffer.alloc(32,7),secret="v1,whsec_"+key.toString("base64"),body='{"fixture":true}';
+  const request=(age=0,payload=body)=>{const timestamp=String(Math.floor(Date.now()/1000)-age),id="fixture-webhook";return new Request("https://fixture.test",{method:"POST",body:payload,headers:{"webhook-id":id,"webhook-timestamp":timestamp,"webhook-signature":"v1,"+createHmac("sha256",key).update(`${id}.${timestamp}.${body}`).digest("base64")}});};
+  assert.equal(await verify(request(),secret),body);
+  await assert.rejects(()=>verify(request(0,body+" "),secret),error=>error.code==="invalid_signature");
+  await assert.rejects(()=>verify(request(600),secret),error=>error.code==="stale_timestamp");
+});

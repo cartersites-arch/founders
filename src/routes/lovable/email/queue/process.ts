@@ -1,3 +1,4 @@
+import { matchesSecret } from "@/lib/security-token";
 import { sendEmailitEmail, EmailitAPIError } from "@/integrations/emailit/client";
 import { createClient } from "@supabase/supabase-js";
 import { createFileRoute } from "@tanstack/react-router";
@@ -66,15 +67,16 @@ export const Route = createFileRoute("/lovable/email/queue/process")({
           return Response.json({ error: "Server configuration error" }, { status: 500 });
         }
 
-        // Verify the caller is authorized with the service role key.
-        // In the TanStack stack, the pg_cron job sends the service role key as a Bearer token.
+        // Dedicated queue credential; never accept the database service-role key as job authentication.
+        const queueSecret = process.env.EMAIL_QUEUE_SECRET;
+        if (!queueSecret || queueSecret.length < 32) return Response.json({ error: "Queue not configured" }, { status: 503 });
         const authHeader = request.headers.get("Authorization");
         if (!authHeader?.startsWith("Bearer ")) {
           return Response.json({ error: "Unauthorized" }, { status: 401 });
         }
 
         const token = authHeader.slice("Bearer ".length).trim();
-        if (token !== supabaseServiceKey) {
+        if (!(await matchesSecret(token, queueSecret))) {
           return Response.json({ error: "Forbidden" }, { status: 403 });
         }
 

@@ -1,5 +1,5 @@
-export async function readLimitedJson(request: Request, maximum = 65536): Promise<unknown> {
-  if (!request.body) return {};
+export async function readLimitedText(request: Request, maximum = 65536): Promise<string> {
+  if (!request.body) return "";
   const reader = request.body.getReader();
   const chunks: Uint8Array[] = [];
   let size = 0;
@@ -23,8 +23,13 @@ export async function readLimitedJson(request: Request, maximum = 65536): Promis
     bytes.set(chunk, offset);
     offset += chunk.byteLength;
   }
+  return new TextDecoder().decode(bytes);
+}
+
+export async function readLimitedJson(request: Request, maximum = 65536): Promise<unknown> {
+  const text = await readLimitedText(request, maximum);
   try {
-    return size ? JSON.parse(new TextDecoder().decode(bytes)) : {};
+    return text ? JSON.parse(text) : {};
   } catch {
     throw new Response("Invalid JSON", { status: 400 });
   }

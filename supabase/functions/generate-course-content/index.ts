@@ -86,6 +86,7 @@ const TOOL = {
 Deno.serve(async (req) => {
   const cors = corsHeaders(req.headers.get("origin"));
   if (req.method === "OPTIONS") return new Response(null, { headers: cors });
+  if (req.method !== "POST") return new Response("Method not allowed", { status: 405, headers: cors });
   try {
     // Require admin auth
     const authHeader = req.headers.get("Authorization");
