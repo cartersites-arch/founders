@@ -10,7 +10,7 @@
     "preview": "vite preview",
     "lint": "eslint .",
     "format": "prettier --write .",
-    "test:security": "node scripts/security.test.mjs && node scripts/database-security.test.mjs && node scripts/billing-security.test.mjs && node scripts/privacy-security.test.mjs && node scripts/generation-security.test.mjs && node scripts/completion-security.test.mjs && node scripts/sitemap-security.test.mjs && node scripts/provider-privacy.test.mjs"
+    "test:security": "node scripts/security.test.mjs && node scripts/database-security.test.mjs && node scripts/billing-security.test.mjs && node scripts/privacy-security.test.mjs && node scripts/generation-security.test.mjs && node scripts/completion-security.test.mjs && node scripts/sitemap-security.test.mjs && node scripts/provider-privacy.test.mjs && node scripts/admin-security.test.mjs"
   },
   "dependencies": {
     "@cloudflare/vite-plugin": "^1.25.5",

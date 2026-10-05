@@ -1,3 +1,5 @@
+import { getRequest } from "@tanstack/react-start/server";
+import { MIN_NEW_PASSWORD_LENGTH, MAX_NEW_PASSWORD_LENGTH } from "@/lib/password-policy";
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
@@ -120,7 +122,7 @@ export const createAdminUser = createServerFn({ method: "POST" })
     z
       .object({
         email: z.string().email(),
-        password: z.string().min(8),
+        password: z.string().min(MIN_NEW_PASSWORD_LENGTH).max(MAX_NEW_PASSWORD_LENGTH),
         full_name: z.string().optional(),
       })
       .parse(d),
@@ -178,7 +180,7 @@ export const setAdminPassword = createServerFn({ method: "POST" })
     z
       .object({
         user_id: z.string().uuid(),
-        password: z.string().min(8),
+        password: z.string().min(MIN_NEW_PASSWORD_LENGTH).max(MAX_NEW_PASSWORD_LENGTH),
       })
       .parse(d),
   )
@@ -196,11 +198,11 @@ export const sendAdminPasswordReset = createServerFn({ method: "POST" })
   .inputValidator((d: unknown) => z.object({ email: z.string().email() }).parse(d))
   .handler(async ({ data, context }): Promise<{ ok: true }> => {
     await assertAdmin((context as any).userId);
-    const { error } = await (supabaseAdmin as any).auth.admin.generateLink({
-      type: "recovery",
-      email: data.email.trim().toLowerCase(),
-    });
-    if (error) throw new Error(error.message);
+    const { error } = await supabaseAdmin.auth.resetPasswordForEmail(
+      data.email.trim().toLowerCase(),
+      { redirectTo: new URL("/auth/reset-password", getRequest().url).href },
+    );
+    if (error) throw new Error("Unable to send password reset email. Try again later.");
     return { ok: true };
   });
 
@@ -260,20 +262,11 @@ export const revokeAdmin = createServerFn({ method: "POST" })
       throw new Error("You can't remove your own admin role. Ask another admin.");
     }
 
-    // Don't allow removing the last admin
-    const { count } = await supabaseAdmin
-      .from("user_roles")
-      .select("*", { count: "exact", head: true })
-      .eq("role", "admin");
-    if ((count ?? 0) <= 1) {
-      throw new Error("Refusing to remove the last admin.");
-    }
-
-    const { error } = await supabaseAdmin
-      .from("user_roles")
-      .delete()
-      .eq("user_id", data.user_id)
-      .eq("role", "admin");
-    if (error) throw new Error(error.message);
+    // Serialize role removal and recheck the caller inside the same transaction.
+    const { data: removed, error } = await (supabaseAdmin as any).rpc("revoke_admin_role", {
+      _caller_id: callerId,
+      _target_id: data.user_id,
+    });
+    if (error || removed !== true) throw new Error("Unable to remove admin access. Refresh and try again.");
     return { ok: true };
   });

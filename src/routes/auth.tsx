@@ -1,3 +1,4 @@
+import { MIN_NEW_PASSWORD_LENGTH, MAX_NEW_PASSWORD_LENGTH } from "@/lib/password-policy";
 import { createFileRoute, useNavigate, redirect, Link, Outlet, useRouterState } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { z } from "zod";
@@ -203,7 +204,8 @@ function AuthPage() {
                 autoComplete={mode === "signup" ? "new-password" : "current-password"}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                minLength={8}
+                minLength={mode === "signup" ? MIN_NEW_PASSWORD_LENGTH : 8}
+                maxLength={mode === "signup" ? MAX_NEW_PASSWORD_LENGTH : undefined}
                 required
               />
             </div>

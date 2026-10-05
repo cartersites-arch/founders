@@ -1,3 +1,4 @@
+import { MIN_NEW_PASSWORD_LENGTH, MAX_NEW_PASSWORD_LENGTH } from "@/lib/password-policy";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
@@ -121,7 +122,8 @@ function ResetPasswordPage() {
                   id="newPassword"
                   type="password"
                   autoComplete="new-password"
-                  minLength={12}
+                  minLength={MIN_NEW_PASSWORD_LENGTH}
+                  maxLength={MAX_NEW_PASSWORD_LENGTH}
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
                   required

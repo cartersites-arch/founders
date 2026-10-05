@@ -1,3 +1,4 @@
+import { MIN_NEW_PASSWORD_LENGTH, MAX_NEW_PASSWORD_LENGTH } from "@/lib/password-policy";
 import * as React from "react";
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
@@ -80,7 +81,8 @@ function TeamPage() {
           full_name: newName.trim() || undefined,
         },
       });
-      toast.success(`Admin created. Password: ${newPassword}`);
+      window.prompt("Admin created. Copy this password securely:", newPassword);
+      toast.success("Admin created.");
       setNewEmail("");
       setNewName("");
       setNewPassword("");
@@ -121,12 +123,12 @@ function TeamPage() {
 
   async function onResetPassword(user_id: string, label: string) {
     const pwd = prompt(
-      `Set new password for ${label} (min 8 chars). Leave empty to auto-generate:`,
+      `Set new password for ${label} (min ${MIN_NEW_PASSWORD_LENGTH} chars). Leave empty to auto-generate:`,
     );
     if (pwd === null) return;
     const password = pwd.trim() || genPassword();
-    if (password.length < 8) {
-      toast.error("Password too short");
+    if (password.length < MIN_NEW_PASSWORD_LENGTH || password.length > MAX_NEW_PASSWORD_LENGTH) {
+      toast.error(`Use ${MIN_NEW_PASSWORD_LENGTH}–${MAX_NEW_PASSWORD_LENGTH} characters.`);
       return;
     }
     try {
@@ -190,14 +192,18 @@ function TeamPage() {
           <Input
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}
-            placeholder="min 8 chars"
+            type="password"
+            autoComplete="new-password"
+            minLength={MIN_NEW_PASSWORD_LENGTH}
+            maxLength={MAX_NEW_PASSWORD_LENGTH}
+            placeholder={`min ${MIN_NEW_PASSWORD_LENGTH} chars`}
             className="mt-1"
           />
         </div>
         <Button type="button" variant="outline" onClick={() => setNewPassword(genPassword())}>
           Generate
         </Button>
-        <Button type="submit" disabled={busy || !newEmail.trim() || newPassword.length < 8}>
+        <Button type="submit" disabled={busy || !newEmail.trim() || newPassword.length < MIN_NEW_PASSWORD_LENGTH}>
           {busy ? "Creating…" : "Create admin"}
         </Button>
       </form>

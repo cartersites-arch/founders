@@ -57,3 +57,9 @@ The main reviewed SQL now restricts browser reads of `providers` to explicit pub
 Provider request history requires a signed-in account with a currently verified email. Caller-supplied email filters cannot grant access, and responses omit contact emails, payment references and staff notes. Matching preserves legacy email casing while escaping wildcard characters. Unpublished providers without a request matching that account are hidden.
 
 The host AI source function now uses the same service-only database limiter: five attempts per minute and twenty per rolling 24 hours per account. Submitted attempts count even when the provider fails. Provider output is capped at 2,048 tokens / 64 KiB with a 60-second timeout. This source function is not included in the current built Worker; the preventive change is tested in a source harness with the real development limiter and mocked AI responses. No new secret or Cloudflare binding is needed.
+
+## Admin team and recovery follow-up
+
+The main SQL now includes a service-only atomic admin-role removal RPC. The updated Worker calls it; apply the reviewed setup transaction before releasing that Worker. Concurrent removals serialize, recheck the caller after acquiring the lock, reject self-removal and preserve admin access. No new credential or binding is required.
+
+New/replacement password inputs and admin server validators consistently require 12–256 characters. Existing sign-in passwords are unaffected. Newly created admin passwords are offered through a deliberate copy dialog rather than a transient success toast. The admin reset button now requests actual Auth recovery delivery instead of merely generating an unused link, with a callback on the requesting application's `/auth/reset-password` route. Include the relevant app callbacks in the existing Supabase allowlist and verify real delivery on staging; local tests mock delivery and do not send email.
