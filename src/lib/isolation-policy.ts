@@ -20,7 +20,7 @@ export function assertDevelopmentSupabaseUrl(value: string | undefined): void {
 
 export function assertAllowedRequest(input: string | URL | Request): void {
   const raw = input instanceof Request ? input.url : String(input);
-  const url = new URL(raw);
+  const url = new URL(raw, typeof window === "undefined" ? undefined : window.location.href);
   if (url.pathname.includes("%")) {
     throw new Error("Isolation: encoded endpoint paths are disabled.");
   }

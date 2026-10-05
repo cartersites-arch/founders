@@ -62,3 +62,7 @@ The closed mobile navigation panel was extending the page width. Its wrapper now
 ## Redirect typing follow-up
 
 Four learning/admin routes now use the typed `/auth` destination instead of a `never` cast. This lets the router validate the existing sign-in mode and return-path search parameters without changing redirect behavior. This follow-up supersedes the earlier outstanding type-error status.
+
+## Browser interaction follow-up
+
+Fixture-backed Chromium checks passed for opening and closing the mobile menu, closed-menu inert state, required/email/password-length validation, and POST requests to maintenance/backfill returning local 503 shutdown responses. The fetch guard now resolves browser-relative URLs against the current page while keeping external hosts blocked; a regression test covers this case. All 14 security/isolation tests passed. The SQL workspace columns and membership helper signatures match the repository migration; this does not establish deployed-schema compatibility. Real sign-in, password-reset delivery and persisted submissions remain untested.

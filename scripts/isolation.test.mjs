@@ -51,3 +51,16 @@ test("development database and local requests disable redirects", async () => {
   assertAllowedRequest(`${dev}/auth/v1/token`);
   assert.throws(() => assertAllowedRequest("http://localhost.evil.test:8080/"));
 });
+
+test("browser relative URLs resolve locally and external URLs remain blocked", () => {
+  const originalWindow = globalThis.window;
+  globalThis.window = { location: { href: "http://127.0.0.1:8080/auth" } };
+  try {
+    assert.doesNotThrow(() => assertAllowedRequest("/api/public/hooks/competitor-radar-scan"));
+    assert.throws(() => assertAllowedRequest("//example.invalid/api"));
+    assert.throws(() => assertAllowedRequest("https://example.invalid/api"));
+  } finally {
+    if (originalWindow === undefined) delete globalThis.window;
+    else globalThis.window = originalWindow;
+  }
+});
