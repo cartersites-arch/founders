@@ -1,3 +1,5 @@
+import { createIsomorphicFn } from "@tanstack/react-start";
+import { cspNonceForRequest } from "@/lib/csp-nonce";
 import { createRouter, useRouter } from "@tanstack/react-router";
 import { routeTree } from "./routeTree.gen";
 
@@ -54,9 +56,18 @@ function DefaultErrorComponent({ error, reset }: { error: Error; reset: () => vo
   );
 }
 
-export const getRouter = () => {
+const readServerNonce = createIsomorphicFn()
+  .server(async () => {
+    const { getRequest } = await import("@tanstack/react-start/server");
+    return cspNonceForRequest(getRequest());
+  })
+  .client(() => undefined);
+
+export const getRouter = async () => {
+  const nonce = await readServerNonce();
   const router = createRouter({
     routeTree,
+    ssr: { nonce },
     context: {},
     scrollRestoration: true,
     // Cache loader data for 30s on the client so cross-page navigation

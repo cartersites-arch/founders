@@ -1,11 +1,11 @@
+import { createMaintenanceHandlers } from "@/server/maintenance-handlers";
 import { createFileRoute } from "@tanstack/react-router";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
 
 /**
  * Daily competitor radar scan — called by pg_cron.
  * Fetches each active competitor's sitemap, diffs against stored URLs,
- * and inserts new ones. No auth required; this is a /api/public/* route
- * but only does internal sitemap polling.
+ * and inserts new ones. POST requires a dedicated maintenance credential.
  */
 
 async function fetchSitemapUrls(sitemapUrl: string, depth = 0): Promise<string[]> {
@@ -117,9 +117,6 @@ async function runScan() {
 
 export const Route = createFileRoute("/api/public/hooks/competitor-radar-scan")({
   server: {
-    handlers: {
-      GET: async () => Response.json(await runScan()),
-      POST: async () => Response.json(await runScan()),
-    },
+    handlers: createMaintenanceHandlers(async () => Response.json(await runScan())),
   },
 });

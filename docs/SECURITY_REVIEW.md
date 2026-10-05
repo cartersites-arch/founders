@@ -1,10 +1,10 @@
 # Founders security and local isolation review
 
-This branch prepares an isolated local review of the Founders security findings. It is not a production hardening release. No changes have been sent to Derek's repository, no migrations have been applied, and no deployment or credential rotation has been performed.
+This branch implements source hardening and prepares an isolated local review of the Founders security findings. It is not a production hardening release. No changes have been sent to Derek's repository, no migrations have been applied, and no deployment or credential rotation has been performed.
 
 ## Source and scope
 
-The audit inspected commit `dc9fab033e038e013bd61acf121fd73cdd89cc6d`. At inspection, both `cartersites-arch/founders` and its parent `derekbowen/founders` had that commit on `main`. Work is confined to the local `security-hardening` branch of the fork.
+The audit inspected commit `dc9fab033e038e013bd61acf121fd73cdd89cc6d`. At inspection, both `cartersites-arch/founders` and its parent `derekbowen/founders` had that commit on `main`. Work is confined to the `security-hardening` branch of the fork; its pull request remains draft.
 
 ## Local development safeguards
 
@@ -23,7 +23,7 @@ npm run dev
 
 Both Supabase URL variables must identify the development project. Do not copy production keys. The preflight requires the `security-hardening` branch. The test suite uses stub fetch implementations and does not contact a database.
 
-## Proposed security fixes for review
+## Security findings and deployment requirements
 
 | Priority                             | Source finding                                            | Proposed production change                                                                                                                                     |
 | ------------------------------------ | --------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -35,7 +35,9 @@ Both Supabase URL variables must identify the development project. Do not copy p
 | Medium                               | Forwarded host trusted without domain verification        | Verify domain ownership and accept forwarded host headers only from trusted proxies.                                                                           |
 | Medium                               | Public submissions lack application abuse limits          | Add rate limits, challenge controls and notification deduplication.                                                                                            |
 
-These production fixes have not been implemented in this local isolation setup. Deployed grants, policies, migrations, external account ownership and current dependency advisories remain unverified. Later migrations already protect the quality views; those are not outstanding findings.
+Source fixes now require dedicated bearer secrets and POST for maintenance and backfill, bound request sizes, sanitize Markdown and JSON-LD, restrict public reads to published pages within the verified workspace, authenticate forwarded hosts, add script nonces and a production CSP, and limit public submissions. Local maintenance shutdowns remain enabled. Submission limits are per process; distributed edge limits and challenge controls remain deployment requirements.
+
+`docs/security/workspace-privileges.sql` is an unapplied review draft, not a migration. It restricts sensitive workspace updates, prevents direct submission inserts bypassing server controls, and limits membership/role helpers to the requesting user. The Supabase CLI could not initialize its local configuration here; promote the reviewed SQL using a CLI-generated migration before any authorized database change. It was tested only against an in-memory fixture, not the deployed schema. Deployed grants, policies, migrations, external account ownership and current dependency advisories remain unverified. Later migrations already protect the quality views; those are not outstanding findings.
 
 ## Migration and deployment boundaries
 
@@ -49,4 +51,4 @@ Review this branch against the audit commit. Do not merge development-only shutd
 
 A source inspection exposed the driver credential in tool output during the audit. Its value is omitted here. Treat it as compromised and coordinate remediation with its owner; the fork does not authorize changing the original deployment.
 
-Validation completed: the three isolation tests and configuration preflight passed, and the client and server build succeeded. Local server startup was blocked by the execution environment denying a listening socket, so no browser or end-to-end validation was completed. Type checking reported the same four route-search `redirect` errors in both the original audit commit and this branch, with no additional errors reported for the isolation changes.
+Validation completed: three isolation tests, nine source security tests, and one in-memory PostgreSQL privilege test passed; the client and server build succeeded. With scoped socket permission, the local server returned HTTP 200 with six nonce-bearing scripts, and the maintenance route returned 503. Server fetch used a fixture that blocks hosted requests. No hosted database was contacted by these tests. Type checking reported the same four route-search `redirect` errors as the original audit commit, with no additional errors. Full browser and hosted end-to-end tests remain outstanding.

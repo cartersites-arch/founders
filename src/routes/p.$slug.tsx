@@ -46,8 +46,7 @@ function PublicPage() {
       )}
       <article
         className="prose prose-neutral mt-8 max-w-none dark:prose-invert"
-        // body_markdown is admin/AI-generated content stored in our DB.
-        // Source is constrained to markdown via the generation prompt.
+        // HTML is sanitized server-side, including customer and AI input.
         dangerouslySetInnerHTML={{ __html: page.body_html }}
       />
       <p className="mt-12 text-xs text-muted-foreground">

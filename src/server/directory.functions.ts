@@ -1,3 +1,4 @@
+import { guardPublicSubmission } from "./submission-guard.server";
 import { createServerFn } from "@tanstack/react-start";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
@@ -289,6 +290,7 @@ function slugify(s: string): string {
 export const submitProviderListing = createServerFn({ method: "POST" })
   .inputValidator((d) => ListProviderInput.parse(d))
   .handler(async ({ data }) => {
+    await guardPublicSubmission("provider-listing", data.email);
     // verify category exists & published
     const { data: cat } = await supabaseAdmin
       .from("service_categories")
@@ -809,6 +811,7 @@ const SubmitClaimInput = z.object({
 export const submitProviderClaim = createServerFn({ method: "POST" })
   .inputValidator((d) => SubmitClaimInput.parse(d))
   .handler(async ({ data }) => {
+    await guardPublicSubmission("provider-claim", data.claimer_email);
     const { data: prov } = await supabaseAdmin
       .from("providers")
       .select("id, slug, claim_status")
@@ -959,6 +962,7 @@ const SubmitPlanInput = z.object({
 export const submitProviderPlanRequest = createServerFn({ method: "POST" })
   .inputValidator((d) => SubmitPlanInput.parse(d))
   .handler(async ({ data }) => {
+    await guardPublicSubmission("provider-plan", data.requester_email);
     const { data: prov } = await supabaseAdmin
       .from("providers")
       .select("id, slug")

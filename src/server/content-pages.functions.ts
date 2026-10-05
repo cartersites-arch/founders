@@ -1,3 +1,4 @@
+import { resolvePublicWorkspace } from "./public-workspace.server";
 /**
  * content_pages access contract (SECURITY)
  * ----------------------------------------
@@ -69,7 +70,22 @@ export interface ContentPage {
 }
 
 export type ContentPageLookupResult =
-  | { kind: "found"; page: ContentPage }
+  | {
+      kind: "found";
+      page: Pick<
+        ContentPage,
+        | "id"
+        | "slug"
+        | "url_path"
+        | "title"
+        | "seo_title"
+        | "seo_description"
+        | "hero_image_url"
+        | "body_markdown"
+        | "locale"
+        | "updated_at"
+      >;
+    }
   | { kind: "redirect"; canonicalSlug: string }
   | { kind: "not_found" };
 
@@ -79,18 +95,23 @@ export type ContentPageLookupResult =
  * canonical slug. Caller is responsible for issuing the 301.
  */
 export const lookupContentPage = createServerFn({ method: "GET" })
-  .inputValidator((data: unknown) => z.object({ slug: z.string().min(1) }).parse(data))
+  .inputValidator((data: unknown) => z.object({ slug: z.string().min(1).max(200) }).parse(data))
   .handler(async ({ data }): Promise<ContentPageLookupResult> => {
     const { slug } = data;
+    const workspace = await resolvePublicWorkspace();
+    if (!workspace) return { kind: "not_found" };
 
     // Prefer canonical /p/{slug} url_path; multiple rows may share a slug
     // (e.g. nested legacy paths like /p/foo/become-a-pool-host-...)
     const canonicalPath = `/p/${slug}`;
     const { data: rows } = await (supabaseAdmin as any)
       .from("content_pages")
-      .select("*")
+      .select(
+        "id, slug, url_path, title, seo_title, seo_description, hero_image_url, body_markdown, locale, updated_at",
+      )
+      .eq("workspace_id", workspace.id)
       .eq("slug", slug)
-      .in("status", ["pending", "scraped", "drafted", "migrated", "published"])
+      .eq("status", "published")
       .order("priority", { ascending: false })
       .limit(5);
 

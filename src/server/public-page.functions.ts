@@ -1,42 +1,10 @@
 import { createServerFn } from "@tanstack/react-start";
-import { getRequestHeader } from "@tanstack/react-start/server";
 import { z } from "zod";
-import { marked } from "marked";
+import { renderSafeMarkdown } from "@/lib/safe-content";
+import { resolvePublicWorkspace } from "./public-workspace.server";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Public /p/$slug rendering.
-//
-// Resolves the requesting hostname to a workspace, then loads the matching
-// content_pages row. Customers install a reverse-proxy on their Sharetribe
-// marketplace ("their-domain.com/p/* -> founders.click/p/*"). The host header
-// they forward is what tells us which workspace's content to serve.
-//
-// Resolution order:
-//   1. X-Forwarded-Host (set by the customer's reverse-proxy edge)
-//   2. Host
-//   3. Fallback to the PRNM workspace (so founders.click's own /p/ pages keep
-//      working when no proxy is in front of us)
-// ─────────────────────────────────────────────────────────────────────────────
-
-const PRNM_FALLBACK_DOMAIN = "poolrentalnearme.online";
-
-function normalizeHost(raw: string | null | undefined): string | null {
-  if (!raw) return null;
-  // X-Forwarded-Host can contain a comma-separated chain; take the first.
-  const first = raw.split(",")[0].trim();
-  if (!first) return null;
-  return first
-    .toLowerCase()
-    .replace(/:\d+$/, "")
-    .replace(/^www\./, "");
-}
-
-function readIncomingHost(): string | null {
-  const xfh = normalizeHost(getRequestHeader("x-forwarded-host"));
-  if (xfh) return xfh;
-  return normalizeHost(getRequestHeader("host"));
-}
+// Published content is scoped to a verified request workspace.
 
 export type PublicPage = {
   workspace: { id: string; slug: string; name: string };
@@ -57,29 +25,7 @@ export const getPublicPage = createServerFn({ method: "GET" })
   .inputValidator((d: unknown) => _PublicPageInput.parse(d))
   .handler(async ({ data }): Promise<PublicPage | null> => {
     const sb = supabaseAdmin as any;
-    const host = readIncomingHost();
-
-    // 1) Resolve workspace from host (verified domain match).
-    let workspace: { id: string; slug: string; name: string } | null = null;
-    if (host) {
-      const { data: w } = await sb
-        .from("workspaces")
-        .select("id, slug, name")
-        .eq("marketplace_domain", host)
-        .maybeSingle();
-      if (w) workspace = w;
-    }
-
-    // 2) Fall back to PRNM workspace (covers founders.click's own host and
-    // any local/staging hostname that doesn't match a customer).
-    if (!workspace) {
-      const { data: w } = await sb
-        .from("workspaces")
-        .select("id, slug, name")
-        .eq("marketplace_domain", PRNM_FALLBACK_DOMAIN)
-        .maybeSingle();
-      if (w) workspace = w;
-    }
+    const workspace = await resolvePublicWorkspace();
 
     if (!workspace) return null;
 
@@ -96,9 +42,7 @@ export const getPublicPage = createServerFn({ method: "GET" })
 
     if (!page) return null;
 
-    const body_html = page.body_markdown
-      ? (marked.parse(page.body_markdown, { async: false, gfm: true, breaks: false }) as string)
-      : "";
+    const body_html = page.body_markdown ? renderSafeMarkdown(page.body_markdown) : "";
 
     return {
       workspace,
