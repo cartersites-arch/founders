@@ -1,3 +1,5 @@
+import { readLimitedText } from "../../lib/limited-json.ts";
+
 /**
  * Verify an inbound webhook from Emailit.
  *
@@ -51,8 +53,8 @@ export async function verifyEmailitWebhook(
     );
   }
 
-  const tsNum = parseInt(timestamp, 10);
-  if (!Number.isFinite(tsNum)) {
+  const tsNum = Number(timestamp);
+  if (!/^\d{1,12}$/.test(timestamp) || !Number.isSafeInteger(tsNum)) {
     throw new EmailitVerifyError("invalid_timestamp", `Invalid timestamp: ${timestamp}`);
   }
 
@@ -67,7 +69,10 @@ export async function verifyEmailitWebhook(
     }
   }
 
-  const rawBody = await request.text();
+  if (!/^[a-f0-9]{64}$/i.test(signature)) {
+    throw new EmailitVerifyError("invalid_signature", "Invalid signature format");
+  }
+  const rawBody = await readLimitedText(request, 1024 * 1024);
   const expected = await hmacSha256Hex(secret, `${timestamp}.${rawBody}`);
 
   if (!timingSafeEqualHex(signature, expected)) {

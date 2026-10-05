@@ -3,7 +3,7 @@ import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
 import { requireFeatureAccess } from "@/server/workspace.functions";
-import { PLAN_FEATURES, type Plan } from "@/lib/plans";
+import { readLimitedJson } from "@/lib/limited-json";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Customer-facing content server functions. These are workspace-scoped, unlike
@@ -50,7 +50,7 @@ const CreateInputSchema = z.object({
   title: z.string().trim().min(3).max(140),
   description: z.string().trim().max(500).optional().default(""),
   topic: z.string().trim().min(10).max(2000),
-  model: z.string().min(1).max(80).default("openai/gpt-5"),
+  model: z.enum(["openai/gpt-5", "openai/gpt-5-mini", "google/gemini-2.5-pro", "google/gemini-2.5-flash"]).default("openai/gpt-5"),
 });
 
 export const createCustomerPage = createServerFn({ method: "POST" })
@@ -58,7 +58,7 @@ export const createCustomerPage = createServerFn({ method: "POST" })
   .inputValidator((data: unknown) => CreateInputSchema.parse(data))
   .handler(async ({ data, context }) => {
     const { userId } = context as { userId: string };
-    const { workspaceId, plan } = await requireFeatureAccess(userId, "content.quick_page");
+    const { workspaceId } = await requireFeatureAccess(userId, "content.quick_page");
 
     const { data: ws, error: wsErr } = await (supabaseAdmin as any)
       .from("workspaces")
@@ -67,29 +67,7 @@ export const createCustomerPage = createServerFn({ method: "POST" })
       .maybeSingle();
     if (wsErr) throw new Error(wsErr.message);
     if (!ws) throw new Error("Workspace not found");
-    const brandName = (ws.name as string) || "your marketplace";
-
-    // Quota: count content_pages this workspace created since the start of
-    // the current UTC month. Internal workspaces (PRNM) bypass.
-    if (!ws.is_internal) {
-      const quota = PLAN_FEATURES[plan as Plan].quotas.pageGenerationsPerMonth;
-      if (Number.isFinite(quota)) {
-        const monthStart = new Date();
-        monthStart.setUTCDate(1);
-        monthStart.setUTCHours(0, 0, 0, 0);
-        const { count, error: cErr } = await (supabaseAdmin as any)
-          .from("content_pages")
-          .select("id", { count: "exact", head: true })
-          .eq("workspace_id", workspaceId)
-          .gte("created_at", monthStart.toISOString());
-        if (cErr) throw new Error(cErr.message);
-        if ((count ?? 0) >= quota) {
-          throw new Error(
-            `Monthly page-generation quota reached (${quota} on the ${PLAN_FEATURES[plan as Plan].name} plan). Upgrade or wait until next month.`,
-          );
-        }
-      }
-    }
+    const brandName = (typeof ws.name === "string" ? ws.name.slice(0, 120) : "") || "your marketplace";
 
     const apiKey = process.env.OPENROUTER_API_KEY;
     if (!apiKey) throw new Error("OPENROUTER_API_KEY not configured");
@@ -99,12 +77,13 @@ export const createCustomerPage = createServerFn({ method: "POST" })
     let slug = baseSlug;
     let suffix = 1;
     while (true) {
-      const { data: existing } = await (supabaseAdmin as any)
+      const { data: existing, error: lookupError } = await (supabaseAdmin as any)
         .from("content_pages")
         .select("id")
         .eq("workspace_id", workspaceId)
         .eq("url_path", `/p/${slug}`)
         .maybeSingle();
+      if (lookupError) throw new Error("Could not prepare page generation");
       if (!existing) break;
       suffix += 1;
       slug = `${baseSlug}-${suffix}`;
@@ -131,14 +110,24 @@ Length: 600-1200 words.
 Use ## for main sections and ### for sub-points. Lead with a strong opening that gets right into the value — no fluff.
 seo_title (≤60 chars) and seo_description (≤155 chars) optimized for the topic.`;
 
+    const { data: claimed, error: quotaError } = await (supabaseAdmin as any).rpc(
+      "claim_customer_generation", { _workspace_id: workspaceId, _user_id: userId },
+    );
+    if (quotaError) throw new Error("Generation protection unavailable. Try again later.");
+    if (claimed !== true) throw new Error("Generation limit reached. Wait a minute or check your monthly allowance.");
+
+    // The claim is committed before the provider call. Do not refund an attempt
+    // after a timeout or failed save: the provider may already have incurred cost.
     const resp = await fetch("https://openrouter.ai/api/v1/chat/completions", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${apiKey}`,
         "Content-Type": "application/json",
       },
+      signal: AbortSignal.timeout(60_000),
       body: JSON.stringify({
         model: data.model,
+        max_tokens: 8192,
         messages: [
           { role: "system", content: systemPrompt },
           { role: "user", content: userPrompt },
@@ -150,10 +139,14 @@ seo_title (≤60 chars) and seo_description (≤155 chars) optimized for the top
 
     if (resp.status === 402) throw new Error("AI credits exhausted.");
     if (!resp.ok) {
-      const t = await resp.text();
-      throw new Error(`AI gateway ${resp.status}: ${t.slice(0, 300)}`);
+      throw new Error("AI provider could not complete this request. Try again later.");
     }
-    const json = await resp.json();
+    let json: { choices?: { message?: { tool_calls?: { function?: { arguments?: string } }[] } }[] };
+    try {
+      json = await readLimitedJson(resp, 131072) as typeof json;
+    } catch {
+      throw new Error("AI provider returned an invalid or oversized response.");
+    }
     const tc = json?.choices?.[0]?.message?.tool_calls?.[0];
     if (!tc?.function?.arguments) throw new Error("AI response missing tool call");
     const gen = JSON.parse(tc.function.arguments) as {

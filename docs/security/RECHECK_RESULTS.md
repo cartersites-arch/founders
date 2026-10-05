@@ -14,17 +14,26 @@ Scope: `security-review-ready`, using only founders-dev for hosted database chec
 
 - 159 hosted authorization, privacy, forum, unsubscribe, telemetry and email/webhook checks passed. This includes existing cross-user and forged-role/context tests and new permission and recovery cases.
 - 23 hosted billing/shared-limit checks passed, including concurrency, database retry, successor protection and fail-closed behavior.
-- 21 local security/database tests passed. TypeScript and build passed.
+- 38 additional hosted generation, certificate-revocation, Emailit and input-boundary checks passed. Provider calls were mocked; database permission/concurrency checks used founders-dev.
+- 29 local security/database tests passed. TypeScript and build passed.
 - Source inventory reviewed 162 server-function exports and 11 raw HTML insertion sites; these are review counts, not hosted test counts.
 - Database verification found zero public tables without RLS and zero remaining test users, workspaces, forum records, unsubscribe/suppression records or telemetry fixtures.
-- Security advisors retain three intentional self-scoped permission-helper warnings and one expected no-browser-policy notice for the service-only limiter table.
+- Security advisors retain three intentional self-scoped permission-helper warnings and two expected no-browser-policy notices for the service-only limiter and generation-usage tables.
 
 Tests sent no real email, Stripe payment or AI requests. The built mobile My Learning check uses isolated Auth/database fixtures; it is not a live production login check. Earlier founders-dev password checks passed, but do not verify the original project's settings.
+
+## Final pass
+
+- Preserved certificate revocation: browser roles cannot erase or rewrite completions, and the completion endpoint refuses revoked records. Normal issuance and idempotent repeat completion are tested.
+- Limited all server-function request bodies to 1 MiB before framework parsing. The bounded clone leaves request metadata and original binary bytes intact; both stream branches are canceled on rejection.
+- Limited Emailit webhook bodies before hashing, with explicit signature/timestamp validation and built-Worker tampering, stale-event and oversize checks.
+- Confirmed all three exposed views use security-invoker semantics and deny browser access; broad-looking form INSERT policies cannot bypass revoked grants.
+- Dependency audit reported zero known vulnerabilities at check time. No development service-role key was embedded in the 102 scanned client JavaScript files.
 
 ## Remaining limits
 
 Original-project storage permissions and real Stripe, email, queue, content-generation, proxy, Intercom and scheduler flows need owner staging checks. Founders-dev has no Storage buckets, so it cannot establish production Storage safety.
 
-Customer AI generation uses a count-before-generate monthly quota. Parallel requests can exceed that quota; strict cost enforcement needs atomic reservations, cancellation/failure handling and concurrency tests. This is an outstanding finding.
+The AI quota race was fixed in the final pass: service-only usage claims serialize under a workspace lock before provider calls. Existing pages seed the initial monthly allowance; submitted attempts remain counted after failures and page deletion. Model choices, brand text, provider output and execution time are bounded. The form explains that failed submitted attempts still count. Unlimited workspaces retain shared burst limits. Hosted tests exercise parallel claims, failure/retry, provider/save errors, unauthorized access and normal generation with a mocked provider. No real AI charges were incurred.
 
 Access JWTs can remain valid until expiry after sign-out under normal Supabase behavior. Immediate revocation, if required, needs a separately specified policy and tests. This review does not certify that every endpoint or integration is free of vulnerabilities.

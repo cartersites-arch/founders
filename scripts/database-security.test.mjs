@@ -47,6 +47,7 @@ test("workspace billing fields and direct form writes cannot bypass server autho
     `);
     await db.exec(readFileSync(new URL("./fixtures/billing-schema.sql", import.meta.url), "utf8"));
     await db.exec(readFileSync(new URL("./fixtures/privacy-schema.sql", import.meta.url), "utf8"));
+    await db.exec("CREATE TABLE public.content_pages(id uuid PRIMARY KEY,workspace_id uuid,created_at timestamptz DEFAULT now()); GRANT ALL ON public.content_pages TO service_role; CREATE TABLE public.course_completions(id uuid,user_id uuid,course_slug text,course_title text,learner_name text,certificate_uid text,completed_at timestamptz,revoked_at timestamptz,revoke_reason text);");
     await db.exec(
       readFileSync(new URL("../docs/security/apply-security.sql", import.meta.url), "utf8"),
     );

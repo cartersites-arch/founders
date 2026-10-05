@@ -1,32 +1,38 @@
-export async function readLimitedText(request: Request, maximum = 65536): Promise<string> {
-  if (!request.body) return "";
+export async function readLimitedBytes(request: Request | Response, maximum = 65536): Promise<Uint8Array<ArrayBuffer>> {
+  if (!request.body) return new Uint8Array();
   const reader = request.body.getReader();
-  const chunks: Uint8Array[] = [];
+  let bytes = new Uint8Array(Math.min(4096, maximum));
   let size = 0;
   try {
     for (;;) {
       const { done, value } = await reader.read();
       if (done) break;
-      size += value.byteLength;
-      if (size > maximum) {
-        await reader.cancel();
+      const nextSize = size + value.byteLength;
+      if (nextSize > maximum) {
+        void reader.cancel().catch(() => {});
         throw new Response("Request too large", { status: 413 });
       }
-      chunks.push(value);
+      if (nextSize > bytes.byteLength) {
+        const grown = new Uint8Array(Math.min(maximum, Math.max(nextSize, bytes.byteLength * 2)));
+        grown.set(bytes);
+        bytes = grown;
+      }
+      bytes.set(value, size);
+      size = nextSize;
     }
   } finally {
     reader.releaseLock();
   }
-  const bytes = new Uint8Array(size);
-  let offset = 0;
-  for (const chunk of chunks) {
-    bytes.set(chunk, offset);
-    offset += chunk.byteLength;
-  }
-  return new TextDecoder().decode(bytes);
+  // A bounded contiguous buffer also prevents many tiny chunks from creating
+  // an unbounded array of chunk objects before the byte limit is reached.
+  return bytes.slice(0, size);
 }
 
-export async function readLimitedJson(request: Request, maximum = 65536): Promise<unknown> {
+export async function readLimitedText(request: Request | Response, maximum = 65536): Promise<string> {
+  return new TextDecoder().decode(await readLimitedBytes(request, maximum));
+}
+
+export async function readLimitedJson(request: Request | Response, maximum = 65536): Promise<unknown> {
   const text = await readLimitedText(request, maximum);
   try {
     return text ? JSON.parse(text) : {};

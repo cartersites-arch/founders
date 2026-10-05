@@ -1,4 +1,5 @@
 import { createStart, createMiddleware } from "@tanstack/react-start";
+import { boundServerFunctionRequest } from "@/lib/server-function-request";
 import { cspNonceForRequest } from "@/lib/csp-nonce";
 import { resolveWorkspaceHost } from "@/lib/verified-host";
 import { supabase } from "@/integrations/supabase/client";
@@ -44,6 +45,12 @@ function isNonProductionHost(hostHeader: string | null): boolean {
 }
 
 const securityHeadersMiddleware = createMiddleware().server(async ({ next, request }) => {
+  try {
+    await boundServerFunctionRequest(request);
+  } catch (error) {
+    if (error instanceof Response) return error;
+    throw error;
+  }
   const url = new URL(request.url);
   if (url.pathname.startsWith("/lovable/") || url.pathname === "/email/unsubscribe") {
     return next();

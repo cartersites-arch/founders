@@ -125,6 +125,7 @@ function NewPagePage() {
 
           <div>
             <label className="block text-sm font-medium">Model</label>
+            <p className="mt-1 text-xs text-muted-foreground">Submitted generation attempts count toward your monthly allowance, including attempts that fail after being sent.</p>
             <select
               value={model}
               onChange={(e) => setModel(e.target.value)}

@@ -204,3 +204,56 @@ test("Auth webhook signatures reject tampering and expired timestamps", async ()
   await assert.rejects(()=>verify(request(0,body+" "),secret),error=>error.code==="invalid_signature");
   await assert.rejects(()=>verify(request(600),secret),error=>error.code==="stale_timestamp");
 });
+
+test("server-function bodies are bounded before parsing and retain binary multipart bytes", async () => {
+  const { boundServerFunctionRequest } = await import("../src/lib/server-function-request.ts");
+  const bytes = new Uint8Array([0, 255, 10, 13, 50]);
+  const input = new Request("https://preview.example/_serverFn/fixture", {
+    method: "POST", headers: { "content-type": "multipart/form-data; boundary=fixture", authorization: "Bearer fixture" }, body: bytes,
+  });
+  const bounded = await boundServerFunctionRequest(input);
+  assert.deepEqual(new Uint8Array(await bounded.arrayBuffer()), bytes);
+  assert.equal(bounded.headers.get("authorization"), "Bearer fixture");
+  assert.equal(bounded.headers.get("content-type"), input.headers.get("content-type"));
+  const large = new Request("https://preview.example/_serverFn/fixture", {
+    method: "POST", headers: { "content-length": "1" }, body: new Uint8Array(1024 * 1024 + 1),
+  });
+  await assert.rejects(() => boundServerFunctionRequest(large), error => error instanceof Response && error.status === 413);
+  const unrelated = new Request("https://preview.example/api/billing/webhook", { method: "POST", body: "signed fixture" });
+  assert.equal(await boundServerFunctionRequest(unrelated), unrelated);
+  assert.equal(await unrelated.text(), "signed fixture");
+});
+
+
+test("streaming body limits reject tiny-chunk input at the byte boundary", async () => {
+  const { readLimitedBytes } = await import("../src/lib/limited-json.ts");
+  let canceled = false;
+  const body = new ReadableStream({
+    start(controller) { for (let i = 0; i < 65; i++) controller.enqueue(new Uint8Array([i])); },
+    cancel() { canceled = true; },
+  });
+  await assert.rejects(() => readLimitedBytes(new Response(body), 64), error => error instanceof Response && error.status === 413);
+  assert.equal(canceled, true);
+});
+
+test("Emailit signatures preserve raw bytes and reject tampering, malformed headers and stale events", async () => {
+  const { verifyEmailitWebhook } = await import("../src/integrations/emailit/verify.ts");
+  const { createHmac } = await import("node:crypto");
+  const secret = "fixture-only-emailit-signing-secret", body = '{ "type": "fixture.ignored" }';
+  const stamp = String(Math.floor(Date.now() / 1000));
+  const signature = createHmac("sha256", secret).update(`${stamp}.${body}`).digest("hex");
+  const headers = { "x-emailit-timestamp": stamp, "x-emailit-signature": signature };
+  const make = (text = body, h = headers) => new Request("https://preview.example/lovable/email/suppression", { method: "POST", headers: h, body: text });
+  assert.equal(await verifyEmailitWebhook(make(), secret), body);
+  await assert.rejects(() => verifyEmailitWebhook(make(body + " "), secret), error => error.code === "invalid_signature");
+  await assert.rejects(() => verifyEmailitWebhook(make(body, { ...headers, "x-emailit-timestamp": "bad" }), secret), error => error.code === "invalid_timestamp");
+  await assert.rejects(() => verifyEmailitWebhook(make(body, { ...headers, "x-emailit-timestamp": String(Number(stamp) - 1000) }), secret), error => error.code === "stale_timestamp");
+  const malformed = make(body, { ...headers, "x-emailit-signature": "bad" });
+  await assert.rejects(() => verifyEmailitWebhook(malformed, secret), error => error.code === "invalid_signature");
+  assert.equal(malformed.bodyUsed, false);
+});
+test("Emailit rejects oversized webhook bodies before signature hashing", async () => {
+  const { verifyEmailitWebhook } = await import("../src/integrations/emailit/verify.ts");
+  const request = new Request("https://preview.example/lovable/email/suppression", { method: "POST", headers: { "x-emailit-timestamp": String(Math.floor(Date.now() / 1000)), "x-emailit-signature": "0".repeat(64) }, body: "x".repeat(1024 * 1024 + 1) });
+  await assert.rejects(() => verifyEmailitWebhook(request, "fixture-only-secret"), error => error instanceof Response && error.status === 413);
+});
