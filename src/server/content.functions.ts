@@ -79,7 +79,7 @@ export const getProvider = createServerFn({ method: "GET" })
   .handler(async ({ data }) => {
     const { data: provider, error } = await supabaseAdmin
       .from("providers")
-      .select("*")
+      .select("id,slug,name,address,business_type,city,city_slug,state_code,description,long_description,primary_category,secondary_categories,services,email,phone,website_url,logo_url,hero_image_url,gallery_urls,latitude,longitude,rating,rating_count,faq,is_published,is_featured,plan,claim_status,seo_title,seo_description,created_at,updated_at")
       .eq("slug", data.slug)
       .eq("is_published", true)
       .maybeSingle();

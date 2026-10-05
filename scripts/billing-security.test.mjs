@@ -71,3 +71,19 @@ test('shared counters limit recipients across clients and scopes expire without 
  const rows=(await db.query('SELECT key FROM public.submission_rate_limits')).rows;assert.ok(rows.length<20);assert.ok(rows.every(r=>!r.key.includes('@')));
  }finally{await db.close();}
 });
+test('host AI counters enforce five per minute and twenty per day across resets',async()=>{
+ const db=await fixture();try{
+ await db.exec('SET ROLE service_role');
+ const hash='a'.repeat(64);
+ const claim=async()=> (await db.query('SELECT public.consume_submission_limits($1,$2,$3) AS allowed',['host-ai',hash,hash])).rows[0].allowed;
+ for(let batch=0;batch<4;batch++){
+   await db.exec("UPDATE public.submission_rate_limits SET expires_at=now()-interval '1 second' WHERE key NOT LIKE 'host-ai:recipient:%'");
+   for(let i=0;i<5;i++) assert.equal(await claim(),true);
+   assert.equal(await claim(),false);
+ }
+ await db.exec("UPDATE public.submission_rate_limits SET expires_at=now()-interval '1 second' WHERE key NOT LIKE 'host-ai:recipient:%'");
+ assert.equal(await claim(),false);
+ await db.exec("UPDATE public.submission_rate_limits SET expires_at=now()-interval '1 second'");
+ assert.equal(await claim(),true);
+ }finally{await db.close();}
+});

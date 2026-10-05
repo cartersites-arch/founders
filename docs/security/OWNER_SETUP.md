@@ -49,3 +49,11 @@ The final pass also protects revoked course completions from direct learner dele
 Deploy the updated `generate-help-article`, `generate-course-content`, `generate-content-batch` and `seed-blog-posts` functions with their shared helper through the existing staging/release process. No new variable or binding is required. Verify normal admin workflows and oversized-input rejection on staging before production deployment.
 
 Sitemap scanners now require HTTPS and keep redirects, nested sitemap requests and discovered page URLs on the configured origin, with bounded downloads and a shared request/time budget. Check existing competitor sitemap configurations; cross-origin indexes will have those children skipped and HTTP-only sources must be replaced by a working HTTPS URL. Hostname validation cannot establish where DNS resolves: retain outbound network protection against private-address destinations and verify that deployment boundary on staging.
+
+## Provider privacy and host AI follow-up
+
+The main reviewed SQL now restricts browser reads of `providers` to explicit public business-listing columns. Intake emails/notes, claimant identities, workflow fields and internal analytics are not public API fields. Existing server-side admin tools keep their service-role access; any custom browser query using `select('*')` must select the public columns or use an authorized admin endpoint.
+
+Provider request history requires a signed-in account with a currently verified email. Caller-supplied email filters cannot grant access, and responses omit contact emails, payment references and staff notes. Matching preserves legacy email casing while escaping wildcard characters. Unpublished providers without a request matching that account are hidden.
+
+The host AI source function now uses the same service-only database limiter: five attempts per minute and twenty per rolling 24 hours per account. Submitted attempts count even when the provider fails. Provider output is capped at 2,048 tokens / 64 KiB with a 60-second timeout. This source function is not included in the current built Worker; the preventive change is tested in a source harness with the real development limiter and mocked AI responses. No new secret or Cloudflare binding is needed.

@@ -15,7 +15,7 @@ Scope: `security-review-ready`, using only founders-dev for hosted database chec
 - 159 hosted authorization, privacy, forum, unsubscribe, telemetry and email/webhook checks passed. This includes existing cross-user and forged-role/context tests and new permission and recovery cases.
 - 23 hosted billing/shared-limit checks passed, including concurrency, database retry, successor protection and fail-closed behavior.
 - 38 additional hosted generation, certificate-revocation, Emailit and input-boundary checks passed. Provider calls were mocked; database permission/concurrency checks used founders-dev.
-- 38 local security/database tests passed, including nine URL-fetching/Edge follow-up tests. TypeScript and build passed.
+- 40 local security/database tests passed, including nine URL-fetching/Edge follow-up tests. TypeScript and build passed.
 - Source inventory reviewed 162 server-function exports and 11 raw HTML insertion sites; these are review counts, not hosted test counts.
 - Database verification found zero public tables without RLS and zero remaining test users, workspaces, forum records, unsubscribe/suppression records or telemetry fixtures.
 - Security advisors retain three intentional self-scoped permission-helper warnings and two expected no-browser-policy notices for the service-only limiter and generation-usage tables.
@@ -46,3 +46,11 @@ Access JWTs can remain valid until expiry after sign-out under normal Supabase b
 - This is not a complete DNS-rebinding defense: outbound network controls must also prevent a permitted DNS name resolving to private infrastructure. Cross-origin sitemap arrangements and the updated Edge Functions require owner staging verification. No production configuration, Supabase project settings or deployed functions were changed.
 
 Follow-up verification: TypeScript and the final build passed; the built-Worker mobile My Learning check passed again with isolated fixtures and the runtime publishable-key binding. The 102 built client JavaScript files did not contain the authorized development service-role key. Original infrastructure/client configuration files still match the original baseline. No database fixtures or deployed settings were changed in this follow-up.
+
+## Provider privacy and host AI follow-up
+
+The additional review found public provider-status history exposing intake emails, payment references and staff notes, plus public Data API reads of private provider intake/workflow columns. Provider status now requires verified Auth email ownership, escapes email pattern wildcards, minimizes returned fields and fails closed on database errors. Published business listings retain an explicit public field set, while browser grants exclude private intake and internal metadata. Service-role admin access remains available.
+
+A separate host AI source function had no shared cost guard. It now claims five-per-minute and twenty-per-24-hour account limits before provider calls, counts failed attempts, limits output and applies a timeout. This function is absent from the current Worker manifest; source-harness tests do not claim a deployed host AI endpoint. Provider-status tests use the actual built Worker; Data API and counter checks use founders-dev. All AI responses are mocked.
+
+Follow-up evidence: 40 provider-privacy/host-AI checks passed using founders-dev, the built Worker for provider status, and a source harness for the unused host AI function. The additional public-column permission test and daily/minute limiter test passed, bringing local tests to 40. The broader hosted authorization regression suite passed again. Final TypeScript/build and isolated mobile My Learning passed; the 102 client JavaScript files contained no authorized development service-role key. Cleanup verification counted zero follow-up users, sessions, workspaces, providers, claims, plans and host AI counters. All public tables retained RLS; advisor findings were unchanged. Only founders-dev database permissions/limiter logic changed; production and original infrastructure configuration remain untouched.

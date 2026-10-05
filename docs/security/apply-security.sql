@@ -71,7 +71,7 @@ DECLARE
   item record;
   accepted integer;
 BEGIN
-  IF _scope NOT IN ('waitlist','provider-lead','provider-listing','provider-claim','provider-plan','feature-request','content-404','city-click')
+  IF _scope NOT IN ('waitlist','provider-lead','provider-listing','provider-claim','provider-plan','feature-request','content-404','city-click','host-ai')
     OR _client_hash IS NULL OR _client_hash !~ '^[a-f0-9]{64}$'
     OR (_recipient_hash IS NOT NULL AND _recipient_hash !~ '^[a-f0-9]{64}$') THEN
     RAISE EXCEPTION 'Invalid submission limit parameters';
@@ -86,7 +86,9 @@ BEGIN
   FOR item IN SELECT * FROM (VALUES
     ('all-submissions'::text, 60, 60),
     (_scope || ':client:' || _client_hash, 5, 60),
-    (_scope || ':recipient:' || coalesce(_recipient_hash,''), 3, 3600)
+    (_scope || ':recipient:' || coalesce(_recipient_hash,''),
+      CASE WHEN _scope='host-ai' THEN 20 ELSE 3 END,
+      CASE WHEN _scope='host-ai' THEN 86400 ELSE 3600 END)
   ) AS limits(key, maximum, seconds)
     WHERE _recipient_hash IS NOT NULL OR key NOT LIKE '%:recipient:%'
     ORDER BY key
@@ -312,5 +314,15 @@ REVOKE INSERT(id,user_id,course_slug,course_title,learner_name,certificate_uid,c
   UPDATE(id,user_id,course_slug,course_title,learner_name,certificate_uid,completed_at,revoked_at,revoke_reason)
   ON public.course_completions FROM PUBLIC,anon,authenticated;
 GRANT INSERT,UPDATE,DELETE ON public.course_completions TO service_role;
+
+-- Public directory reads expose business listing fields, never intake or staff metadata.
+REVOKE SELECT ON public.providers FROM PUBLIC,anon,authenticated;
+DO $$ DECLARE column_list text; BEGIN
+  SELECT string_agg(quote_ident(column_name),',') INTO column_list
+    FROM information_schema.columns WHERE table_schema='public' AND table_name='providers';
+  EXECUTE 'REVOKE SELECT (' || column_list || ') ON public.providers FROM PUBLIC,anon,authenticated';
+END $$;
+GRANT SELECT (id,slug,name,address,business_type,city,city_slug,state_code,description,long_description,primary_category,secondary_categories,services,email,phone,website_url,logo_url,hero_image_url,gallery_urls,latitude,longitude,rating,rating_count,faq,is_published,is_featured,plan,claim_status,seo_title,seo_description,created_at,updated_at) ON public.providers TO anon,authenticated;
+GRANT SELECT ON public.providers TO service_role;
 
 COMMIT;
