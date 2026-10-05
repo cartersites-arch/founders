@@ -45,8 +45,15 @@ export function assertAllowedRequest(input: string | URL | Request): void {
 export function createIsolatedFetch(baseFetch: typeof fetch): typeof fetch {
   return async (input, init) => {
     assertAllowedRequest(input);
-    // Never follow a redirect to an unchecked destination.
-    return baseFetch(input, { ...init, redirect: "error" });
+    // Workers supports manual/follow, but rejects redirect: "error".
+    // Reject redirects ourselves without contacting their destination.
+    const response = await baseFetch(input, { ...init, redirect: "manual" });
+    if (response.type === "opaqueredirect" ||
+      [301, 302, 303, 307, 308].includes(response.status)) {
+      await response.body?.cancel();
+      throw new Error("Isolation: redirects are disabled.");
+    }
+    return response;
   };
 }
 

@@ -37,3 +37,8 @@ After Cloudflare shows the exact origin, set development-only Auth redirect/site
 ### Cloudflare detached checkout correction
 
 Cloudflare's selected Git branch is checked out as a detached commit. The preflight now accepts that checkout only when `WORKERS_CI=1`, `WORKERS_CI_BRANCH=security-hardening`, and `WORKERS_CI_COMMIT_SHA` exactly matches detached HEAD. Other detached builds, main and mismatched metadata remain denied. Local builds still require the named security-hardening branch. Regression checks cover accepted and rejected cases. This supersedes the blanket detached-checkout rejection described above.
+
+
+### Worker redirect compatibility
+
+Cloudflare Workers rejects Fetch redirect mode `error`. The isolated fetch wrapper now uses `manual` and rejects redirect responses (including browser opaque redirects) before following any destination. This resolves the signing-key fetch failure that surfaced as invalid-token responses on authenticated server functions. Verified with the Workers runtime, isolation regression tests, and TypeScript checking; hosted sign-in verification remains pending after deployment.

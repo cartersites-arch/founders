@@ -46,10 +46,25 @@ test("development database and local requests disable redirects", async () => {
     return new Response("ok");
   });
   await guarded(new Request(`${dev}/rest/v1/workspaces`), { redirect: "follow" });
-  assert.equal(options.redirect, "error");
+  assert.equal(options.redirect, "manual");
   assertAllowedRequest("http://127.0.0.1:8080/");
   assertAllowedRequest(`${dev}/auth/v1/token`);
   assert.throws(() => assertAllowedRequest("http://localhost.evil.test:8080/"));
+});
+
+test("redirect responses are rejected without following their destination", async () => {
+  for (const status of [301, 302, 303, 307, 308]) {
+    let calls = 0;
+    const guarded = createIsolatedFetch(async (_input, init) => {
+      calls++;
+      assert.equal(init.redirect, "manual");
+      return new Response(null, { status, headers: { Location: "https://example.invalid" } });
+    });
+    await assert.rejects(() => guarded(`${dev}/auth/v1/.well-known/jwks.json`), /redirects are disabled/);
+    assert.equal(calls, 1);
+  }
+  const opaque = createIsolatedFetch(async () => ({ type: "opaqueredirect", status: 0 }));
+  await assert.rejects(() => opaque(`${dev}/auth/v1/token`), /redirects are disabled/);
 });
 
 test("browser relative URLs resolve locally and external URLs remain blocked", () => {
