@@ -59,7 +59,7 @@ export const Route = createFileRoute("/help-center/$category/$slug")({
         <SiteHeader />
         <main className="mx-auto max-w-3xl px-4 py-20 text-center">
           <h1 className="text-2xl font-bold">Something went wrong</h1>
-          <p className="mt-2 text-muted-foreground">{error.message}</p>
+          <p className="mt-2 text-muted-foreground">{error instanceof Error ? error.message : "Unexpected error"}</p>
           <button
             onClick={() => {
               router.invalidate();

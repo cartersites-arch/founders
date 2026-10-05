@@ -1,3 +1,5 @@
+import { guardHostAi } from "./host-ai-guard.server";
+import { readLimitedJson } from "@/lib/limited-json";
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
@@ -77,8 +79,8 @@ export const createThread = createServerFn({ method: "POST" })
       .select("display_name, full_name")
       .eq("user_id", context.userId)
       .maybeSingle();
-    const author_name = profile?.display_name || profile?.full_name || "Pool Host";
-    const { data: thread, error } = await context.supabase
+    const author_name = (profile?.display_name || profile?.full_name || "Pool Host").slice(0, 120);
+    const { data: thread, error } = await supabaseAdmin
       .from("mb_threads")
       .insert({
         title: data.title,
@@ -106,8 +108,8 @@ export const createReply = createServerFn({ method: "POST" })
       .select("display_name, full_name")
       .eq("user_id", context.userId)
       .maybeSingle();
-    const author_name = profile?.display_name || profile?.full_name || "Pool Host";
-    const { data: reply, error } = await context.supabase
+    const author_name = (profile?.display_name || profile?.full_name || "Pool Host").slice(0, 120);
+    const { data: reply, error } = await supabaseAdmin
       .from("mb_replies")
       .insert({
         thread_id: data.thread_id,
@@ -153,18 +155,21 @@ const SYSTEM_PROMPTS: Record<string, string> = {
 export const runAiTool = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d: unknown) => aiSchema.parse(d))
-  .handler(async ({ data }) => {
+  .handler(async ({ data, context }) => {
     const apiKey = process.env.OPENROUTER_API_KEY;
     if (!apiKey) throw new Error("OPENROUTER_API_KEY not configured");
+    await guardHostAi(context.userId);
 
     const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
       method: "POST",
+      signal: AbortSignal.timeout(60000),
       headers: {
         Authorization: `Bearer ${apiKey}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
         model: "google/gemini-2.5-flash",
+        max_tokens: 2048,
         messages: [
           { role: "system", content: SYSTEM_PROMPTS[data.tool] },
           { role: "user", content: data.prompt },
@@ -176,10 +181,10 @@ export const runAiTool = createServerFn({ method: "POST" })
     if (res.status === 402)
       throw new Error("AI credits exhausted. Add funds in Workspace settings.");
     if (!res.ok) {
-      const txt = await res.text();
-      throw new Error(`AI request failed: ${txt.slice(0, 200)}`);
+      void res.body?.cancel().catch(() => {});
+      throw new Error("AI request failed. Try again later.");
     }
-    const json = await res.json();
+    const json = await readLimitedJson(res, 65536) as any;
     const content = json?.choices?.[0]?.message?.content ?? "";
     return { content };
   });

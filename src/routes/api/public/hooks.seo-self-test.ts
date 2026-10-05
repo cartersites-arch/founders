@@ -1,25 +1,9 @@
+import { fetchSitemapUrls } from "@/lib/safe-sitemap";
+import { createMaintenanceHandlers } from "@/server/maintenance-handlers";
 import { createFileRoute } from "@tanstack/react-router";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
 
-const UA = "Mozilla/5.0 (compatible; PoolRentalNearMeBot/1.0; +https://www.poolrentalnearme.com)";
 
-async function fetchSitemapUrls(sitemapUrl: string, depth = 0): Promise<string[]> {
-  if (depth > 2) return [];
-  const res = await fetch(sitemapUrl, { headers: { "User-Agent": UA } });
-  if (!res.ok) throw new Error(`Sitemap fetch ${res.status}`);
-  const xml = await res.text();
-  const locs = Array.from(xml.matchAll(/<loc>\s*([^<\s]+)\s*<\/loc>/g)).map((m) => m[1]);
-  if (/<sitemapindex/i.test(xml)) {
-    const out: string[] = [];
-    for (const child of locs.slice(0, 10)) {
-      try {
-        out.push(...(await fetchSitemapUrls(child, depth + 1)));
-      } catch {}
-    }
-    return out;
-  }
-  return locs;
-}
 
 async function runRadar() {
   const sb = supabaseAdmin as any;
@@ -208,9 +192,6 @@ async function runAll() {
 
 export const Route = createFileRoute("/api/public/hooks/seo-self-test")({
   server: {
-    handlers: {
-      GET: async () => Response.json(await runAll()),
-      POST: async () => Response.json(await runAll()),
-    },
+    handlers: createMaintenanceHandlers(async () => Response.json(await runAll())),
   },
 });

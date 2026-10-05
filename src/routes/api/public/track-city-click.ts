@@ -1,3 +1,5 @@
+import { readLimitedJson } from "@/lib/limited-json";
+import { guardPublicSubmission } from "@/server/submission-guard.server";
 import { createFileRoute } from "@tanstack/react-router";
 import { z } from "zod";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
@@ -18,7 +20,14 @@ function getCookie(cookieHeader: string | null, name: string): string | null {
   for (const p of parts) {
     const eq = p.indexOf("=");
     if (eq === -1) continue;
-    if (p.slice(0, eq) === name) return decodeURIComponent(p.slice(eq + 1));
+    if (p.slice(0, eq) === name) {
+      try {
+        const value = decodeURIComponent(p.slice(eq + 1));
+        return /^[a-z0-9]{16,64}$/.test(value) ? value : null;
+      } catch {
+        return null;
+      }
+    }
   }
   return null;
 }
@@ -39,9 +48,10 @@ export const Route = createFileRoute("/api/public/track-city-click")({
         let parsed: z.infer<typeof Body>;
         try {
           // sendBeacon defaults to text/plain — read as text then JSON.parse
-          const raw = await request.text();
-          parsed = Body.parse(JSON.parse(raw));
-        } catch {
+          await guardPublicSubmission("city-click");
+          parsed = Body.parse(await readLimitedJson(request, 8192));
+        } catch (error) {
+          if (error instanceof Response) return error;
           return new Response("Bad request", { status: 400 });
         }
 
@@ -86,7 +96,7 @@ export const Route = createFileRoute("/api/public/track-city-click")({
           resHeaders["set-cookie"] =
             `prnm_vid=${visitorHash}; Path=/; Max-Age=${60 * 60 * 24 * 90}; SameSite=Lax; HttpOnly; Secure`;
         }
-        return new Response("ok", { status: 204, headers: resHeaders });
+        return new Response(null, { status: 204, headers: resHeaders });
       },
     },
   },

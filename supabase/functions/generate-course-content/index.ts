@@ -1,3 +1,4 @@
+import { readBoundedJson } from "../_shared/request-body.ts";
 // supabase/functions/generate-course-content/index.ts
 // One-shot generator: POST { course: {slug,title,subtitle,tier,category} } -> structured content JSON
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
@@ -86,6 +87,7 @@ const TOOL = {
 Deno.serve(async (req) => {
   const cors = corsHeaders(req.headers.get("origin"));
   if (req.method === "OPTIONS") return new Response(null, { headers: cors });
+  if (req.method !== "POST") return new Response("Method not allowed", { status: 405, headers: cors });
   try {
     // Require admin auth
     const authHeader = req.headers.get("Authorization");
@@ -117,7 +119,7 @@ Deno.serve(async (req) => {
         headers: { ...cors, "Content-Type": "application/json" },
       });
 
-    const { course } = await req.json();
+    const { course } = await readBoundedJson(req);
     const KEY = Deno.env.get("OPENROUTER_API_KEY");
     if (!KEY) throw new Error("OPENROUTER_API_KEY missing");
 
@@ -156,6 +158,10 @@ Write the full long-form course content for the PRNM Learning Academy. Total pro
       headers: { ...cors, "Content-Type": "application/json" },
     });
   } catch (e) {
+    if (e instanceof Response) {
+      const headers = corsHeaders(req.headers.get("origin"));
+      return new Response(e.body, { status: e.status, headers });
+    }
     console.error(e);
     return new Response(JSON.stringify({ error: e instanceof Error ? e.message : String(e) }), {
       status: 500,

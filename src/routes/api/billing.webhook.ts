@@ -1,3 +1,4 @@
+import { readLimitedText } from "@/lib/limited-json";
 import { createFileRoute } from "@tanstack/react-router";
 import type Stripe from "stripe";
 import { stripe, getWebhookSecret } from "@/integrations/stripe/client.server";
@@ -27,13 +28,17 @@ export const Route = createFileRoute("/api/billing/webhook")({
           return new Response("Webhook not configured", { status: 503 });
         }
 
-        const body = await request.text();
+        let body: string;
+        try { body = await readLimitedText(request, 1024 * 1024); } catch (error) {
+          if (error instanceof Response) return error;
+          return new Response("Invalid request", { status: 400 });
+        }
         let event: Stripe.Event;
         try {
           event = await stripe.webhooks.constructEventAsync(body, sig, secret);
         } catch (e: any) {
           console.warn("[stripe webhook] signature verification failed:", e?.message);
-          return new Response(`Invalid signature: ${e?.message ?? "unknown"}`, {
+          return new Response("Invalid signature", {
             status: 400,
           });
         }
@@ -47,7 +52,7 @@ export const Route = createFileRoute("/api/billing/webhook")({
         } catch (e: any) {
           console.error(`[stripe webhook] handler error for ${event.type}:`, e);
           // 500 makes Stripe retry — preferable to silent failure.
-          return new Response(`Handler error: ${e?.message ?? "unknown"}`, {
+          return new Response("Webhook processing failed", {
             status: 500,
           });
         }

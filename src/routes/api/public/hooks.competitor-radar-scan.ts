@@ -1,37 +1,14 @@
+import { fetchSitemapUrls } from "@/lib/safe-sitemap";
+import { createMaintenanceHandlers } from "@/server/maintenance-handlers";
 import { createFileRoute } from "@tanstack/react-router";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
 
 /**
  * Daily competitor radar scan — called by pg_cron.
  * Fetches each active competitor's sitemap, diffs against stored URLs,
- * and inserts new ones. No auth required; this is a /api/public/* route
- * but only does internal sitemap polling.
+ * and inserts new ones. POST requires a dedicated maintenance credential.
  */
 
-async function fetchSitemapUrls(sitemapUrl: string, depth = 0): Promise<string[]> {
-  if (depth > 2) return [];
-  const res = await fetch(sitemapUrl, {
-    headers: {
-      "User-Agent":
-        "Mozilla/5.0 (compatible; PoolRentalNearMeBot/1.0; +https://www.poolrentalnearme.com)",
-    },
-  });
-  if (!res.ok) throw new Error(`Sitemap fetch ${res.status}`);
-  const xml = await res.text();
-  const locs = Array.from(xml.matchAll(/<loc>\s*([^<\s]+)\s*<\/loc>/g)).map((m) => m[1]);
-  if (/<sitemapindex/i.test(xml)) {
-    const out: string[] = [];
-    for (const child of locs.slice(0, 25)) {
-      try {
-        out.push(...(await fetchSitemapUrls(child, depth + 1)));
-      } catch {
-        /* skip */
-      }
-    }
-    return out;
-  }
-  return locs;
-}
 
 async function runScan() {
   const sb = supabaseAdmin as any;
@@ -117,9 +94,6 @@ async function runScan() {
 
 export const Route = createFileRoute("/api/public/hooks/competitor-radar-scan")({
   server: {
-    handlers: {
-      GET: async () => Response.json(await runScan()),
-      POST: async () => Response.json(await runScan()),
-    },
+    handlers: createMaintenanceHandlers(async () => Response.json(await runScan())),
   },
 });

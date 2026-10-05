@@ -1,0 +1,79 @@
+# Founders security deployment
+
+This branch applies the security fixes to the original Founders application. Keep the existing Supabase project, Cloudflare Worker, domains, Stripe, email and Intercom integrations. No preview infrastructure or test credentials are included. Review and deploy through the existing release process; this PR does not change production.
+
+## One time setup
+
+1. Review and apply the `docs/security/apply-security.sql` transaction only, after a database backup. It restricts workspace billing fields, privileged RPCs and direct form inserts while preserving owner name changes and service-role access. It also installs service-only atomic billing, shared submission-limit and unsubscribe RPCs, restricts profiles to their owners and admins, protects forum moderation/count columns while preserving normal replies and likes, preserves certificate revocations, and adds service-only AI generation usage accounting. Apply SQL before deploying the updated Worker; missing RPCs fail closed. Compare its referenced tables, columns and function signatures with the existing project before applying. Do not replay historical migrations or scheduler setup SQL. Apply this file through the SQL Editor on the intended project; record its application in the existing release process. The CLI could not create a migration in this restricted workspace, so no migration history entry is supplied.
+2. On the existing Cloudflare Worker (`founders-click` in the original Wrangler configuration), retain runtime `SUPABASE_URL`, `SUPABASE_PUBLISHABLE_KEY` and secret `SUPABASE_SERVICE_ROLE_KEY`. Browser builds need the existing `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY`. Never put the service-role key in a browser/build variable. Set independent random secrets of at least 32 characters named `MAINTENANCE_HOOK_SECRET`, `BACKFILL_ADMIN_TOKEN` `FOUNDERS_PROXY_SECRET` and `EMAIL_QUEUE_SECRET` under Settings → Variables and Secrets, type Secret. Deploy with the existing account and domain configuration.
+3. Update the email queue caller to use `Authorization: Bearer <EMAIL_QUEUE_SECRET>` instead of the database key. Transactional email HTTP requests now require an admin account; ordinary app server email flows remain unchanged. Update maintenance callers to POST with `Authorization: Bearer <MAINTENANCE_HOOK_SECRET>`; the backfill endpoint uses `BACKFILL_ADMIN_TOKEN` instead. Configure the trusted reverse proxy to overwrite `X-Forwarded-Host` with its validated original host and overwrite `X-Founders-Proxy-Token` with the matching `FOUNDERS_PROXY_SECRET`. Never forward a client-supplied proxy token. Forwarded hosts without this token fail closed. Customer domains also require `domain_verified_at` in the existing workspace record; review existing verified domains before rollout.
+4. In the existing Supabase project's Edge Function secrets, set a new independent `CONTENT_DRIVER_SECRET` of at least 32 random characters and deploy both `drive-content-generation` and `generate-content-batch` together. Update driver callers to POST with `Authorization: Bearer <CONTENT_DRIVER_SECRET>`. The old hardcoded credential and credentials in query strings no longer work. Normal signed-in admin access to batch generation remains supported. Do not change normal Supabase API keys merely to adopt this branch.
+5. In Supabase Authentication → Sign In / Providers → Email, enable Prevent use of leaked passwords and set minimum password length to 12. Existing passwords remain unchanged. Under URL Configuration use the existing production site URL and allow its `/auth/reset-password` callback. Preserve other valid callback URLs. If email scanners consume reset links, the reset email Body can additionally contain `<p>Recovery code: {{ .Token }}</p>`; enter that code using the reset form's recovery-code option.
+
+## Validation and rollback
+
+Local security and database fixture tests run with `npm run test:security`; TypeScript uses `npx tsc --noEmit`; build uses `npm run build`. Hosted preview password and authorization results are reference evidence, not a claim that the original project's configuration has been tested.
+
+Before rollout, verify on owner-controlled staging: signed-out protection, ordinary-user admin denial, cross-user isolation, owner workspace rename, saved public forms, real customer domains through the proxy, scheduled maintenance, content generation, Stripe checkout/webhooks, email/unsubscribe, Intercom, and CSP hydration. The production CSP allows self, per-request nonces and the known Intercom script hosts; additional legitimate script integrations require an explicit allowlist review.
+
+After deployment, test recovery, rejection of short/leaked passwords, successful new-password sign-in, old-password rejection, and rejection of reused/expired recovery codes. Stage fixtures should be removed with their sessions revoked.
+
+Keep a database backup and the prior release. Rolling back code alone does not restore revoked database grants or old job authentication; coordinate rollback of callers and permissions. Never restore the exposed hardcoded driver credential.
+
+## Additional review findings
+
+The transactional email HTTP endpoint previously allowed any signed-in user to choose recipients and templates. It now requires a database-backed admin role before parsing or queueing mail. The email queue now requires `EMAIL_QUEUE_SECRET`; update its scheduler alongside the Worker release. Raw webhook input is limited to 1 MiB and Stripe errors returned to callers are generic. Academy seeding and course generation accept POST only.
+
+The additional review verified ordinary-user email denial and missing/wrong/database-key queue rejection in the built Worker against founders-dev. Stripe tests used a locally generated signed fixture with an ignored event type, so they created no checkout, payment or subscription changes. Auth webhook tests verified genuine signatures, tampering rejection and stale timestamps. No emails were sent.
+
+Shared submission limits now use the existing Supabase database across Worker instances, with global, client and recipient counters. No extra Cloudflare binding is required. The in-memory limiter is an additional early rejection layer; Cloudflare edge rules are still recommended for volumetric traffic. Billing now retrieves authoritative Stripe state, checks database errors, and atomically updates both billing tables under a workspace lock and snapshot revision check. Duplicate and older notifications are ignored; stale snapshots and failed writes return a generic 500 for Stripe retry. Replacing a subscription requires a creation event and a canceled/expired predecessor, preventing late predecessor events from overwriting its successor. Still outstanding: full original-project storage and integration verification. Founders-dev currently has no Storage buckets or policies, so its storage check cannot validate the original project. This review is not exhaustive.
+
+Hosted founders-dev billing tests exercised real parallel RPCs, same-second revision conflicts, retry/recovery, shared recipient counters, browser-role denial and signed Worker webhooks with mocked Stripe responses. No real Stripe requests or payments were made. Temporary test users, sessions, workspaces and fixture rate keys were removed. The shared rate and generation-usage tables intentionally have RLS enabled without browser policies and grant access only to service_role; their two no-policy advisor notices are expected. The three existing self-scoped permission-helper warnings remain intentional.
+
+
+## Broader security recheck
+
+Profiles are now readable only by the account owner or an authorized admin. Public forum display names remain on forum records; the change does not make the forum private. Authors can edit content but cannot directly set pinning, counters, identities or timestamps. Narrow trigger-only functions maintain counts across authors; browser roles cannot execute those functions.
+
+Unsubscribe suppression and token consumption now run in one locked database transaction. A failed suppression write leaves the token usable for retry, and already-consumed legacy tokens repair missing suppression. Request bodies are bounded and token values are no longer included in error logging. Auth webhook responses no longer expose internal exception details. Public city-click and 404 logging use the shared submission guard; city tracking also safely handles malformed cookies and returns a valid empty 204 response.
+
+The recheck reviewed the 162 source server-function exports and 11 raw HTML insertion sites. Source review is not equivalent to exercising every function in the deployed environment. Additional database tests cover profile isolation, forum privileges/counters, unsubscribe rollback and repair. Hosted founders-dev checks cover the same permissions and built-Worker unsubscribe/telemetry routes. No real email, payment or AI requests were sent.
+
+Still review on owner staging: original Storage policies, real Stripe/email/queue/content-generation/proxy integrations, and any added scripts under CSP. Customer content generation now claims usage under the same workspace lock used for billing, before sending a provider request. Monthly counters include the initial existing-page baseline, cannot be reset by deleting pages, and retain submitted attempts after provider/save failures because cost may already have been incurred. A shared ten-request-per-minute burst limit also applies to unlimited/internal workspaces. Only the four models offered in the form are accepted, with bounded branding, output tokens, response size and a provider timeout. The form explains the attempt-counting rule. Supabase access JWTs may remain valid until expiry after sign-out; choose and test stricter revocation if the release requires immediate access-token invalidation. Neither limitation is claimed fixed by this PR.
+
+
+The final pass also protects revoked course completions from direct learner deletion or rewriting. Normal certificate issuance and repeat completion remain supported, but a revoked record requires staff action rather than a learner requesting a replacement. Server-function bodies are limited to 1 MiB before framework parsing, without changing request metadata or signed webhook bytes. The separate Emailit suppression verifier now bounds its raw body and rejects malformed signature/timestamp headers before expensive processing.
+
+## Sitemap and Edge Function follow-up
+
+Deploy the updated `generate-help-article`, `generate-course-content`, `generate-content-batch` and `seed-blog-posts` functions with their shared helper through the existing staging/release process. No new variable or binding is required. Verify normal admin workflows and oversized-input rejection on staging before production deployment.
+
+Sitemap scanners now require HTTPS and keep redirects, nested sitemap requests and discovered page URLs on the configured origin, with bounded downloads and a shared request/time budget. Check existing competitor sitemap configurations; cross-origin indexes will have those children skipped and HTTP-only sources must be replaced by a working HTTPS URL. Hostname validation cannot establish where DNS resolves: retain outbound network protection against private-address destinations and verify that deployment boundary on staging.
+
+## Provider privacy and host AI follow-up
+
+The main reviewed SQL now restricts browser reads of `providers` to explicit public business-listing columns. Intake emails/notes, claimant identities, workflow fields and internal analytics are not public API fields. Existing server-side admin tools keep their service-role access; any custom browser query using `select('*')` must select the public columns or use an authorized admin endpoint.
+
+Provider request history requires a signed-in account with a currently verified email. Caller-supplied email filters cannot grant access, and responses omit contact emails, payment references and staff notes. Matching preserves legacy email casing while escaping wildcard characters. Unpublished providers without a request matching that account are hidden.
+
+The host AI source function now uses the same service-only database limiter: five attempts per minute and twenty per rolling 24 hours per account. Submitted attempts count even when the provider fails. Provider output is capped at 2,048 tokens / 64 KiB with a 60-second timeout. This source function is not included in the current built Worker; the preventive change is tested in a source harness with the real development limiter and mocked AI responses. No new secret or Cloudflare binding is needed.
+
+## Admin team and recovery follow-up
+
+The main SQL now includes a service-only atomic admin-role removal RPC. The updated Worker calls it; apply the reviewed setup transaction before releasing that Worker. Concurrent removals serialize, recheck the caller after acquiring the lock, reject self-removal and preserve admin access. No new credential or binding is required.
+
+New/replacement password inputs and admin server validators consistently require 12–256 characters. Existing sign-in passwords are unaffected. Newly created admin passwords are offered through a deliberate copy dialog rather than a transient success toast. The admin reset button now requests actual Auth recovery delivery instead of merely generating an unused link, with a callback on the requesting application's `/auth/reset-password` route. Include the relevant app callbacks in the existing Supabase allowlist and verify real delivery on staging; local tests mock delivery and do not send email.
+
+The provider security SQL also removes direct browser listing INSERT access (including legacy column grants). Listing submissions must use the guarded Worker endpoint. Admin creation continues through service-role server actions; integrations that insert listings directly with a browser key must migrate to the guarded flow.
+
+## Forum abuse controls
+
+The owner SQL installs trigger-only database checks for thread/reply creation and content edits. Each author shares five accepted writes per minute and twenty per hour across both tables; deleting posts does not refund the budget. Bodies are limited to 10,000 characters, thread titles to 200, and author labels/categories to 120. Both direct authenticated API writes and service-role Worker writes are checked. Counter and moderation maintenance do not consume posting allowance. Existing content is not rewritten; editing legacy oversized content requires shortening it. No additional Worker binding or secret is required. These per-account controls do not replace signup abuse protection, moderation or network-level denial-of-service protection.
+
+## Account-switching follow-up
+
+Forum limits now also share site-wide caps of 60 accepted writes/minute and 600/hour, alongside the per-author limits. A confirmed, non-anonymous, unbanned Auth user must exist for the author. See `STAGING_ACCEPTANCE.md` for the consolidated release checklist, Auth dashboard paths, CAPTCHA prerequisites and outbound-network acceptance criteria. Global caps bound persisted writes but can be exhausted by an attacker; they do not replace platform abuse protection. No Auth dashboard setting was changed in this pass.
+
+## Optional Auth CAPTCHA activation
+
+Cloudflare Turnstile support is prepared for signup, password sign-in and reset-email requests. Follow `CAPTCHA_SETUP.md` to set the public `VITE_TURNSTILE_SITE_KEY` build variable, deploy on staging, then enable the matching secret in Supabase Authentication → Attack Protection. Default builds preserve existing behavior without a widget. No new runtime Worker secret or replacement Supabase token is needed. Live provider enforcement and admin reset delivery require staged verification before production.

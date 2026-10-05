@@ -16,7 +16,7 @@ export const Route = createFileRoute("/account/learning")({
     const { data } = await supabase.auth.getUser();
     if (!data.user) {
       throw redirect({
-        to: "/auth" as never,
+        to: "/auth",
         search: { redirect: location.pathname, mode: "signin" },
       });
     }
@@ -36,6 +36,9 @@ function MyLearningPage() {
       listMyProgress({ data: undefined as never }),
     ])
       .then(([l, p]) => {
+        if (!l || !p || !Array.isArray(l.rows) || !Array.isArray(p.rows)) {
+          throw new Error("Couldn't load your learning records. Please refresh; if this continues, the server response needs checking.");
+        }
         setRows(l.rows);
         const m = new Map<string, CourseProgress>();
         for (const r of p.rows) m.set(r.course_slug, r);

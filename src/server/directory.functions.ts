@@ -1,3 +1,6 @@
+import { getRequest } from "@tanstack/react-start/server";
+import { readProviderStatus } from "./provider-status.server";
+import { guardPublicSubmission } from "./submission-guard.server";
 import { createServerFn } from "@tanstack/react-start";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
@@ -289,6 +292,7 @@ function slugify(s: string): string {
 export const submitProviderListing = createServerFn({ method: "POST" })
   .inputValidator((d) => ListProviderInput.parse(d))
   .handler(async ({ data }) => {
+    await guardPublicSubmission("provider-listing", data.email);
     // verify category exists & published
     const { data: cat } = await supabaseAdmin
       .from("service_categories")
@@ -809,6 +813,7 @@ const SubmitClaimInput = z.object({
 export const submitProviderClaim = createServerFn({ method: "POST" })
   .inputValidator((d) => SubmitClaimInput.parse(d))
   .handler(async ({ data }) => {
+    await guardPublicSubmission("provider-claim", data.claimer_email);
     const { data: prov } = await supabaseAdmin
       .from("providers")
       .select("id, slug, claim_status")
@@ -959,6 +964,7 @@ const SubmitPlanInput = z.object({
 export const submitProviderPlanRequest = createServerFn({ method: "POST" })
   .inputValidator((d) => SubmitPlanInput.parse(d))
   .handler(async ({ data }) => {
+    await guardPublicSubmission("provider-plan", data.requester_email);
     const { data: prov } = await supabaseAdmin
       .from("providers")
       .select("id, slug")
@@ -984,45 +990,17 @@ export const submitProviderPlanRequest = createServerFn({ method: "POST" })
   });
 
 export const getProviderStatus = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
   .inputValidator((d) =>
-    z
-      .object({ slug: z.string().min(1).max(120), email: z.string().email().max(160).optional() })
-      .parse(d),
+    z.object({ slug: z.string().min(1).max(120) }).parse(d),
   )
-  .handler(async ({ data }) => {
-    const { data: prov } = await supabaseAdmin
-      .from("providers")
-      .select(
-        "id, slug, name, city, state_code, primary_category, is_published, is_featured, plan, claim_status, submission_status, listing_paid_until, featured_until, claimed_at",
-      )
-      .eq("slug", data.slug)
-      .maybeSingle();
-    if (!prov) return { provider: null, claims: [], plan_requests: [] };
-
-    const filterEmail = data.email?.toLowerCase();
-    const [{ data: claims }, { data: reqs }] = await Promise.all([
-      supabaseAdmin
-        .from("provider_claims")
-        .select("id, status, claimer_name, claimer_email, created_at, reviewed_at, admin_notes")
-        .eq("provider_id", prov.id)
-        .order("created_at", { ascending: false })
-        .limit(20),
-      (supabaseAdmin as any)
-        .from("provider_plan_requests")
-        .select(
-          "id, status, requested_plan, amount_usd, payment_method, payment_reference, requester_email, created_at, reviewed_at, admin_notes",
-        )
-        .eq("provider_id", prov.id)
-        .order("created_at", { ascending: false })
-        .limit(20),
-    ]);
-    const filterFn = (r: any) =>
-      !filterEmail || (r.claimer_email || r.requester_email || "").toLowerCase() === filterEmail;
-    return {
-      provider: prov,
-      claims: ((claims as any[]) ?? []).filter(filterFn),
-      plan_requests: ((reqs as any[]) ?? []).filter(filterFn),
-    };
+  .handler(async ({ data, context }) => {
+    const token = getRequest().headers.get("authorization")?.slice(7);
+    const { data: auth, error } = await context.supabase.auth.getUser(token);
+    if (error || auth.user?.id !== context.userId || !auth.user?.email_confirmed_at || !auth.user.email) {
+      throw new Error("Verified email required");
+    }
+    return readProviderStatus(supabaseAdmin, data.slug, auth.user.email);
   });
 
 export const adminListPlanRequests = createServerFn({ method: "GET" })

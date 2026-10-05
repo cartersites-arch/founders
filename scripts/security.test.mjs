@@ -1,0 +1,259 @@
+import test from "node:test";
+import assert from "node:assert/strict";
+import { renderSafeMarkdown } from "../src/lib/safe-content.ts";
+import { serializeScriptJson } from "../src/lib/script-json.ts";
+import { cspNonceForRequest } from "../src/lib/csp-nonce.ts";
+import { normalizeWorkspaceHost, resolveWorkspaceHost } from "../src/lib/verified-host.ts";
+import { createMaintenanceHandlers } from "../src/server/maintenance-handlers.ts";
+import {
+  createSubmissionLimiter,
+  validateSubmissionOrigin,
+} from "../src/lib/submission-limiter.ts";
+import { readLimitedJson } from "../src/lib/limited-json.ts";
+
+const secret = "fixture-only-maintenance-token-not-a-real-credential";
+function request(method = "POST", token = secret) {
+  return new Request("http://localhost/hooks", {
+    method,
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
+  });
+}
+
+test("customer HTML cannot inject scripts, handlers, unsafe links or embedded documents", () => {
+  const html = renderSafeMarkdown(`# Safe heading
+<script>alert(1)</script><img src=x onerror=alert(2)><iframe srcdoc='<script>alert(3)</script>'></iframe><svg onload=alert(4)></svg>
+<a href="javascript:alert(5)" onclick="alert(6)">bad link</a><a href="//evil.test">relative protocol</a>
+[encoded attack](javascript&#58;alert(7))
+[valid link](https://example.test/path)
+**bold** and *emphasis*
+`);
+  assert.doesNotMatch(
+    html,
+    /<script|<img|<iframe|<svg|onerror|onclick|onload|javascript:|href="\/\//i,
+  );
+  assert.match(html, /<h1>Safe heading<\/h1>/);
+  assert.match(html, /href="https:\/\/example.test\/path"/);
+  assert.match(html, /<strong>bold<\/strong>/);
+});
+test("JSON LD cannot close its enclosing script", () => {
+  const payload = { name: "</script><script>alert(1)</script>&\u2028" };
+  const encoded = serializeScriptJson(payload);
+  assert.doesNotMatch(encoded, /<|>|&|\u2028/);
+  assert.deepEqual(JSON.parse(encoded), payload);
+});
+test("CSP nonces are stable for one request and distinct across requests", () => {
+  const a = request("GET");
+  const nonce = cspNonceForRequest(a);
+  assert.match(nonce, /^[A-Za-z0-9+/]{32}$/);
+  assert.equal(nonce, cspNonceForRequest(a));
+  assert.notEqual(nonce, cspNonceForRequest(request("GET")));
+});
+test("only authenticated proxy headers select a forwarded workspace", async () => {
+  const headers = new Headers({ host: "localhost:8080", "x-forwarded-host": "customer.example" });
+  assert.equal(await resolveWorkspaceHost(headers, secret), null);
+  headers.set("x-founders-proxy-token", "wrong");
+  assert.equal(await resolveWorkspaceHost(headers, secret), null);
+  headers.set("x-founders-proxy-token", secret);
+  assert.equal(await resolveWorkspaceHost(headers, secret), "customer.example");
+  headers.set("x-forwarded-host", "customer.example,attacker.example");
+  assert.equal(await resolveWorkspaceHost(headers, secret), null);
+  assert.equal(normalizeWorkspaceHost("www.customer.example:443"), "customer.example");
+  for (const invalid of [
+    "user@customer.example",
+    "customer.example/path",
+    "customer.example?x=1",
+    "customer.example#fragment",
+    " customer.example",
+  ])
+    assert.equal(normalizeWorkspaceHost(invalid), null);
+});
+test("maintenance auth rejects GET, missing secrets and forged credentials before side effects", async () => {
+  let calls = 0;
+  const action = async () => {
+    calls++;
+    return Response.json({ ok: true });
+  };
+  const hooks = createMaintenanceHandlers(action, { secret: () => secret });
+  assert.equal((await hooks.GET()).status, 405);
+  assert.equal((await hooks.POST({ request: request("POST", null) })).status, 401);
+  assert.equal((await hooks.POST({ request: request("POST", "bad") })).status, 401);
+  const unset = createMaintenanceHandlers(action, { secret: () => undefined });
+  assert.equal((await unset.POST({ request: request() })).status, 503);
+  assert.equal(calls, 0);
+  const response = await hooks.POST({ request: request() });
+  assert.equal(response.status, 200);
+  assert.equal(response.headers.get("cache-control"), "no-store");
+  assert.equal(calls, 1);
+});
+test("maintenance blocks concurrent work, enforces cooldown and releases failed jobs", async () => {
+  let time = 1,
+    release;
+  const pending = new Promise((resolve) => {
+    release = resolve;
+  });
+  const hooks = createMaintenanceHandlers(
+    async () => {
+      await pending;
+      return new Response("ok");
+    },
+    { secret: () => secret, now: () => time },
+  );
+  const first = hooks.POST({ request: request() });
+  await new Promise((resolve) => setTimeout(resolve, 20));
+  assert.equal((await hooks.POST({ request: request() })).status, 429);
+  release();
+  assert.equal((await first).status, 200);
+  assert.equal((await hooks.POST({ request: request() })).status, 429);
+  time += 30_000;
+  assert.equal((await hooks.POST({ request: request() })).status, 200);
+  const failed = createMaintenanceHandlers(
+    async () => {
+      throw new Error("secret internal detail");
+    },
+    { secret: () => secret, now: () => time },
+  );
+  assert.equal(
+    await (await failed.POST({ request: request() })).text(),
+    "Maintenance operation failed",
+  );
+  time += 30_000;
+  assert.equal((await failed.POST({ request: request() })).status, 500);
+});
+test("submission counters bound memory, reject bursts and expire", () => {
+  let time = 0;
+  const consume = createSubmissionLimiter(() => time, 2);
+  assert.equal(consume("client-a", 2, 1000), true);
+  assert.equal(consume("client-a", 2, 1000), true);
+  assert.equal(consume("client-a", 2, 1000), false);
+  assert.equal(consume("client-b", 2, 1000), true);
+  assert.equal(consume("client-c", 2, 1000), false);
+  time = 1000;
+  assert.equal(consume("client-c", 2, 1000), true);
+});
+test("cross-origin submissions are rejected", () => {
+  assert.equal(
+    validateSubmissionOrigin(
+      new Request("https://own.example/form", { headers: { origin: "https://attacker.example" } }),
+    ),
+    false,
+  );
+  assert.equal(
+    validateSubmissionOrigin(
+      new Request("https://own.example/form", { headers: { origin: "https://own.example" } }),
+    ),
+    true,
+  );
+});
+test("request JSON is bounded by actual streamed bytes", async () => {
+  const valid = new Request("http://localhost", { method: "POST", body: '{"limit":1}' });
+  assert.deepEqual(await readLimitedJson(valid), { limit: 1 });
+  await assert.rejects(
+    () => readLimitedJson(new Request("http://localhost", { method: "POST", body: "{" })),
+    (error) => error instanceof Response && error.status === 400,
+  );
+  await assert.rejects(
+    () =>
+      readLimitedJson(
+        new Request("http://localhost", { method: "POST", body: "x".repeat(20) }),
+        10,
+      ),
+    (error) => error instanceof Response && error.status === 413,
+  );
+});
+
+test("dedicated Edge driver credentials reject missing, oversized and incorrect tokens", async () => {
+  const { matchesSecret } = await import("../supabase/functions/_shared/security-token.ts");
+  assert.equal(await matchesSecret(null, secret), false);
+  assert.equal(await matchesSecret(secret, undefined), false);
+  assert.equal(await matchesSecret(secret, "short"), false);
+  assert.equal(await matchesSecret("x".repeat(513), secret), false);
+  assert.equal(await matchesSecret("wrong credential", secret), false);
+  assert.equal(await matchesSecret(secret, secret), true);
+});
+
+test("webhook text remains unchanged for signature verification and is size bounded", async () => {
+  const { readLimitedText } = await import("../src/lib/limited-json.ts");
+  const body = '{ "message": "signed payload" }\n';
+  assert.equal(await readLimitedText(new Request("https://fixture.test", {method:"POST",body})), body);
+  await assert.rejects(() => readLimitedText(new Request("https://fixture.test", {method:"POST",body:"x".repeat(11)}),10), error => error instanceof Response && error.status===413);
+});
+
+test("admin seeding and course generation reject GET before credentials or side effects", async () => {
+  const { readFileSync } = await import("node:fs");
+  const { default: ts } = await import("typescript");
+  for (const path of ["seed-academy-courses", "generate-course-content"]) {
+    let handler;
+    const source = readFileSync(new URL(`../supabase/functions/${path}/index.ts`, import.meta.url), "utf8");
+    const js = ts.transpileModule(source, {compilerOptions:{module:ts.ModuleKind.ESNext,target:ts.ScriptTarget.ESNext}}).outputText.replace(/^import .*;\s*$/gm, "").replace(/^export {};\s*$/gm, "");
+    new Function("Deno", "createClient", "seed", js)({serve:fn=>{handler=fn;},env:{get:()=>{throw new Error("Unexpected credential access");}}},()=>{throw new Error("Unexpected database access");},[]);
+    assert.equal((await handler(new Request("https://fixture.test", {method:"GET"}))).status,405);
+  }
+});
+
+test("Auth webhook signatures reject tampering and expired timestamps", async () => {
+  const { readFileSync } = await import("node:fs");
+  const { createHmac } = await import("node:crypto");
+  const { default: ts } = await import("typescript");
+  const { readLimitedText } = await import("../src/lib/limited-json.ts");
+  const source=readFileSync(new URL("../src/integrations/webhooks/standard.ts",import.meta.url),"utf8");
+  const js=ts.transpileModule(source,{compilerOptions:{module:ts.ModuleKind.ESNext,target:ts.ScriptTarget.ESNext}}).outputText.replace(/^import .*;\s*$/gm,"").replace(/export /g,"");
+  const verify=new Function("readLimitedText",js+"; return verifyStandardWebhook;")(readLimitedText);
+  const key=Buffer.alloc(32,7),secret="v1,whsec_"+key.toString("base64"),body='{"fixture":true}';
+  const request=(age=0,payload=body)=>{const timestamp=String(Math.floor(Date.now()/1000)-age),id="fixture-webhook";return new Request("https://fixture.test",{method:"POST",body:payload,headers:{"webhook-id":id,"webhook-timestamp":timestamp,"webhook-signature":"v1,"+createHmac("sha256",key).update(`${id}.${timestamp}.${body}`).digest("base64")}});};
+  assert.equal(await verify(request(),secret),body);
+  await assert.rejects(()=>verify(request(0,body+" "),secret),error=>error.code==="invalid_signature");
+  await assert.rejects(()=>verify(request(600),secret),error=>error.code==="stale_timestamp");
+});
+
+test("server-function bodies are bounded before parsing and retain binary multipart bytes", async () => {
+  const { boundServerFunctionRequest } = await import("../src/lib/server-function-request.ts");
+  const bytes = new Uint8Array([0, 255, 10, 13, 50]);
+  const input = new Request("https://preview.example/_serverFn/fixture", {
+    method: "POST", headers: { "content-type": "multipart/form-data; boundary=fixture", authorization: "Bearer fixture" }, body: bytes,
+  });
+  const bounded = await boundServerFunctionRequest(input);
+  assert.deepEqual(new Uint8Array(await bounded.arrayBuffer()), bytes);
+  assert.equal(bounded.headers.get("authorization"), "Bearer fixture");
+  assert.equal(bounded.headers.get("content-type"), input.headers.get("content-type"));
+  const large = new Request("https://preview.example/_serverFn/fixture", {
+    method: "POST", headers: { "content-length": "1" }, body: new Uint8Array(1024 * 1024 + 1),
+  });
+  await assert.rejects(() => boundServerFunctionRequest(large), error => error instanceof Response && error.status === 413);
+  const unrelated = new Request("https://preview.example/api/billing/webhook", { method: "POST", body: "signed fixture" });
+  assert.equal(await boundServerFunctionRequest(unrelated), unrelated);
+  assert.equal(await unrelated.text(), "signed fixture");
+});
+
+
+test("streaming body limits reject tiny-chunk input at the byte boundary", async () => {
+  const { readLimitedBytes } = await import("../src/lib/limited-json.ts");
+  let canceled = false;
+  const body = new ReadableStream({
+    start(controller) { for (let i = 0; i < 65; i++) controller.enqueue(new Uint8Array([i])); },
+    cancel() { canceled = true; },
+  });
+  await assert.rejects(() => readLimitedBytes(new Response(body), 64), error => error instanceof Response && error.status === 413);
+  assert.equal(canceled, true);
+});
+
+test("Emailit signatures preserve raw bytes and reject tampering, malformed headers and stale events", async () => {
+  const { verifyEmailitWebhook } = await import("../src/integrations/emailit/verify.ts");
+  const { createHmac } = await import("node:crypto");
+  const secret = "fixture-only-emailit-signing-secret", body = '{ "type": "fixture.ignored" }';
+  const stamp = String(Math.floor(Date.now() / 1000));
+  const signature = createHmac("sha256", secret).update(`${stamp}.${body}`).digest("hex");
+  const headers = { "x-emailit-timestamp": stamp, "x-emailit-signature": signature };
+  const make = (text = body, h = headers) => new Request("https://preview.example/lovable/email/suppression", { method: "POST", headers: h, body: text });
+  assert.equal(await verifyEmailitWebhook(make(), secret), body);
+  await assert.rejects(() => verifyEmailitWebhook(make(body + " "), secret), error => error.code === "invalid_signature");
+  await assert.rejects(() => verifyEmailitWebhook(make(body, { ...headers, "x-emailit-timestamp": "bad" }), secret), error => error.code === "invalid_timestamp");
+  await assert.rejects(() => verifyEmailitWebhook(make(body, { ...headers, "x-emailit-timestamp": String(Number(stamp) - 1000) }), secret), error => error.code === "stale_timestamp");
+  const malformed = make(body, { ...headers, "x-emailit-signature": "bad" });
+  await assert.rejects(() => verifyEmailitWebhook(malformed, secret), error => error.code === "invalid_signature");
+  assert.equal(malformed.bodyUsed, false);
+});
+test("Emailit rejects oversized webhook bodies before signature hashing", async () => {
+  const { verifyEmailitWebhook } = await import("../src/integrations/emailit/verify.ts");
+  const request = new Request("https://preview.example/lovable/email/suppression", { method: "POST", headers: { "x-emailit-timestamp": String(Math.floor(Date.now() / 1000)), "x-emailit-signature": "0".repeat(64) }, body: "x".repeat(1024 * 1024 + 1) });
+  await assert.rejects(() => verifyEmailitWebhook(request, "fixture-only-secret"), error => error instanceof Response && error.status === 413);
+});

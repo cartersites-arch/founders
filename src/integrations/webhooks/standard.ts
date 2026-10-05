@@ -1,3 +1,4 @@
+import { readLimitedText } from "../../lib/limited-json";
 /**
  * Verify an inbound webhook signed per the Standard Webhooks spec
  * (https://www.standardwebhooks.com/). Used by Supabase Auth Hooks.
@@ -86,7 +87,7 @@ export async function verifyStandardWebhook(
     throw new StandardWebhookError("invalid_secret", "Could not base64-decode webhook secret");
   }
 
-  const rawBody = await request.text();
+  const rawBody = await readLimitedText(request, 1024 * 1024);
   const expectedSig = await hmacSha256Base64(secretBytes, `${id}.${timestamp}.${rawBody}`);
 
   // Header may contain multiple space-separated signatures (key rotation).

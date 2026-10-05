@@ -1,3 +1,4 @@
+import { fetchSitemapUrls } from "@/lib/safe-sitemap";
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
@@ -89,32 +90,6 @@ export const deleteCompetitorSite = createServerFn({ method: "POST" })
   });
 
 /** Fetch sitemap (and nested sitemap indexes) and return all <loc> URLs. */
-async function fetchSitemapUrls(sitemapUrl: string, depth = 0): Promise<string[]> {
-  if (depth > 2) return [];
-  const res = await fetch(sitemapUrl, {
-    headers: {
-      "User-Agent":
-        "Mozilla/5.0 (compatible; PoolRentalNearMeBot/1.0; +https://www.poolrentalnearme.com)",
-    },
-  });
-  if (!res.ok) throw new Error(`Sitemap fetch ${res.status}`);
-  const xml = await res.text();
-  const locs = Array.from(xml.matchAll(/<loc>\s*([^<\s]+)\s*<\/loc>/g)).map((m) => m[1]);
-  // If this is a sitemap index, recurse
-  if (/<sitemapindex/i.test(xml)) {
-    const out: string[] = [];
-    for (const child of locs.slice(0, 25)) {
-      try {
-        const sub = await fetchSitemapUrls(child, depth + 1);
-        out.push(...sub);
-      } catch {
-        /* skip */
-      }
-    }
-    return out;
-  }
-  return locs;
-}
 
 /** Run sitemap diff for one (or all) competitor sites. Returns count of new URLs found. */
 export const runCompetitorScan = createServerFn({ method: "POST" })

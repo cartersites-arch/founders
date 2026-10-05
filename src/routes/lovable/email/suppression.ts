@@ -85,6 +85,7 @@ export const Route = createFileRoute("/lovable/email/suppression")({
           const rawBody = await verifyEmailitWebhook(request, webhookSecret);
           event = JSON.parse(rawBody) as EmailitWebhookEvent;
         } catch (error) {
+          if (error instanceof Response && error.status === 413) return error;
           if (error instanceof EmailitVerifyError) {
             switch (error.code) {
               case "invalid_signature":

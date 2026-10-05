@@ -68,14 +68,16 @@ export const markCourseComplete = createServerFn({ method: "POST" })
     const { supabase, userId } = context as { supabase: any; userId: string };
 
     // Already completed?
-    const { data: existing } = await supabase
+    const { data: existing, error: existingError } = await supabase
       .from("course_completions")
       .select("certificate_uid, revoked_at")
       .eq("user_id", userId)
       .eq("course_slug", data.course_slug)
       .maybeSingle();
 
-    if (existing && !existing.revoked_at) {
+    if (existingError) throw new Error("Could not verify course completion");
+    if (existing?.revoked_at) throw new Error("This completion was revoked. Contact support.");
+    if (existing) {
       return { ok: true, certificate_uid: existing.certificate_uid as string, already: true };
     }
 

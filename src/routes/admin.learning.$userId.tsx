@@ -11,7 +11,7 @@ export const Route = createFileRoute("/admin/learning/$userId")({
     const { data } = await supabase.auth.getUser();
     if (!data.user) {
       throw redirect({
-        to: "/auth" as never,
+        to: "/auth",
         search: { redirect: location.pathname, mode: "signin" },
       });
     }

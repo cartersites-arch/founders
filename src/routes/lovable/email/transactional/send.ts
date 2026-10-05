@@ -1,3 +1,4 @@
+import { readLimitedJson } from "@/lib/limited-json";
 import * as React from "react";
 import { render as renderAsync } from "@react-email/components";
 import { createClient } from "@supabase/supabase-js";
@@ -58,6 +59,11 @@ export const Route = createFileRoute("/lovable/email/transactional/send")({
           return Response.json({ error: "Unauthorized" }, { status: 401 });
         }
 
+        // Authentication alone does not authorize sending mail to arbitrary recipients.
+        const { data: role, error: roleError } = await supabase
+          .from("user_roles").select("role").eq("user_id", user.id).eq("role", "admin").maybeSingle();
+        if (roleError || !role) return Response.json({ error: "Forbidden" }, { status: 403 });
+
         // Parse request body
         let templateName: string;
         let recipientEmail: string;
@@ -65,7 +71,7 @@ export const Route = createFileRoute("/lovable/email/transactional/send")({
         let messageId: string;
         let templateData: Record<string, any> = {};
         try {
-          const body = await request.json();
+          const body = (await readLimitedJson(request)) as Record<string, any>;
           templateName = body.templateName || body.template_name;
           recipientEmail = body.recipientEmail || body.recipient_email;
           messageId = crypto.randomUUID();
@@ -73,7 +79,8 @@ export const Route = createFileRoute("/lovable/email/transactional/send")({
           if (body.templateData && typeof body.templateData === "object") {
             templateData = body.templateData;
           }
-        } catch {
+        } catch (error) {
+          if (error instanceof Response) return error;
           return Response.json({ error: "Invalid JSON in request body" }, { status: 400 });
         }
 

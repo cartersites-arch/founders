@@ -3,31 +3,31 @@
 // invoked unattended (e.g. from a sandbox curl loop or pg_cron) so the user
 // doesn't have to keep the admin browser tab open.
 //
-// Auth: a shared token passed as ?token=... (or x-driver-token header) that
-// must equal env DRIVE_TOKEN. If DRIVE_TOKEN is unset, the function refuses
-// to run.
+// POST with Authorization: Bearer CONTENT_DRIVER_SECRET. Never put credentials in URLs.
 
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
+import { matchesSecret } from "../_shared/security-token.ts";
 import { createClient } from "jsr:@supabase/supabase-js@2";
 
 const CORS = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers":
     "authorization, x-client-info, apikey, content-type, x-driver-token",
-  "Access-Control-Allow-Methods": "POST, GET, OPTIONS",
+  "Access-Control-Allow-Methods": "POST, OPTIONS",
 };
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: CORS });
 
+  if (req.method !== "POST") return json({ error: "Method not allowed" }, 405);
+
   try {
     const url = new URL(req.url);
-    const token = req.headers.get("x-driver-token") ?? url.searchParams.get("token") ?? "";
-    // Hardcoded driver token — rotate by editing this constant and redeploying.
-    const expected = "6e85780dcbe7b1f7a7fbd8ce2d425a496bc675bb5ccf55f7";
-    if (token !== expected) {
-      return json({ error: "Unauthorized" }, 401);
-    }
+    const expected = Deno.env.get("CONTENT_DRIVER_SECRET");
+    if (!expected || expected.length < 32) return json({ error: "Driver not configured" }, 503);
+    const authorization = req.headers.get("authorization");
+    const token = authorization?.startsWith("Bearer ") ? authorization.slice(7) : null;
+    if (!(await matchesSecret(token, expected))) return json({ error: "Unauthorized" }, 401);
 
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
@@ -36,6 +36,7 @@ Deno.serve(async (req) => {
     const maxBatches = Math.min(Number(url.searchParams.get("maxBatches") ?? 60), 200);
     const count = Math.min(Number(url.searchParams.get("count") ?? 10), 10);
     const model = url.searchParams.get("model") ?? "google/gemini-3-flash-preview";
+    if (!Number.isInteger(maxBatches) || maxBatches < 1 || !Number.isInteger(count) || count < 1 || model.length > 100 || !/^[a-zA-Z0-9_./:-]+$/.test(model)) return json({ error: "Invalid parameters" }, 400);
 
     const results: Array<Record<string, unknown>> = [];
     let totalAttempted = 0;
@@ -58,12 +59,12 @@ Deno.serve(async (req) => {
         break;
       }
 
-      // Kick a batch (server-to-server, bypassing JWT via x-driver-secret = service key)
+      // Kick a batch with the dedicated driver credential.
       const r = await fetch(`${supabaseUrl}/functions/v1/generate-content-batch`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "x-driver-secret": serviceKey,
+          "x-driver-secret": expected,
           // satisfy the function gateway's expected header even when the function
           // itself is verify_jwt=false:
           Authorization: `Bearer ${serviceKey}`,
@@ -104,7 +105,7 @@ Deno.serve(async (req) => {
 
     return json({ ok: true, totalAttempted, batches: results.length, results });
   } catch (e) {
-    return json({ error: e instanceof Error ? e.message : String(e) }, 500);
+    return json({ error: "Content generation failed" }, 500);
   }
 });
 
