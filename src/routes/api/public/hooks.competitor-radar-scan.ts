@@ -1,3 +1,4 @@
+import { fetchSitemapUrls } from "@/lib/safe-sitemap";
 import { createMaintenanceHandlers } from "@/server/maintenance-handlers";
 import { createFileRoute } from "@tanstack/react-router";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
@@ -8,30 +9,6 @@ import { supabaseAdmin } from "@/integrations/supabase/client.server";
  * and inserts new ones. POST requires a dedicated maintenance credential.
  */
 
-async function fetchSitemapUrls(sitemapUrl: string, depth = 0): Promise<string[]> {
-  if (depth > 2) return [];
-  const res = await fetch(sitemapUrl, {
-    headers: {
-      "User-Agent":
-        "Mozilla/5.0 (compatible; PoolRentalNearMeBot/1.0; +https://www.poolrentalnearme.com)",
-    },
-  });
-  if (!res.ok) throw new Error(`Sitemap fetch ${res.status}`);
-  const xml = await res.text();
-  const locs = Array.from(xml.matchAll(/<loc>\s*([^<\s]+)\s*<\/loc>/g)).map((m) => m[1]);
-  if (/<sitemapindex/i.test(xml)) {
-    const out: string[] = [];
-    for (const child of locs.slice(0, 25)) {
-      try {
-        out.push(...(await fetchSitemapUrls(child, depth + 1)));
-      } catch {
-        /* skip */
-      }
-    }
-    return out;
-  }
-  return locs;
-}
 
 async function runScan() {
   const sb = supabaseAdmin as any;

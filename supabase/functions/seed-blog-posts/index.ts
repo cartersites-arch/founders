@@ -1,3 +1,4 @@
+import { readBoundedJson } from "../_shared/request-body.ts";
 // Admin-only seed endpoint: upsert blog posts.
 // Auth: requires Bearer JWT for a user with the 'admin' role.
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
@@ -51,7 +52,7 @@ Deno.serve(async (req) => {
       .maybeSingle();
     if (!role) return json({ error: "Forbidden" }, 403);
 
-    const body = await req.json().catch(() => null);
+    const body = await readBoundedJson(req);
     const posts = Array.isArray(body?.posts) ? body.posts : null;
     if (!posts || posts.length === 0 || posts.length > 500) {
       return json({ error: "Invalid posts payload" }, 400);
@@ -70,6 +71,10 @@ Deno.serve(async (req) => {
     if (error) return json({ error: error.message }, 500);
     return json({ ok: true, count });
   } catch (e) {
+    if (e instanceof Response) {
+      const headers = corsHeaders(req.headers.get("origin"));
+      return new Response(e.body, { status: e.status, headers });
+    }
     return json({ error: e instanceof Error ? e.message : String(e) }, 500);
   }
 });

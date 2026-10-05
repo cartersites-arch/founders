@@ -43,3 +43,9 @@ Still review on owner staging: original Storage policies, real Stripe/email/queu
 
 
 The final pass also protects revoked course completions from direct learner deletion or rewriting. Normal certificate issuance and repeat completion remain supported, but a revoked record requires staff action rather than a learner requesting a replacement. Server-function bodies are limited to 1 MiB before framework parsing, without changing request metadata or signed webhook bytes. The separate Emailit suppression verifier now bounds its raw body and rejects malformed signature/timestamp headers before expensive processing.
+
+## Sitemap and Edge Function follow-up
+
+Deploy the updated `generate-help-article`, `generate-course-content`, `generate-content-batch` and `seed-blog-posts` functions with their shared helper through the existing staging/release process. No new variable or binding is required. Verify normal admin workflows and oversized-input rejection on staging before production deployment.
+
+Sitemap scanners now require HTTPS and keep redirects, nested sitemap requests and discovered page URLs on the configured origin, with bounded downloads and a shared request/time budget. Check existing competitor sitemap configurations; cross-origin indexes will have those children skipped and HTTP-only sources must be replaced by a working HTTPS URL. Hostname validation cannot establish where DNS resolves: retain outbound network protection against private-address destinations and verify that deployment boundary on staging.

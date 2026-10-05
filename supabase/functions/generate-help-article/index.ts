@@ -1,3 +1,4 @@
+import { readBoundedJson } from "../_shared/request-body.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
@@ -36,6 +37,7 @@ Rules:
 serve(async (req) => {
   const corsHeaders = buildCorsHeaders(req.headers.get("origin"));
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
+  if (req.method !== "POST") return new Response("Method not allowed", { status: 405, headers: { ...corsHeaders, Allow: "POST, OPTIONS" } });
 
   try {
     // Require admin auth
@@ -71,7 +73,7 @@ serve(async (req) => {
       });
     }
 
-    const { prompt } = await req.json();
+    const { prompt } = await readBoundedJson(req);
     const key = Deno.env.get("OPENROUTER_API_KEY");
     if (!key) throw new Error("OPENROUTER_API_KEY missing");
     if (!prompt) throw new Error("prompt required");
@@ -101,6 +103,10 @@ serve(async (req) => {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   } catch (e) {
+    if (e instanceof Response) {
+      const headers = buildCorsHeaders(req.headers.get("origin"));
+      return new Response(e.body, { status: e.status, headers });
+    }
     return new Response(JSON.stringify({ error: e instanceof Error ? e.message : "unknown" }), {
       status: 500,
       headers: { ...corsHeaders, "Content-Type": "application/json" },

@@ -1,3 +1,4 @@
+import { readBoundedJson } from "../_shared/request-body.ts";
 import { matchesSecret } from "../_shared/security-token.ts";
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "jsr:@supabase/supabase-js@2";
@@ -659,8 +660,7 @@ Deno.serve(async (req) => {
     const supabase = createClient(supabaseUrl, serviceKey);
 
     // Driver-secret bypass for unattended/server-to-server runs.
-    // Uses the service-role key (already known only to the backend operator)
-    // so we don't need a new secret.
+    // Uses the independent CONTENT_DRIVER_SECRET, never a database credential.
     const providedDriver = req.headers.get("x-driver-secret");
     const isDriver = await matchesSecret(providedDriver, Deno.env.get("CONTENT_DRIVER_SECRET"));
 
@@ -695,7 +695,7 @@ Deno.serve(async (req) => {
       }
     }
 
-    const data = parseInput(await req.json().catch(() => ({})));
+    const data = parseInput(await readBoundedJson(req));
 
     if (data.action === "preflight") {
       // Reachable + admin + env all confirmed by getting here. Probe AI gateway.
@@ -821,6 +821,10 @@ Deno.serve(async (req) => {
       { headers: { ...cors, "Content-Type": "application/json" } },
     );
   } catch (e) {
+    if (e instanceof Response) {
+      const headers = corsHeaders(req.headers.get("origin"));
+      return new Response(e.body, { status: e.status, headers });
+    }
     console.error("[generate-content-batch]", e);
     return new Response(JSON.stringify({ error: errorMessage(e) }), {
       status: 500,

@@ -15,7 +15,7 @@ Scope: `security-review-ready`, using only founders-dev for hosted database chec
 - 159 hosted authorization, privacy, forum, unsubscribe, telemetry and email/webhook checks passed. This includes existing cross-user and forged-role/context tests and new permission and recovery cases.
 - 23 hosted billing/shared-limit checks passed, including concurrency, database retry, successor protection and fail-closed behavior.
 - 38 additional hosted generation, certificate-revocation, Emailit and input-boundary checks passed. Provider calls were mocked; database permission/concurrency checks used founders-dev.
-- 29 local security/database tests passed. TypeScript and build passed.
+- 38 local security/database tests passed, including nine URL-fetching/Edge follow-up tests. TypeScript and build passed.
 - Source inventory reviewed 162 server-function exports and 11 raw HTML insertion sites; these are review counts, not hosted test counts.
 - Database verification found zero public tables without RLS and zero remaining test users, workspaces, forum records, unsubscribe/suppression records or telemetry fixtures.
 - Security advisors retain three intentional self-scoped permission-helper warnings and two expected no-browser-policy notices for the service-only limiter and generation-usage tables.
@@ -37,3 +37,12 @@ Original-project storage permissions and real Stripe, email, queue, content-gene
 The AI quota race was fixed in the final pass: service-only usage claims serialize under a workspace lock before provider calls. Existing pages seed the initial monthly allowance; submitted attempts remain counted after failures and page deletion. Model choices, brand text, provider output and execution time are bounded. The form explains that failed submitted attempts still count. Unlimited workspaces retain shared burst limits. Hosted tests exercise parallel claims, failure/retry, provider/save errors, unauthorized access and normal generation with a mocked provider. No real AI charges were incurred.
 
 Access JWTs can remain valid until expiry after sign-out under normal Supabase behavior. Immediate revocation, if required, needs a separately specified policy and tests. This review does not certify that every endpoint or integration is free of vulnerabilities.
+
+## URL fetching and Edge Function follow-up
+
+- Replaced the three sitemap scanners' unbounded, automatically redirected recursive fetches with one shared guard. Only HTTPS DNS destinations without credentials or nonstandard ports are accepted; literal IPs and common private host suffixes are rejected. Redirects, nested sitemaps and discovered page URLs must stay on the configured origin. Each scan allows at most 25 requests, three redirects per download, 1 MiB per document, 8 MiB total, 10,000 unique page URLs and a 30-second deadline. Invalid children are skipped; valid same-origin scans continue.
+- Four privileged Edge Functions now count actual streamed request bytes before JSON parsing (1 MiB maximum), preserving 400/413 responses. Help-article generation now rejects GET before authentication or side effects.
+- Nine additional local tests exercise valid nested scans, redirect handling, private/foreign destinations, download and recursion budgets, streamed input limits and the help-generation method guard. The four Edge handlers also preserve 400/413 after their admin checks. These use mocked fetches; they do not contact competitor sites or deployed Edge Functions.
+- This is not a complete DNS-rebinding defense: outbound network controls must also prevent a permitted DNS name resolving to private infrastructure. Cross-origin sitemap arrangements and the updated Edge Functions require owner staging verification. No production configuration, Supabase project settings or deployed functions were changed.
+
+Follow-up verification: TypeScript and the final build passed; the built-Worker mobile My Learning check passed again with isolated fixtures and the runtime publishable-key binding. The 102 built client JavaScript files did not contain the authorized development service-role key. Original infrastructure/client configuration files still match the original baseline. No database fixtures or deployed settings were changed in this follow-up.
