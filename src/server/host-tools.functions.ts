@@ -78,7 +78,7 @@ export const createThread = createServerFn({ method: "POST" })
       .eq("user_id", context.userId)
       .maybeSingle();
     const author_name = profile?.display_name || profile?.full_name || "Pool Host";
-    const { data: thread, error } = await context.supabase
+    const { data: thread, error } = await supabaseAdmin
       .from("mb_threads")
       .insert({
         title: data.title,
@@ -107,7 +107,7 @@ export const createReply = createServerFn({ method: "POST" })
       .eq("user_id", context.userId)
       .maybeSingle();
     const author_name = profile?.display_name || profile?.full_name || "Pool Host";
-    const { data: reply, error } = await context.supabase
+    const { data: reply, error } = await supabaseAdmin
       .from("mb_replies")
       .insert({
         thread_id: data.thread_id,

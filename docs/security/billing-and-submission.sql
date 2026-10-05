@@ -17,7 +17,7 @@ DECLARE
   item record;
   accepted integer;
 BEGIN
-  IF _scope NOT IN ('waitlist','provider-lead','provider-listing','provider-claim','provider-plan','feature-request')
+  IF _scope NOT IN ('waitlist','provider-lead','provider-listing','provider-claim','provider-plan','feature-request','content-404','city-click')
     OR _client_hash IS NULL OR _client_hash !~ '^[a-f0-9]{64}$'
     OR (_recipient_hash IS NOT NULL AND _recipient_hash !~ '^[a-f0-9]{64}$') THEN
     RAISE EXCEPTION 'Invalid submission limit parameters';

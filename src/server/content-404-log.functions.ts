@@ -1,3 +1,4 @@
+import { guardPublicSubmission } from "@/server/submission-guard.server";
 import { createServerFn } from "@tanstack/react-start";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
@@ -26,8 +27,8 @@ export const log404 = createServerFn({ method: "POST" })
   .inputValidator((data: unknown) =>
     z
       .object({
-        urlPath: z.string().min(1).max(2048),
-        slug: z.string().nullable().optional(),
+        urlPath: z.string().min(1).max(2048).regex(/^\/p\/[^\s]*$/),
+        slug: z.string().max(120).nullable().optional(),
         referrer: z.string().max(2048).nullable().optional(),
         userAgent: z.string().max(1024).nullable().optional(),
       })
@@ -35,6 +36,7 @@ export const log404 = createServerFn({ method: "POST" })
   )
   .handler(async ({ data }) => {
     try {
+      await guardPublicSubmission("content-404");
       // Capture request headers server-side if not provided by caller.
       let referrer = data.referrer ?? null;
       let userAgent = data.userAgent ?? null;
@@ -74,7 +76,7 @@ export const log404 = createServerFn({ method: "POST" })
       }
     } catch (err) {
       // Never let logging failures break the 404 response.
-      console.error("[404-log] failed to record", data.urlPath, err);
+      if (!(err instanceof Response)) console.error("[404-log] failed to record");
     }
     return { ok: true };
   });

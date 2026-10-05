@@ -1,12 +1,6 @@
+import { readLimitedJson, readLimitedText } from "@/lib/limited-json";
 import { createClient } from "@supabase/supabase-js";
 import { createFileRoute } from "@tanstack/react-router";
-
-function redactEmail(email: string | null | undefined): string {
-  if (!email) return "***";
-  const [localPart, domain] = email.split("@");
-  if (!localPart || !domain) return "***";
-  return `${localPart[0]}***@${domain}`;
-}
 
 export const Route = createFileRoute("/email/unsubscribe")({
   server: {
@@ -23,7 +17,7 @@ export const Route = createFileRoute("/email/unsubscribe")({
         const url = new URL(request.url);
         const token = url.searchParams.get("token");
 
-        if (!token) {
+        if (typeof token !== "string" || token.length < 16 || token.length > 256) {
           return Response.json({ error: "Token is required" }, { status: 400 });
         }
 
@@ -64,7 +58,13 @@ export const Route = createFileRoute("/email/unsubscribe")({
         // etc.) send this when the user clicks "Unsubscribe" in the mail UI.
         const contentType = request.headers.get("content-type") ?? "";
         if (contentType.includes("application/x-www-form-urlencoded")) {
-          const formText = await request.text();
+          let formText: string;
+          try {
+            formText = await readLimitedText(request, 8192);
+          } catch (error) {
+            if (error instanceof Response) return error;
+            return Response.json({ error: "Invalid request" }, { status: 400 });
+          }
           const params = new URLSearchParams(formText);
           // For one-click, token comes from query param (already set above).
           // Otherwise, token may be in the form body.
@@ -77,74 +77,30 @@ export const Route = createFileRoute("/email/unsubscribe")({
         } else {
           // JSON body (from the app's unsubscribe page)
           try {
-            const body = await request.json();
-            if (body.token) {
+            const body = (await readLimitedJson(request, 8192)) as Record<string, unknown>;
+            if (typeof body.token === "string") {
               token = body.token;
             }
-          } catch {
+          } catch (error) {
+            if (error instanceof Response && error.status === 413) return error;
             // Fall through — token stays from query param
           }
         }
 
-        if (!token) {
+        if (typeof token !== "string" || token.length < 16 || token.length > 256) {
           return Response.json({ error: "Token is required" }, { status: 400 });
         }
 
         const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-        // Look up the token
-        const { data: tokenRecord, error: lookupError } = await supabase
-          .from("email_unsubscribe_tokens")
-          .select("*")
-          .eq("token", token)
-          .maybeSingle();
-
-        if (lookupError || !tokenRecord) {
-          return Response.json({ error: "Invalid or expired token" }, { status: 404 });
-        }
-
-        if (tokenRecord.used_at) {
-          return Response.json({ success: false, reason: "already_unsubscribed" });
-        }
-
-        // Atomic check-and-update to avoid TOCTOU race
-        const { data: updated, error: updateError } = await supabase
-          .from("email_unsubscribe_tokens")
-          .update({ used_at: new Date().toISOString() })
-          .eq("token", token)
-          .is("used_at", null)
-          .select()
-          .maybeSingle();
-
-        if (updateError) {
-          console.error("Failed to mark token as used", { error: updateError, token });
+        const { data: result, error } = await supabase.rpc("apply_email_unsubscribe", { _token: token });
+        if (error) {
+          console.error("Failed to process unsubscribe");
           return Response.json({ error: "Failed to process unsubscribe" }, { status: 500 });
         }
-
-        if (!updated) {
-          return Response.json({ success: false, reason: "already_unsubscribed" });
-        }
-
-        // Add email to suppressed list (upsert to handle duplicates)
-        const { error: suppressError } = await supabase
-          .from("suppressed_emails")
-          .upsert(
-            { email: tokenRecord.email.toLowerCase(), reason: "unsubscribe" },
-            { onConflict: "email" },
-          );
-
-        if (suppressError) {
-          console.error("Failed to suppress email", {
-            error: suppressError,
-            email_redacted: redactEmail(tokenRecord.email),
-          });
-          return Response.json({ error: "Failed to process unsubscribe" }, { status: 500 });
-        }
-
-        console.log("Email unsubscribed", {
-          email_redacted: redactEmail(tokenRecord.email),
-        });
-
+        if (result === "invalid") return Response.json({ error: "Invalid or expired token" }, { status: 404 });
+        if (result === "already") return Response.json({ success: false, reason: "already_unsubscribed" });
+        if (result !== "success") return Response.json({ error: "Failed to process unsubscribe" }, { status: 500 });
         return Response.json({ success: true });
       },
     },

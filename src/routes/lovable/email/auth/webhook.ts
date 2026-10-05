@@ -92,7 +92,7 @@ export const Route = createFileRoute("/lovable/email/auth/webhook")({
             stack: err?.stack?.slice(0, 800),
           });
           return Response.json(
-            { error: "Internal error", detail: err?.message ?? String(err) },
+            { error: "Internal error" },
             { status: 500 },
           );
         }
