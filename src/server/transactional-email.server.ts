@@ -1,3 +1,4 @@
+import { isLocalIsolation } from "@/lib/isolation-policy";
 // Server-side helper for enqueuing transactional emails from server functions
 // (including public/unauthenticated triggers like the waitlist form).
 // Mirrors the logic of /lovable/email/transactional/send.ts but callable directly
@@ -32,6 +33,9 @@ export async function sendTransactionalEmailServer({
   idempotencyKey,
   templateData = {},
 }: SendParams): Promise<{ success: boolean; reason?: string }> {
+  if (isLocalIsolation()) {
+    return { success: false, reason: "disabled_in_isolated_local_testing" };
+  }
   const supabase = supabaseAdmin as any;
   const template = TEMPLATES[templateName];
   if (!template) {

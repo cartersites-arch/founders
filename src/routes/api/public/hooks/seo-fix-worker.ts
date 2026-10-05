@@ -1,3 +1,4 @@
+import { createMaintenanceHandlers } from "@/server/maintenance-handlers";
 import { createFileRoute } from "@tanstack/react-router";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
 import { runSeoFix } from "@/server/admin-tools.functions";
@@ -81,15 +82,6 @@ async function processBatch() {
 
 export const Route = createFileRoute("/api/public/hooks/seo-fix-worker")({
   server: {
-    handlers: {
-      POST: async () => {
-        const out = await processBatch();
-        return Response.json(out);
-      },
-      GET: async () => {
-        const out = await processBatch();
-        return Response.json(out);
-      },
-    },
+    handlers: createMaintenanceHandlers(async () => Response.json(await processBatch())),
   },
 });

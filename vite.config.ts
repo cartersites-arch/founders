@@ -11,6 +11,7 @@ export default defineConfig(async ({ command }) => {
       ? [
           (await import("@cloudflare/vite-plugin")).cloudflare({
             viteEnvironment: { name: "ssr" },
+            ...(process.env.VITE_DEVELOPMENT_PREVIEW === "1" ? { configPath: "wrangler.preview.jsonc" } : {}),
           }),
         ]
       : [];
@@ -53,10 +54,8 @@ export default defineConfig(async ({ command }) => {
       ],
     },
     server: {
-      // Bind to IPv4 (0.0.0.0) so the dev server starts in environments
-      // without IPv6 (containers, Codespaces, sandboxes). Still reachable
-      // from external network interfaces.
-      host: "0.0.0.0",
+      // Local review only: do not expose the dev server to external interfaces.
+      host: "127.0.0.1",
       port: Number(process.env.PORT) || 8080,
       strictPort: true,
     },

@@ -1,14 +1,12 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "founders-click",
+  "name": "founders-dev-local",
   "main": "@tanstack/react-start/server-entry",
   "compatibility_date": "2026-05-10",
   "compatibility_flags": ["nodejs_compat"],
-  "account_id": "a77a2937ead70a37bce5f0ba0322030f",
 
-  // Get a free *.workers.dev URL so we have a staging URL before the
-  // founders.click custom domain is wired up.
-  "workers_dev": true,
+  // Local review only: no account is selected and hosted URLs are disabled.
+  "workers_dev": false,
 
   // Static asset directory produced by `vite build` for the TanStack Start
   // client bundle. The Vite Cloudflare plugin writes here.
@@ -25,7 +23,7 @@
   // SUPABASE_SERVICE_ROLE_KEY, SEND_EMAIL_HOOK_SECRET, EMAILIT_WEBHOOK_SECRET)
   // goes in via `wrangler secret put NAME` — never in this file.
   "vars": {
-    "EMAILIT_SENDER_DOMAIN": "founders.click",
-    "SITE_ROOT_DOMAIN": "founders.click",
+    "EMAILIT_SENDER_DOMAIN": "example.invalid",
+    "SITE_ROOT_DOMAIN": "localhost",
   },
 }

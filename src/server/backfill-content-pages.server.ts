@@ -1,3 +1,4 @@
+import { matchesSecret } from "@/lib/security-token";
 import { z } from "zod";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
 
@@ -307,8 +308,8 @@ export async function runBackfillContentPages(input: BackfillInput) {
     })
     .parse(input);
 
-  const expected = process.env.BACKFILL_ADMIN_TOKEN || process.env.SUPABASE_SERVICE_ROLE_KEY;
-  if (!expected || data.adminToken !== expected) {
+  const expected = process.env.BACKFILL_ADMIN_TOKEN;
+  if (!(await matchesSecret(data.adminToken, expected))) {
     throw new Error("Unauthorized");
   }
   {

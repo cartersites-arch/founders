@@ -1,0 +1,302 @@
+[
+  {
+    "name": "20260502084805_a2902a3a-50a0-4858-9514-f6a5bac39b82.sql",
+    "hash": "396f21b30006ffc1bba5b4abb2953c714cd19f765ccbce953267c0053e513b79",
+    "status": "included"
+  },
+  {
+    "name": "20260502084825_989e136c-e1bd-45c5-b741-f233832b6b97.sql",
+    "hash": "8eecfd333be06b48ee493759e2f7f8fd70d0324873613c4507eac2c2475f4c9a",
+    "status": "included"
+  },
+  {
+    "name": "20260502091723_fa16036c-03cb-42c9-bf10-0dde104dfd1a.sql",
+    "hash": "018df5bb6ec6b77c9b4aaf1e2aedfb987893ce03bb24c4ba46d4f0a8b8383540",
+    "status": "included"
+  },
+  {
+    "name": "20260502092454_2541afc0-ac25-4fee-a9f5-47e53a0890c1.sql",
+    "hash": "5bb94e8ae260612418b169a43c10ea55519da309790fb12d8985841a063bcbde",
+    "status": "included"
+  },
+  {
+    "name": "20260502104723_4a3d05bb-bc29-4fd7-8874-3621a2112091.sql",
+    "hash": "61f50681bda06319691b63513d1923be3cfb690fa83eb1d82494dd87f348ee7b",
+    "status": "included"
+  },
+  {
+    "name": "20260502104750_2c74e658-6d0a-47ed-aaa0-1985875e26a3.sql",
+    "hash": "a656a05cb25fe6c0e71d2bb1db249593abba433c7debe3a3230893551a566316",
+    "status": "included"
+  },
+  {
+    "name": "20260502113828_1709500d-9f8a-4121-9700-7332dcd195af.sql",
+    "hash": "1c809ba51fcdc4869f3665be412c9adfcfdb13a5ec41df7637c5b3de506d6e80",
+    "status": "included"
+  },
+  {
+    "name": "20260502120959_bb513e0d-8c20-4bfe-bea0-e608791a6bd5.sql",
+    "hash": "657dfea72652b061e1bb24b4bc37716c47d7d57423114b3eb5f365bec1ee889f",
+    "status": "included"
+  },
+  {
+    "name": "20260502123621_d2516ab9-c479-4941-8923-c91ffb4a0b69.sql",
+    "hash": "dcf32374f4d8dcca1ad9f820b4acdf230833eca334d550c7bc591de364ce46ae",
+    "status": "included"
+  },
+  {
+    "name": "20260502124605_7765a242-0096-4bad-8eb9-d43416a905be.sql",
+    "hash": "165dba2b57f060dfdea08def38094c05e67bb574d3e501c9cb036902c9162037",
+    "status": "included"
+  },
+  {
+    "name": "20260502125418_b9c62c5f-35ee-4141-8b60-1da7386ecd97.sql",
+    "hash": "e76b763445185b941c9c98085ff0d4e7f03404c9287c1bc2245d84b36eee7e41",
+    "status": "included"
+  },
+  {
+    "name": "20260502125439_23ef0e89-ef9f-47b3-b7cf-a28b55ea55d2.sql",
+    "hash": "35da8ec0157be660a05b4e84a302b8459d484b2fc9ed3fce356b844ada61549f",
+    "status": "included"
+  },
+  {
+    "name": "20260502131002_f514f9cb-686f-41da-9dc6-00fd74058e13.sql",
+    "hash": "3c2d1321c52fed896de299cd1f37ac00dbba3a161116907748bd8d1b5bcdad8d",
+    "status": "included"
+  },
+  {
+    "name": "20260502131747_fd5d0633-638f-4f1f-ad1b-c6609182036b.sql",
+    "hash": "cdfe79073fb9f8011a3123d2b4c5438c0b6c131d81c7cf3cf5a15575c414d322",
+    "status": "included"
+  },
+  {
+    "name": "20260502133647_ca096039-b38c-414c-94a4-9e0f3d2381c6.sql",
+    "hash": "be8bbc637afb7aad3c6f45553555c0a73f08dd3847cb45588bedc39d3a6a55a5",
+    "status": "included"
+  },
+  {
+    "name": "20260502135328_0fb7a70f-8e09-4969-b90f-a1bf3185946b.sql",
+    "hash": "1070008718a7024c76e84a6c44ed68344f30daa13062709666b10f6eef1ce4d6",
+    "status": "included"
+  },
+  {
+    "name": "20260502152903_3fbe1546-9e3a-4dc6-9269-12e784707b8f.sql",
+    "hash": "d0cf28b9c0dbe30982cc139d6b7e97fdce52bb4af67deabf5eb44b8fb2b8720d",
+    "status": "included"
+  },
+  {
+    "name": "20260502233000_a1b2c3d4-e5f6-7890-abcd-ef1234567890.sql",
+    "hash": "e2a301b339250789f9752ce3e49cac5660f6518892bd5cc2f23bfe0692d63368",
+    "status": "included"
+  },
+  {
+    "name": "20260503044749_a591f5e0-21c4-408e-b1e9-f70705847813.sql",
+    "hash": "514664d15a105b3f9baf64293585f941735a7aa50df73dbdb0e62ef1eaacd3d1",
+    "status": "included"
+  },
+  {
+    "name": "20260503044822_b26b0405-fe9c-411a-8058-2dfded3d406f.sql",
+    "hash": "423a9b22430881a3a4ae85c2e5bbc73b5989ce597951af588ef51b8c9b40f3a6",
+    "status": "included"
+  },
+  {
+    "name": "20260503050446_65fe37f1-705b-4485-bfb3-b2f7f1ab94e7.sql",
+    "hash": "1bb5f56839e994bf752877ff8d7f322633d46399a6531927c1564188b69ec0a4",
+    "status": "included"
+  },
+  {
+    "name": "20260503050726_42e9a48f-7e08-48d3-8613-fc6665fffa65.sql",
+    "hash": "19a785b0176d0c72f56f9ce76e7ddfa984eaca58c0e98522a8064932e0137cd4",
+    "status": "included"
+  },
+  {
+    "name": "20260503054106_378faba2-b5db-4400-a5d0-1f5c467a4df1.sql",
+    "hash": "317a72607bd9380805f0b58d4ed6d544b54a05a9b8de0b000e204a4a8174de68",
+    "status": "included"
+  },
+  {
+    "name": "20260503071720_3868ec7a-8c8f-4846-9085-bbeb7b43106d.sql",
+    "hash": "421f2d8bc244eef8474f984a650ee5f7c32b5ecf3aec1733b6af017c843ce10b",
+    "status": "included"
+  },
+  {
+    "name": "20260503073220_821da08f-a620-4a51-9d90-9d897c9e03c4.sql",
+    "hash": "05356e4932e84520ba47508c27b62269436bd34ea95c22b6dcd923c0a70f304b",
+    "status": "included"
+  },
+  {
+    "name": "20260503073420_05514898-2dbc-4017-b9fd-facdaced355b.sql",
+    "hash": "bb39b313368c66bc25d24de5401ea741163ff804072ffcaf127dc55a4172817a",
+    "status": "included"
+  },
+  {
+    "name": "20260503181858_e661b638-f01c-4509-a1ff-bbcf7ef31d70.sql",
+    "hash": "563fe997df189f0f1ca8327e4c4f0a89dc218b4b94ad0bb01d57b20a5a0105b7",
+    "status": "included"
+  },
+  {
+    "name": "20260503182127_700b741d-ffb4-4862-936b-1a9f25c0b713.sql",
+    "hash": "a4da075bbc84fa20c7b8862f825509795b89b9c9c1204e624671279d629cbe34",
+    "status": "excluded: schedulers, networking extensions or competitor seeds"
+  },
+  {
+    "name": "20260503183204_98645831-24e9-4344-8f06-c1336ea4df0f.sql",
+    "hash": "2d20c3935fc24ead779a0da4f9490ec5bec7b3cd20f40b4c57aa063ad3ef3691",
+    "status": "included"
+  },
+  {
+    "name": "20260503185550_04c3cfaf-e4d0-41ee-aa78-755f6bfaaa12.sql",
+    "hash": "911942eff21451c2a913621fb7220ef40be9a64ceb1477ef842ea7b2ac19c81d",
+    "status": "included"
+  },
+  {
+    "name": "20260503185619_3d979523-4561-4feb-b171-89f21a7ec09e.sql",
+    "hash": "30a3789e4e3b90c3b5be6220942e156f879c26d2550c380e827031878b7d8fb8",
+    "status": "included"
+  },
+  {
+    "name": "20260503214344_c8aeead6-945c-489c-b533-1ad052dbd466.sql",
+    "hash": "7ea08ca0563196cefd162ca5c55194fb8d5772cc1c7f96743009405e23d75fa8",
+    "status": "included"
+  },
+  {
+    "name": "20260503222953_e80d383a-7464-4074-a0f5-56c925fcfff8.sql",
+    "hash": "7ebe17fb54dc77ea84cfa46af202e4d0a9ff6a64eeafc3e6f743001532d2b47b",
+    "status": "included"
+  },
+  {
+    "name": "20260503224607_fa65e0c9-061f-4b89-8bab-1b888ba1132a.sql",
+    "hash": "3088c0d4c7225f24a17a6e450d24faec690eafd19bdded8118b1be663b7edb57",
+    "status": "included"
+  },
+  {
+    "name": "20260503230322_18c00d76-d895-4b50-9cd2-f8930c2785fe.sql",
+    "hash": "dc43565e4f19d25af21b83021ccda8aa1bef40b16c5f3f41aaeb6443116cc094",
+    "status": "included"
+  },
+  {
+    "name": "20260503231041_b090a46f-643b-4207-b796-7c64f61a63b5.sql",
+    "hash": "5e177ef7fb56ad13b085d67ecbcd7ebb6fe28337cefb03dd89752f261fd4001f",
+    "status": "included"
+  },
+  {
+    "name": "20260504041912_12b092b4-5de2-4e59-9809-f4a00ab75988.sql",
+    "hash": "487f0e0e968836c4f59cfb25ee40ff298dff2a58b9cbd2ccd44f106a3a2911f0",
+    "status": "included"
+  },
+  {
+    "name": "20260504224549_e332e013-176c-4d29-80ed-9dc56fe4ea40.sql",
+    "hash": "ce3d8b6af4d9ce497af99eef2b20f319d3cd3785f6d796b8078c60800abda1ec",
+    "status": "included"
+  },
+  {
+    "name": "20260505004403_email_infra.sql",
+    "hash": "106bf80099d51bb075937a85280af5cc4fc46a3957f75a46da302efa2a235c9e",
+    "status": "sanitized: email tables only; no queues, network extensions, vault or scheduler instructions"
+  },
+  {
+    "name": "20260505092224_859458a4-60c1-40e8-ba94-57fc81031a01.sql",
+    "hash": "357eab7164488430f81c1d8c8848a961ad5eef1e0803381042673f225dd24c5d",
+    "status": "included"
+  },
+  {
+    "name": "20260505092249_67cf97aa-ff34-41e3-85a7-a904979f922d.sql",
+    "hash": "118c368142f0be8dd21511337c867f98d0c8997d9901ed25c3d81411ff004465",
+    "status": "included"
+  },
+  {
+    "name": "20260505092817_434dcb24-7b7e-46e7-8ed1-a780bd0f29a4.sql",
+    "hash": "01c8a68b6c52403140054e1555c8df320ba8fad9d5afe171b409191fb3d52d40",
+    "status": "included"
+  },
+  {
+    "name": "20260505093601_59000bf7-d0bb-4789-8b58-0dd0b2e8e007.sql",
+    "hash": "d6ccb9e9905a297bbb7cc9ec468d1a76a15c225b034a5bac1b96806a8bf43e48",
+    "status": "included"
+  },
+  {
+    "name": "20260505094449_1509f5d4-4c63-4402-a7bc-c58be5469a16.sql",
+    "hash": "f5d90b4d91db0893870cb02bf7a571c393afd1d866d01a1a48c6de1059fa2026",
+    "status": "included"
+  },
+  {
+    "name": "20260505103452_c51129e0-13a3-446c-962b-61c473417a78.sql",
+    "hash": "e71be49c8053ab8a1d7586cb4a5f27ac70d5e0bcd25177a197abc04a41773849",
+    "status": "included"
+  },
+  {
+    "name": "20260505113147_0b742260-d78d-400a-958e-e9e7e63828ad.sql",
+    "hash": "c694a05ee616bb9e5d91290a0094a0a5e08e43fa321581b9658cc2e74b54fe3e",
+    "status": "included"
+  },
+  {
+    "name": "20260505130815_89b965c6-b832-4c61-bba1-60c5788991c9.sql",
+    "hash": "3b3b0cd90d2016ee036188942b8b8a6f937f29fcb6db1cbb522121c3182ad0c1",
+    "status": "included"
+  },
+  {
+    "name": "20260505151829_e6bdeb86-6b07-434c-a0b8-889c30876963.sql",
+    "hash": "987a62a988b82a5bf5fda44fa576d07c58dfd699e06605aeae82da1638f5b3e3",
+    "status": "included"
+  },
+  {
+    "name": "20260505162001_1e83bbde-998b-419e-8bae-c4a680fb891f.sql",
+    "hash": "f1f2a31144ce90dc9d3b21fba5625bbee1bec1429d0b99d24846520fa700b81b",
+    "status": "included"
+  },
+  {
+    "name": "20260506025705_5201c602-7ac6-4a6c-88dd-646d49587f2a.sql",
+    "hash": "21b6595c763075e682da9546e8b92db12c2cd9da2cff3bc3e282ebe371dd97ee",
+    "status": "included"
+  },
+  {
+    "name": "20260506033545_902bd597-198e-4c7b-924d-8617abb12d4a.sql",
+    "hash": "590345a82ddd57474e77355625d1648b574a725663d13232902fb90ce78e1f2b",
+    "status": "included"
+  },
+  {
+    "name": "20260506033943_34219255-a00e-4e8a-b029-b88535d085c6.sql",
+    "hash": "f06e07ffc64647c86c331017640880ea59f8b91459d0968d6eb47d25bc863110",
+    "status": "excluded: schedulers, networking extensions or competitor seeds"
+  },
+  {
+    "name": "20260506040820_0cea82ec-d98d-48cc-915c-b6dc71b10d74.sql",
+    "hash": "af275e591914a96ee6d8451893886f13107b886bcf80abee708abfd74a9871c0",
+    "status": "excluded: schedulers, networking extensions or competitor seeds"
+  },
+  {
+    "name": "20260506041315_91cd3844-5ec5-4d3c-b058-b05832000c40.sql",
+    "hash": "771bb9a7467dcbb39e116164fd2a6810ec8c501a958c8cacede4f6c1c738daa9",
+    "status": "excluded: schedulers, networking extensions or competitor seeds"
+  },
+  {
+    "name": "20260506043307_302156ca-6573-4385-a0f9-5c6a43ae97ba.sql",
+    "hash": "06662dd3894592e2d5e259045c5b27b7023b51d960f22fd594ad6f7b16def5aa",
+    "status": "excluded: schedulers, networking extensions or competitor seeds"
+  },
+  {
+    "name": "20260506061241_b4d0fddc-6e9a-476f-aff4-ac8c3ce30c24.sql",
+    "hash": "c155e20278a37d3ca2b6459f1999d98049388f7ab230b86f1608693b62efa4a3",
+    "status": "included"
+  },
+  {
+    "name": "20260506062346_0b2fdef9-235b-4d56-a2c4-f2871d719afb.sql",
+    "hash": "6c2974e68dc3e5169a7dba5e9fed0591e6c6bf30cc0ad6741274b87137d51470",
+    "status": "included"
+  },
+  {
+    "name": "20260506065153_1aca3d00-0dfa-4b65-8fec-dc80c4c4c49c.sql",
+    "hash": "6509bb56b157950d32a8197f7fb9d54bad0439097a1f2b383b8fad11442987a1",
+    "status": "included"
+  },
+  {
+    "name": "20260506073729_0f1b8a60-0bc8-400a-865d-81ef4772f384.sql",
+    "hash": "ec1b0f8aaecbc8bf3618afa732607c771e04e1a842d935480838fec117b034e6",
+    "status": "included"
+  },
+  {
+    "name": "20260510120000_saas_workspaces_and_billing.sql",
+    "hash": "8460a32fb4a6f3976a55a95ceb652fcb9e80172d5040448f7c99be2c5c56e9b7",
+    "status": "included"
+  }
+]

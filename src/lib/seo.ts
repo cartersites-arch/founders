@@ -1,3 +1,4 @@
+import { serializeScriptJson } from "./script-json";
 /**
  * SEO helpers for building meta tags and JSON-LD structured data.
  */
@@ -140,6 +141,6 @@ export function websiteJsonLd() {
 export function ldJsonScript(obj: unknown) {
   return {
     type: "application/ld+json",
-    children: JSON.stringify(obj),
+    children: serializeScriptJson(obj),
   };
 }

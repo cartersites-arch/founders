@@ -1,13 +1,13 @@
-project_id = "ptfjspcphskifoseidut"
+project_id = "vpewpybdvtnhwxhzyubc"
 
 [functions.seed-providers]
-verify_jwt = false
+verify_jwt = true
 
 [functions.seed-blog-posts]
-verify_jwt = false
+verify_jwt = true
 
 [functions.drive-content-generation]
-verify_jwt = false
+verify_jwt = true
 
 [functions.generate-content-batch]
-verify_jwt = false
+verify_jwt = true

@@ -1,0 +1,18 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "founders-dev-preview",
+  "main": "@tanstack/react-start/server-entry",
+  "compatibility_date": "2026-05-10",
+  "compatibility_flags": ["nodejs_compat"],
+  "workers_dev": true,
+  "preview_urls": false,
+  "keep_vars": true,
+  "assets": { "directory": "./dist/client" },
+  "observability": { "enabled": true },
+  "vars": {
+    "SUPABASE_URL": "https://vpewpybdvtnhwxhzyubc.supabase.co",
+    "SITE_ROOT_DOMAIN": "founders-dev-preview.cartersites.workers.dev",
+    "EMAILIT_SENDER_DOMAIN": "example.invalid",
+    "VITE_DEVELOPMENT_PREVIEW": "1"
+  }
+}

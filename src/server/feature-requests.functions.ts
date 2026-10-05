@@ -1,3 +1,4 @@
+import { guardPublicSubmission } from "./submission-guard.server";
 import { createServerFn } from "@tanstack/react-start";
 import { getRequest, getRequestHeader } from "@tanstack/react-start/server";
 import { z } from "zod";
@@ -16,6 +17,7 @@ const schema = z.object({
 export const submitFeatureRequest = createServerFn({ method: "POST" })
   .inputValidator((data: unknown) => schema.parse(data))
   .handler(async ({ data }) => {
+    await guardPublicSubmission("feature-request", data.email);
     let city: string | null = data.city ?? null;
     let region: string | null = data.region ?? null;
     let latitude: number | null = null;
