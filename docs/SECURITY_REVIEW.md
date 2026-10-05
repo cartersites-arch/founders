@@ -58,3 +58,7 @@ Validation completed: three isolation tests, nine source security tests, and one
 Compatible dependency updates remove all advisories reported by `npm audit`, including development dependencies, at this review. Seroval resolves to 1.6.8. An Axios 1.20.0 override prevents the nested Firecrawl dependency retaining a vulnerable Axios version. This audit is a point-in-time check, not proof that no undisclosed vulnerabilities exist.
 
 The closed mobile navigation panel was extending the page width. Its wrapper now clips the translated panel, and the closed menu is inert. Chromium smoke checks at 390 by 844 pixels show no horizontal overflow or uncaught errors for home, authentication, password reset and help center, with non-loopback browser requests blocked. Authentication input accepted sample text; real sign-in, submissions and deployed database compatibility remain untested. Updated router error handling accepts unknown errors; the four original redirect-search type errors remain.
+
+## Redirect typing follow-up
+
+Four learning/admin routes now use the typed `/auth` destination instead of a `never` cast. This lets the router validate the existing sign-in mode and return-path search parameters without changing redirect behavior. This follow-up supersedes the earlier outstanding type-error status.
