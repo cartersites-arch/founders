@@ -1,3 +1,4 @@
+import { guardPublicSubmission } from "./submission-guard.server";
 import { createServerFn } from "@tanstack/react-start";
 import { getRequest, getRequestHeader } from "@tanstack/react-start/server";
 import { z } from "zod";
@@ -6,7 +7,7 @@ import { sendTransactionalEmailServer } from "./transactional-email.server";
 
 const schema = z.object({
   email: z.string().trim().email().max(255),
-  nearestMiles: z.number().nullable().optional(),
+  nearestMiles: z.number().finite().min(0).max(25000).nullable().optional(),
   city: z.string().trim().min(1).max(120).nullable().optional(),
   region: z.string().trim().min(1).max(20).nullable().optional(),
 });
@@ -14,6 +15,7 @@ const schema = z.object({
 export const joinPoolWaitlist = createServerFn({ method: "POST" })
   .inputValidator((data: unknown) => schema.parse(data))
   .handler(async ({ data }) => {
+    await guardPublicSubmission("waitlist", data.email);
     let city: string | null = null;
     let region: string | null = null;
     let latitude: number | null = null;

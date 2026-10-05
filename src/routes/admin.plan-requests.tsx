@@ -17,7 +17,7 @@ export const Route = createFileRoute("/admin/plan-requests")({
   errorComponent: ({ error }) => (
     <AdminLayout>
       <h1 className="text-2xl font-bold">Not authorized</h1>
-      <p className="mt-2 text-muted-foreground">{error.message}</p>
+      <p className="mt-2 text-muted-foreground">{error instanceof Error ? error.message : "Unexpected error"}</p>
     </AdminLayout>
   ),
 });

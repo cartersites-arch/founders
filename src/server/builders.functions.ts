@@ -1,3 +1,4 @@
+import { guardPublicSubmission } from "./submission-guard.server";
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
@@ -135,6 +136,7 @@ export const submitProviderLead = createServerFn({ method: "POST" })
       .parse(d),
   )
   .handler(async ({ data }) => {
+    await guardPublicSubmission("provider-lead", data.email);
     const blank = (s?: string) => (s && s.trim() ? s.trim() : null);
     const { error } = await supabaseAdmin.from("provider_leads").insert({
       name: data.name.trim(),

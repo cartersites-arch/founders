@@ -1,3 +1,4 @@
+import { createMaintenanceHandlers } from "@/server/maintenance-handlers";
 import { createFileRoute } from "@tanstack/react-router";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
 
@@ -208,9 +209,6 @@ async function runAll() {
 
 export const Route = createFileRoute("/api/public/hooks/seo-self-test")({
   server: {
-    handlers: {
-      GET: async () => Response.json(await runAll()),
-      POST: async () => Response.json(await runAll()),
-    },
+    handlers: createMaintenanceHandlers(async () => Response.json(await runAll())),
   },
 });

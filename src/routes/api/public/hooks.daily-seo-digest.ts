@@ -1,3 +1,4 @@
+import { createMaintenanceHandlers } from "@/server/maintenance-handlers";
 import { createFileRoute } from "@tanstack/react-router";
 import * as React from "react";
 import { render as renderAsync } from "@react-email/components";
@@ -229,29 +230,9 @@ async function sendDigest(force: boolean) {
 
 export const Route = createFileRoute("/api/public/hooks/daily-seo-digest")({
   server: {
-    handlers: {
-      GET: async ({ request }) => {
-        const url = new URL(request.url);
-        const force = url.searchParams.get("force") === "1";
-        try {
-          const result = await sendDigest(force);
-          return Response.json(result);
-        } catch (e: any) {
-          console.error("daily-seo-digest hook failed", e);
-          return Response.json({ ok: false, error: e?.message || "unknown" }, { status: 500 });
-        }
-      },
-      POST: async ({ request }) => {
-        const url = new URL(request.url);
-        const force = url.searchParams.get("force") === "1";
-        try {
-          const result = await sendDigest(force);
-          return Response.json(result);
-        } catch (e: any) {
-          console.error("daily-seo-digest hook failed", e);
-          return Response.json({ ok: false, error: e?.message || "unknown" }, { status: 500 });
-        }
-      },
-    },
+    handlers: createMaintenanceHandlers(async (request) => {
+      const force = new URL(request.url).searchParams.get("force") === "1";
+      return Response.json(await sendDigest(force));
+    }),
   },
 });

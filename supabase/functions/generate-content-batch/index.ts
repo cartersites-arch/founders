@@ -1,3 +1,4 @@
+import { matchesSecret } from "../_shared/security-token.ts";
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "jsr:@supabase/supabase-js@2";
 
@@ -661,7 +662,7 @@ Deno.serve(async (req) => {
     // Uses the service-role key (already known only to the backend operator)
     // so we don't need a new secret.
     const providedDriver = req.headers.get("x-driver-secret");
-    const isDriver = !!providedDriver && providedDriver === serviceKey;
+    const isDriver = await matchesSecret(providedDriver, Deno.env.get("CONTENT_DRIVER_SECRET"));
 
     if (!isDriver) {
       const authHeader = req.headers.get("Authorization") ?? "";

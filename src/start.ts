@@ -1,10 +1,9 @@
 import { createStart, createMiddleware } from "@tanstack/react-start";
+import { cspNonceForRequest } from "@/lib/csp-nonce";
+import { resolveWorkspaceHost } from "@/lib/verified-host";
 import { supabase } from "@/integrations/supabase/client";
 
-// Baseline security headers applied to every response (HTML, server fns, server routes).
-// CSP is permissive enough to allow Supabase, embedded course iframes, and inline
-// styles used by the design system — but blocks unknown script origins so any
-// future XSS cannot exfiltrate to attacker-controlled hosts.
+// Response security headers; production scripts require a request nonce or an explicit integration host.
 const SECURITY_HEADERS: Record<string, string> = {
   "X-Content-Type-Options": "nosniff",
   "Referrer-Policy": "strict-origin-when-cross-origin",
@@ -18,8 +17,7 @@ const SECURITY_HEADERS: Record<string, string> = {
     "img-src 'self' data: blob: https:",
     "font-src 'self' data: https:",
     "style-src 'self' 'unsafe-inline' https:",
-    // 'unsafe-inline' + 'unsafe-eval' required by Vite/React runtime hydration
-    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https:",
+    "script-src 'self'",
     "connect-src 'self' https: wss:",
     "frame-src 'self' https:",
     "media-src 'self' https: blob:",
@@ -30,9 +28,8 @@ const SECURITY_HEADERS: Record<string, string> = {
 // deploys, staging, raw worker URLs) is internal-only and must NEVER be
 // indexed — otherwise Google sees duplicate content competing with prod.
 // We send X-Robots-Tag: noindex, nofollow on every response when the request
-// host is not the canonical production host. The reverse proxy is configured
-// to forward the original Host as X-Forwarded-Host, so requests proxied
-// through prod will have the canonical host and stay indexable.
+// host is not a canonical production host. Forwarded hosts are trusted only
+// when the reverse proxy supplies the dedicated proxy credential.
 const PRODUCTION_HOSTS = new Set([
   "founders.click",
   "www.founders.click",
@@ -51,6 +48,7 @@ const securityHeadersMiddleware = createMiddleware().server(async ({ next, reque
   if (url.pathname.startsWith("/lovable/") || url.pathname === "/email/unsubscribe") {
     return next();
   }
+  const nonce = cspNonceForRequest(request);
   const result = await next();
   // The Worker runtime returns a Response — attach headers if available.
   const response = (result as { response?: Response }).response;
@@ -58,9 +56,11 @@ const securityHeadersMiddleware = createMiddleware().server(async ({ next, reque
     for (const [k, v] of Object.entries(SECURITY_HEADERS)) {
       if (!response.headers.has(k)) response.headers.set(k, v);
     }
-    // Forwarded host wins (set by EC2 nginx); fall back to direct Host header.
-    const forwardedHost = request.headers.get("x-forwarded-host");
-    const host = forwardedHost ?? request.headers.get("host");
+    const scriptPolicy = import.meta.env.DEV
+      ? "script-src 'self' 'unsafe-inline' 'unsafe-eval'"
+      : `script-src 'self' 'nonce-${nonce}' https://widget.intercom.io https://js.intercomcdn.com`;
+    response.headers.set("Content-Security-Policy", SECURITY_HEADERS["Content-Security-Policy"]!.replace("script-src 'self'", scriptPolicy));
+    const host = await resolveWorkspaceHost(request.headers, process.env.FOUNDERS_PROXY_SECRET);
     if (isNonProductionHost(host)) {
       response.headers.set("X-Robots-Tag", "noindex, nofollow");
     }

@@ -20,20 +20,55 @@ function ResetPasswordPage() {
   // restore a session for the user — show the "set new password" form.
   const [hasRecoverySession, setHasRecoverySession] = useState(false);
   const [email, setEmail] = useState("");
+  const [code, setCode] = useState("");
+  const [useCode, setUseCode] = useState(false);
+  const [recoveryError, setRecoveryError] = useState<string | null>(null);
   const [newPassword, setNewPassword] = useState("");
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
+    let active = true;
     const url = new URL(window.location.href);
     const hash = new URLSearchParams(window.location.hash.replace(/^#/, ""));
-    if (url.searchParams.get("type") === "recovery" || hash.get("type") === "recovery") {
-      setHasRecoverySession(true);
-      return;
+    if (url.searchParams.has("error") || hash.has("error")) {
+      setRecoveryError("This reset link is invalid or has already been used. Request a new email, or use its recovery code if provided.");
     }
-    void supabase.auth.getSession().then(({ data }) => {
-      if (data.session) setHasRecoverySession(true);
+    const { data: subscription } = supabase.auth.onAuthStateChange((event, session) => {
+      if (active && event === "PASSWORD_RECOVERY" && session) {
+        setHasRecoverySession(true);
+        setRecoveryError(null);
+      }
     });
+    void supabase.auth.getSession().then(({ data, error }) => {
+      if (!active) return;
+      if (error) setRecoveryError("We couldn't restore your reset session. Use a recovery code or request a new email.");
+      else if (data.session) setHasRecoverySession(true);
+      else if (hash.has("access_token") || url.searchParams.has("code")) {
+        setRecoveryError("We couldn't restore your reset session. Use a recovery code or request a new email.");
+      }
+    });
+    return () => { active = false; subscription.subscription.unsubscribe(); };
   }, []);
+
+  async function verifyRecoveryCode(e: React.FormEvent) {
+    e.preventDefault();
+    if (busy) return;
+    setBusy(true);
+    setRecoveryError(null);
+    try {
+      const { data, error } = await supabase.auth.verifyOtp({
+        email: email.trim(), token: code.trim(), type: "recovery",
+      });
+      if (error || !data.session) {
+        setRecoveryError("That recovery code is invalid or expired. Use the code from the newest reset email.");
+        return;
+      }
+      setCode("");
+      setHasRecoverySession(true);
+    } catch {
+      setRecoveryError("Couldn't verify the recovery code. Check your connection and try again.");
+    } finally { setBusy(false); }
+  }
 
   async function sendResetEmail(e: React.FormEvent) {
     e.preventDefault();
@@ -76,6 +111,8 @@ function ResetPasswordPage() {
             {hasRecoverySession ? "Set a new password" : "Reset your password"}
           </h1>
 
+          {recoveryError && <p role="alert" className="mt-4 text-sm text-destructive">{recoveryError}</p>}
+
           {hasRecoverySession ? (
             <form onSubmit={setPassword} className="mt-6 space-y-4">
               <div className="space-y-1.5">
@@ -84,7 +121,7 @@ function ResetPasswordPage() {
                   id="newPassword"
                   type="password"
                   autoComplete="new-password"
-                  minLength={8}
+                  minLength={12}
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
                   required
@@ -93,6 +130,20 @@ function ResetPasswordPage() {
               <Button type="submit" disabled={busy} className="w-full">
                 {busy ? "Saving…" : "Update password"}
               </Button>
+            </form>
+          ) : useCode ? (
+            <form onSubmit={verifyRecoveryCode} className="mt-6 space-y-4">
+              <p className="text-sm text-muted-foreground">Enter the recovery code from your newest reset email. Keep it private.</p>
+              <div className="space-y-1.5">
+                <Label htmlFor="recovery-email">Email</Label>
+                <Input id="recovery-email" type="email" autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+              </div>
+              <div className="space-y-1.5">
+                <Label htmlFor="recovery-code">Recovery code</Label>
+                <Input id="recovery-code" type="text" inputMode="numeric" autoComplete="one-time-code" pattern="[0-9]{6,10}" minLength={6} maxLength={10} value={code} onChange={(e) => setCode(e.target.value)} required />
+              </div>
+              <Button type="submit" disabled={busy} className="w-full">{busy ? "Verifying…" : "Verify recovery code"}</Button>
+              <Button type="button" variant="ghost" className="w-full" onClick={() => setUseCode(false)}>Request a reset email</Button>
             </form>
           ) : (
             <form onSubmit={sendResetEmail} className="mt-6 space-y-4">
@@ -113,6 +164,7 @@ function ResetPasswordPage() {
               <Button type="submit" disabled={busy} className="w-full">
                 {busy ? "Sending…" : "Send reset link"}
               </Button>
+              <Button type="button" variant="ghost" className="w-full" onClick={() => setUseCode(true)}>Enter a recovery code</Button>
               <p className="text-center text-sm text-muted-foreground">
                 <Link
                   to="/auth"

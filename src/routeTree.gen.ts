@@ -9,131 +9,81 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as UnsubscribeRouteImport } from './routes/unsubscribe'
-import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
-import { Route as SitemapStaticDotxmlRouteImport } from './routes/sitemap-static[.]xml'
-import { Route as SitemapIndexDotxmlRouteImport } from './routes/sitemap-index[.]xml'
-import { Route as SitemapDefaultDotxmlRouteImport } from './routes/sitemap-default[.]xml'
-import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
-import { Route as ReferralRouteImport } from './routes/referral'
-import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
-import { Route as OnboardingRouteImport } from './routes/onboarding'
-import { Route as AuthRouteImport } from './routes/auth'
-import { Route as AppRouteImport } from './routes/app'
-import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as TemplatesIndexRouteImport } from './routes/templates.index'
-import { Route as HelpCenterIndexRouteImport } from './routes/help-center.index'
-import { Route as VerifyUidRouteImport } from './routes/verify.$uid'
-import { Route as TemplatesSlugRouteImport } from './routes/templates.$slug'
-import { Route as PSlugRouteImport } from './routes/p.$slug'
-import { Route as EmailUnsubscribeRouteImport } from './routes/email/unsubscribe'
-import { Route as AuthResetPasswordRouteImport } from './routes/auth.reset-password'
-import { Route as AppDashboardRouteImport } from './routes/app.dashboard'
-import { Route as AdminTeamRouteImport } from './routes/admin.team'
-import { Route as AdminSiteFooterRouteImport } from './routes/admin.site-footer'
-import { Route as AdminSeoHealthRouteImport } from './routes/admin.seo-health'
-import { Route as AdminScrapeImportRouteImport } from './routes/admin.scrape-import'
-import { Route as AdminRankTrackerRouteImport } from './routes/admin.rank-tracker'
-import { Route as AdminQuickPageRouteImport } from './routes/admin.quick-page'
-import { Route as AdminPlanRequestsRouteImport } from './routes/admin.plan-requests'
-import { Route as AdminPageAuditorRouteImport } from './routes/admin.page-auditor'
-import { Route as AdminNoAccessRouteImport } from './routes/admin.no-access'
-import { Route as AdminMissingPagesRouteImport } from './routes/admin.missing-pages'
-import { Route as AdminLinkCheckerRouteImport } from './routes/admin.link-checker'
-import { Route as AdminLearningRouteImport } from './routes/admin.learning'
-import { Route as AdminLeadsRouteImport } from './routes/admin.leads'
-import { Route as AdminKeywordOpportunitiesRouteImport } from './routes/admin.keyword-opportunities'
-import { Route as AdminInternalLinksRouteImport } from './routes/admin.internal-links'
-import { Route as AdminIndexingRouteImport } from './routes/admin.indexing'
-import { Route as AdminGscImportRouteImport } from './routes/admin.gsc-import'
-import { Route as AdminGenerateContentRouteImport } from './routes/admin.generate-content'
-import { Route as AdminEmailBrandingRouteImport } from './routes/admin.email-branding'
-import { Route as AdminDirectoryRouteImport } from './routes/admin.directory'
-import { Route as AdminDashboardRouteImport } from './routes/admin.dashboard'
-import { Route as AdminContentPagesRouteImport } from './routes/admin.content-pages'
-import { Route as AdminContentMigrationRouteImport } from './routes/admin.content-migration'
-import { Route as AdminCompetitorsRouteImport } from './routes/admin.competitors'
-import { Route as AdminCompetitorRadarRouteImport } from './routes/admin.competitor-radar'
-import { Route as AdminClickReportRouteImport } from './routes/admin.click-report'
-import { Route as AdminClaimsRouteImport } from './routes/admin.claims'
-import { Route as AdminCitiesHeroesRouteImport } from './routes/admin.cities-heroes'
-import { Route as AdminBlogRouteImport } from './routes/admin.blog'
-import { Route as AccountLearningRouteImport } from './routes/account.learning'
+import { Route as AdminRouteImport } from './routes/admin'
+import { Route as AppRouteImport } from './routes/app'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as OnboardingRouteImport } from './routes/onboarding'
+import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
+import { Route as ReferralRouteImport } from './routes/referral'
+import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
+import { Route as SitemapDefaultDotxmlRouteImport } from './routes/sitemap-default[.]xml'
+import { Route as SitemapIndexDotxmlRouteImport } from './routes/sitemap-index[.]xml'
+import { Route as SitemapStaticDotxmlRouteImport } from './routes/sitemap-static[.]xml'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as UnsubscribeRouteImport } from './routes/unsubscribe'
 import { Route as AccountBillingRouteImport } from './routes/account.billing'
-import { Route as HelpCenterCategoryIndexRouteImport } from './routes/help-center.$category.index'
-import { Route as AppPagesIndexRouteImport } from './routes/app.pages.index'
-import { Route as LovableEmailSuppressionRouteImport } from './routes/lovable/email/suppression'
-import { Route as HelpCenterCategorySlugRouteImport } from './routes/help-center.$category.$slug'
-import { Route as AppPagesNewRouteImport } from './routes/app.pages.new'
-import { Route as ApiPublicTrackCityClickRouteImport } from './routes/api/public/track-city-click'
-import { Route as ApiPublicBackfillContentPagesRouteImport } from './routes/api/public/backfill-content-pages'
-import { Route as ApiBillingWebhookRouteImport } from './routes/api/billing.webhook'
+import { Route as AccountLearningRouteImport } from './routes/account.learning'
+import { Route as AdminBlogRouteImport } from './routes/admin.blog'
+import { Route as AdminCitiesHeroesRouteImport } from './routes/admin.cities-heroes'
+import { Route as AdminClaimsRouteImport } from './routes/admin.claims'
+import { Route as AdminClickReportRouteImport } from './routes/admin.click-report'
+import { Route as AdminCompetitorRadarRouteImport } from './routes/admin.competitor-radar'
+import { Route as AdminCompetitorsRouteImport } from './routes/admin.competitors'
+import { Route as AdminContentMigrationRouteImport } from './routes/admin.content-migration'
+import { Route as AdminContentPagesRouteImport } from './routes/admin.content-pages'
+import { Route as AdminDashboardRouteImport } from './routes/admin.dashboard'
+import { Route as AdminDirectoryRouteImport } from './routes/admin.directory'
+import { Route as AdminEmailBrandingRouteImport } from './routes/admin.email-branding'
+import { Route as AdminGenerateContentRouteImport } from './routes/admin.generate-content'
+import { Route as AdminGscImportRouteImport } from './routes/admin.gsc-import'
+import { Route as AdminIndexingRouteImport } from './routes/admin.indexing'
+import { Route as AdminInternalLinksRouteImport } from './routes/admin.internal-links'
+import { Route as AdminKeywordOpportunitiesRouteImport } from './routes/admin.keyword-opportunities'
+import { Route as AdminLeadsRouteImport } from './routes/admin.leads'
+import { Route as AdminLearningRouteImport } from './routes/admin.learning'
+import { Route as AdminLinkCheckerRouteImport } from './routes/admin.link-checker'
+import { Route as AdminMissingPagesRouteImport } from './routes/admin.missing-pages'
+import { Route as AdminNoAccessRouteImport } from './routes/admin.no-access'
+import { Route as AdminPageAuditorRouteImport } from './routes/admin.page-auditor'
+import { Route as AdminPlanRequestsRouteImport } from './routes/admin.plan-requests'
+import { Route as AdminQuickPageRouteImport } from './routes/admin.quick-page'
+import { Route as AdminRankTrackerRouteImport } from './routes/admin.rank-tracker'
+import { Route as AdminScrapeImportRouteImport } from './routes/admin.scrape-import'
+import { Route as AdminSeoHealthRouteImport } from './routes/admin.seo-health'
+import { Route as AdminSiteFooterRouteImport } from './routes/admin.site-footer'
+import { Route as AdminTeamRouteImport } from './routes/admin.team'
+import { Route as AppDashboardRouteImport } from './routes/app.dashboard'
+import { Route as AuthResetPasswordRouteImport } from './routes/auth.reset-password'
+import { Route as EmailUnsubscribeRouteImport } from './routes/email/unsubscribe'
+import { Route as HelpCenterIndexRouteImport } from './routes/help-center.index'
+import { Route as PSlugRouteImport } from './routes/p.$slug'
+import { Route as TemplatesIndexRouteImport } from './routes/templates.index'
+import { Route as TemplatesSlugRouteImport } from './routes/templates.$slug'
+import { Route as VerifyUidRouteImport } from './routes/verify.$uid'
 import { Route as AdminLearningUserIdRouteImport } from './routes/admin.learning.$userId'
-import { Route as LovableEmailTransactionalSendRouteImport } from './routes/lovable/email/transactional/send'
-import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/email/queue/process'
-import { Route as LovableEmailAuthWebhookRouteImport } from './routes/lovable/email/auth/webhook'
-import { Route as AppPagesIdEditRouteImport } from './routes/app.pages.$id.edit'
-import { Route as ApiPublicHooksSyncListingsRouteImport } from './routes/api/public/hooks.sync-listings'
-import { Route as ApiPublicHooksSeoSelfTestRouteImport } from './routes/api/public/hooks.seo-self-test'
-import { Route as ApiPublicHooksSeoFixWorkerRouteImport } from './routes/api/public/hooks/seo-fix-worker'
-import { Route as ApiPublicHooksDailySeoDigestRouteImport } from './routes/api/public/hooks.daily-seo-digest'
-import { Route as ApiPublicHooksCompetitorRadarScanRouteImport } from './routes/api/public/hooks.competitor-radar-scan'
+import { Route as ApiBillingWebhookRouteImport } from './routes/api/billing.webhook'
+import { Route as ApiPublicBackfillContentPagesRouteImport } from './routes/api/public/backfill-content-pages'
+import { Route as ApiPublicTrackCityClickRouteImport } from './routes/api/public/track-city-click'
+import { Route as AppPagesIndexRouteImport } from './routes/app.pages.index'
+import { Route as AppPagesNewRouteImport } from './routes/app.pages.new'
+import { Route as HelpCenterCategoryIndexRouteImport } from './routes/help-center.$category.index'
+import { Route as HelpCenterCategorySlugRouteImport } from './routes/help-center.$category.$slug'
+import { Route as LovableEmailSuppressionRouteImport } from './routes/lovable/email/suppression'
 import { Route as ApiCertificatesUidPdfRouteImport } from './routes/api/certificates.$uid.pdf'
+import { Route as ApiPublicHooksCompetitorRadarScanRouteImport } from './routes/api/public/hooks.competitor-radar-scan'
+import { Route as ApiPublicHooksDailySeoDigestRouteImport } from './routes/api/public/hooks.daily-seo-digest'
+import { Route as ApiPublicHooksSeoFixWorkerRouteImport } from './routes/api/public/hooks/seo-fix-worker'
+import { Route as ApiPublicHooksSeoSelfTestRouteImport } from './routes/api/public/hooks.seo-self-test'
+import { Route as ApiPublicHooksSyncListingsRouteImport } from './routes/api/public/hooks.sync-listings'
+import { Route as AppPagesIdEditRouteImport } from './routes/app.pages.$id.edit'
+import { Route as LovableEmailAuthWebhookRouteImport } from './routes/lovable/email/auth/webhook'
+import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/email/queue/process'
+import { Route as LovableEmailTransactionalSendRouteImport } from './routes/lovable/email/transactional/send'
 
-const UnsubscribeRoute = UnsubscribeRouteImport.update({
-  id: '/unsubscribe',
-  path: '/unsubscribe',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
-  id: '/sitemap.xml',
-  path: '/sitemap.xml',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SitemapStaticDotxmlRoute = SitemapStaticDotxmlRouteImport.update({
-  id: '/sitemap-static.xml',
-  path: '/sitemap-static.xml',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SitemapIndexDotxmlRoute = SitemapIndexDotxmlRouteImport.update({
-  id: '/sitemap-index.xml',
-  path: '/sitemap-index.xml',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SitemapDefaultDotxmlRoute = SitemapDefaultDotxmlRouteImport.update({
-  id: '/sitemap-default.xml',
-  path: '/sitemap-default.xml',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const RobotsDottxtRoute = RobotsDottxtRouteImport.update({
-  id: '/robots.txt',
-  path: '/robots.txt',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ReferralRoute = ReferralRouteImport.update({
-  id: '/referral',
-  path: '/referral',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PrivacyPolicyRoute = PrivacyPolicyRouteImport.update({
-  id: '/privacy-policy',
-  path: '/privacy-policy',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const OnboardingRoute = OnboardingRouteImport.update({
-  id: '/onboarding',
-  path: '/onboarding',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AuthRoute = AuthRouteImport.update({
-  id: '/auth',
-  path: '/auth',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AppRoute = AppRouteImport.update({
-  id: '/app',
-  path: '/app',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminRoute = AdminRouteImport.update({
@@ -141,114 +91,144 @@ const AdminRoute = AdminRouteImport.update({
   path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const AppRoute = AppRouteImport.update({
+  id: '/app',
+  path: '/app',
   getParentRoute: () => rootRouteImport,
 } as any)
-const TemplatesIndexRoute = TemplatesIndexRouteImport.update({
-  id: '/templates/',
-  path: '/templates/',
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
-const HelpCenterIndexRoute = HelpCenterIndexRouteImport.update({
-  id: '/help-center/',
-  path: '/help-center/',
+const OnboardingRoute = OnboardingRouteImport.update({
+  id: '/onboarding',
+  path: '/onboarding',
   getParentRoute: () => rootRouteImport,
 } as any)
-const VerifyUidRoute = VerifyUidRouteImport.update({
-  id: '/verify/$uid',
-  path: '/verify/$uid',
+const PrivacyPolicyRoute = PrivacyPolicyRouteImport.update({
+  id: '/privacy-policy',
+  path: '/privacy-policy',
   getParentRoute: () => rootRouteImport,
 } as any)
-const TemplatesSlugRoute = TemplatesSlugRouteImport.update({
-  id: '/templates/$slug',
-  path: '/templates/$slug',
+const ReferralRoute = ReferralRouteImport.update({
+  id: '/referral',
+  path: '/referral',
   getParentRoute: () => rootRouteImport,
 } as any)
-const PSlugRoute = PSlugRouteImport.update({
-  id: '/p/$slug',
-  path: '/p/$slug',
+const RobotsDottxtRoute = RobotsDottxtRouteImport.update({
+  id: '/robots.txt',
+  path: '/robots.txt',
   getParentRoute: () => rootRouteImport,
 } as any)
-const EmailUnsubscribeRoute = EmailUnsubscribeRouteImport.update({
-  id: '/email/unsubscribe',
-  path: '/email/unsubscribe',
+const SitemapDefaultDotxmlRoute = SitemapDefaultDotxmlRouteImport.update({
+  id: '/sitemap-default.xml',
+  path: '/sitemap-default.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthResetPasswordRoute = AuthResetPasswordRouteImport.update({
-  id: '/reset-password',
-  path: '/reset-password',
-  getParentRoute: () => AuthRoute,
+const SitemapIndexDotxmlRoute = SitemapIndexDotxmlRouteImport.update({
+  id: '/sitemap-index.xml',
+  path: '/sitemap-index.xml',
+  getParentRoute: () => rootRouteImport,
 } as any)
-const AppDashboardRoute = AppDashboardRouteImport.update({
+const SitemapStaticDotxmlRoute = SitemapStaticDotxmlRouteImport.update({
+  id: '/sitemap-static.xml',
+  path: '/sitemap-static.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const UnsubscribeRoute = UnsubscribeRouteImport.update({
+  id: '/unsubscribe',
+  path: '/unsubscribe',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AccountBillingRoute = AccountBillingRouteImport.update({
+  id: '/account/billing',
+  path: '/account/billing',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AccountLearningRoute = AccountLearningRouteImport.update({
+  id: '/account/learning',
+  path: '/account/learning',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminBlogRoute = AdminBlogRouteImport.update({
+  id: '/blog',
+  path: '/blog',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminCitiesHeroesRoute = AdminCitiesHeroesRouteImport.update({
+  id: '/cities-heroes',
+  path: '/cities-heroes',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminClaimsRoute = AdminClaimsRouteImport.update({
+  id: '/claims',
+  path: '/claims',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminClickReportRoute = AdminClickReportRouteImport.update({
+  id: '/click-report',
+  path: '/click-report',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminCompetitorRadarRoute = AdminCompetitorRadarRouteImport.update({
+  id: '/competitor-radar',
+  path: '/competitor-radar',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminCompetitorsRoute = AdminCompetitorsRouteImport.update({
+  id: '/competitors',
+  path: '/competitors',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminContentMigrationRoute = AdminContentMigrationRouteImport.update({
+  id: '/content-migration',
+  path: '/content-migration',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminContentPagesRoute = AdminContentPagesRouteImport.update({
+  id: '/content-pages',
+  path: '/content-pages',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminDashboardRoute = AdminDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
-  getParentRoute: () => AppRoute,
-} as any)
-const AdminTeamRoute = AdminTeamRouteImport.update({
-  id: '/team',
-  path: '/team',
   getParentRoute: () => AdminRoute,
 } as any)
-const AdminSiteFooterRoute = AdminSiteFooterRouteImport.update({
-  id: '/site-footer',
-  path: '/site-footer',
+const AdminDirectoryRoute = AdminDirectoryRouteImport.update({
+  id: '/directory',
+  path: '/directory',
   getParentRoute: () => AdminRoute,
 } as any)
-const AdminSeoHealthRoute = AdminSeoHealthRouteImport.update({
-  id: '/seo-health',
-  path: '/seo-health',
+const AdminEmailBrandingRoute = AdminEmailBrandingRouteImport.update({
+  id: '/email-branding',
+  path: '/email-branding',
   getParentRoute: () => AdminRoute,
 } as any)
-const AdminScrapeImportRoute = AdminScrapeImportRouteImport.update({
-  id: '/scrape-import',
-  path: '/scrape-import',
+const AdminGenerateContentRoute = AdminGenerateContentRouteImport.update({
+  id: '/generate-content',
+  path: '/generate-content',
   getParentRoute: () => AdminRoute,
 } as any)
-const AdminRankTrackerRoute = AdminRankTrackerRouteImport.update({
-  id: '/rank-tracker',
-  path: '/rank-tracker',
+const AdminGscImportRoute = AdminGscImportRouteImport.update({
+  id: '/gsc-import',
+  path: '/gsc-import',
   getParentRoute: () => AdminRoute,
 } as any)
-const AdminQuickPageRoute = AdminQuickPageRouteImport.update({
-  id: '/quick-page',
-  path: '/quick-page',
+const AdminIndexingRoute = AdminIndexingRouteImport.update({
+  id: '/indexing',
+  path: '/indexing',
   getParentRoute: () => AdminRoute,
 } as any)
-const AdminPlanRequestsRoute = AdminPlanRequestsRouteImport.update({
-  id: '/plan-requests',
-  path: '/plan-requests',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminPageAuditorRoute = AdminPageAuditorRouteImport.update({
-  id: '/page-auditor',
-  path: '/page-auditor',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminNoAccessRoute = AdminNoAccessRouteImport.update({
-  id: '/no-access',
-  path: '/no-access',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminMissingPagesRoute = AdminMissingPagesRouteImport.update({
-  id: '/missing-pages',
-  path: '/missing-pages',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminLinkCheckerRoute = AdminLinkCheckerRouteImport.update({
-  id: '/link-checker',
-  path: '/link-checker',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminLearningRoute = AdminLearningRouteImport.update({
-  id: '/learning',
-  path: '/learning',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminLeadsRoute = AdminLeadsRouteImport.update({
-  id: '/leads',
-  path: '/leads',
+const AdminInternalLinksRoute = AdminInternalLinksRouteImport.update({
+  id: '/internal-links',
+  path: '/internal-links',
   getParentRoute: () => AdminRoute,
 } as any)
 const AdminKeywordOpportunitiesRoute =
@@ -257,119 +237,119 @@ const AdminKeywordOpportunitiesRoute =
     path: '/keyword-opportunities',
     getParentRoute: () => AdminRoute,
   } as any)
-const AdminInternalLinksRoute = AdminInternalLinksRouteImport.update({
-  id: '/internal-links',
-  path: '/internal-links',
+const AdminLeadsRoute = AdminLeadsRouteImport.update({
+  id: '/leads',
+  path: '/leads',
   getParentRoute: () => AdminRoute,
 } as any)
-const AdminIndexingRoute = AdminIndexingRouteImport.update({
-  id: '/indexing',
-  path: '/indexing',
+const AdminLearningRoute = AdminLearningRouteImport.update({
+  id: '/learning',
+  path: '/learning',
   getParentRoute: () => AdminRoute,
 } as any)
-const AdminGscImportRoute = AdminGscImportRouteImport.update({
-  id: '/gsc-import',
-  path: '/gsc-import',
+const AdminLinkCheckerRoute = AdminLinkCheckerRouteImport.update({
+  id: '/link-checker',
+  path: '/link-checker',
   getParentRoute: () => AdminRoute,
 } as any)
-const AdminGenerateContentRoute = AdminGenerateContentRouteImport.update({
-  id: '/generate-content',
-  path: '/generate-content',
+const AdminMissingPagesRoute = AdminMissingPagesRouteImport.update({
+  id: '/missing-pages',
+  path: '/missing-pages',
   getParentRoute: () => AdminRoute,
 } as any)
-const AdminEmailBrandingRoute = AdminEmailBrandingRouteImport.update({
-  id: '/email-branding',
-  path: '/email-branding',
+const AdminNoAccessRoute = AdminNoAccessRouteImport.update({
+  id: '/no-access',
+  path: '/no-access',
   getParentRoute: () => AdminRoute,
 } as any)
-const AdminDirectoryRoute = AdminDirectoryRouteImport.update({
-  id: '/directory',
-  path: '/directory',
+const AdminPageAuditorRoute = AdminPageAuditorRouteImport.update({
+  id: '/page-auditor',
+  path: '/page-auditor',
   getParentRoute: () => AdminRoute,
 } as any)
-const AdminDashboardRoute = AdminDashboardRouteImport.update({
+const AdminPlanRequestsRoute = AdminPlanRequestsRouteImport.update({
+  id: '/plan-requests',
+  path: '/plan-requests',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminQuickPageRoute = AdminQuickPageRouteImport.update({
+  id: '/quick-page',
+  path: '/quick-page',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminRankTrackerRoute = AdminRankTrackerRouteImport.update({
+  id: '/rank-tracker',
+  path: '/rank-tracker',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminScrapeImportRoute = AdminScrapeImportRouteImport.update({
+  id: '/scrape-import',
+  path: '/scrape-import',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminSeoHealthRoute = AdminSeoHealthRouteImport.update({
+  id: '/seo-health',
+  path: '/seo-health',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminSiteFooterRoute = AdminSiteFooterRouteImport.update({
+  id: '/site-footer',
+  path: '/site-footer',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminTeamRoute = AdminTeamRouteImport.update({
+  id: '/team',
+  path: '/team',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AppDashboardRoute = AppDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminContentPagesRoute = AdminContentPagesRouteImport.update({
-  id: '/content-pages',
-  path: '/content-pages',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminContentMigrationRoute = AdminContentMigrationRouteImport.update({
-  id: '/content-migration',
-  path: '/content-migration',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminCompetitorsRoute = AdminCompetitorsRouteImport.update({
-  id: '/competitors',
-  path: '/competitors',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminCompetitorRadarRoute = AdminCompetitorRadarRouteImport.update({
-  id: '/competitor-radar',
-  path: '/competitor-radar',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminClickReportRoute = AdminClickReportRouteImport.update({
-  id: '/click-report',
-  path: '/click-report',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminClaimsRoute = AdminClaimsRouteImport.update({
-  id: '/claims',
-  path: '/claims',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminCitiesHeroesRoute = AdminCitiesHeroesRouteImport.update({
-  id: '/cities-heroes',
-  path: '/cities-heroes',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminBlogRoute = AdminBlogRouteImport.update({
-  id: '/blog',
-  path: '/blog',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AccountLearningRoute = AccountLearningRouteImport.update({
-  id: '/account/learning',
-  path: '/account/learning',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AccountBillingRoute = AccountBillingRouteImport.update({
-  id: '/account/billing',
-  path: '/account/billing',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const HelpCenterCategoryIndexRoute = HelpCenterCategoryIndexRouteImport.update({
-  id: '/help-center/$category/',
-  path: '/help-center/$category/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AppPagesIndexRoute = AppPagesIndexRouteImport.update({
-  id: '/pages/',
-  path: '/pages/',
   getParentRoute: () => AppRoute,
 } as any)
-const LovableEmailSuppressionRoute = LovableEmailSuppressionRouteImport.update({
-  id: '/lovable/email/suppression',
-  path: '/lovable/email/suppression',
+const AuthResetPasswordRoute = AuthResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => AuthRoute,
+} as any)
+const EmailUnsubscribeRoute = EmailUnsubscribeRouteImport.update({
+  id: '/email/unsubscribe',
+  path: '/email/unsubscribe',
   getParentRoute: () => rootRouteImport,
 } as any)
-const HelpCenterCategorySlugRoute = HelpCenterCategorySlugRouteImport.update({
-  id: '/help-center/$category/$slug',
-  path: '/help-center/$category/$slug',
+const HelpCenterIndexRoute = HelpCenterIndexRouteImport.update({
+  id: '/help-center/',
+  path: '/help-center/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AppPagesNewRoute = AppPagesNewRouteImport.update({
-  id: '/pages/new',
-  path: '/pages/new',
-  getParentRoute: () => AppRoute,
+const PSlugRoute = PSlugRouteImport.update({
+  id: '/p/$slug',
+  path: '/p/$slug',
+  getParentRoute: () => rootRouteImport,
 } as any)
-const ApiPublicTrackCityClickRoute = ApiPublicTrackCityClickRouteImport.update({
-  id: '/api/public/track-city-click',
-  path: '/api/public/track-city-click',
+const TemplatesIndexRoute = TemplatesIndexRouteImport.update({
+  id: '/templates/',
+  path: '/templates/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TemplatesSlugRoute = TemplatesSlugRouteImport.update({
+  id: '/templates/$slug',
+  path: '/templates/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const VerifyUidRoute = VerifyUidRouteImport.update({
+  id: '/verify/$uid',
+  path: '/verify/$uid',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminLearningUserIdRoute = AdminLearningUserIdRouteImport.update({
+  id: '/$userId',
+  path: '/$userId',
+  getParentRoute: () => AdminLearningRoute,
+} as any)
+const ApiBillingWebhookRoute = ApiBillingWebhookRouteImport.update({
+  id: '/api/billing/webhook',
+  path: '/api/billing/webhook',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiPublicBackfillContentPagesRoute =
@@ -378,54 +358,45 @@ const ApiPublicBackfillContentPagesRoute =
     path: '/api/public/backfill-content-pages',
     getParentRoute: () => rootRouteImport,
   } as any)
-const ApiBillingWebhookRoute = ApiBillingWebhookRouteImport.update({
-  id: '/api/billing/webhook',
-  path: '/api/billing/webhook',
+const ApiPublicTrackCityClickRoute = ApiPublicTrackCityClickRouteImport.update({
+  id: '/api/public/track-city-click',
+  path: '/api/public/track-city-click',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminLearningUserIdRoute = AdminLearningUserIdRouteImport.update({
-  id: '/$userId',
-  path: '/$userId',
-  getParentRoute: () => AdminLearningRoute,
-} as any)
-const LovableEmailTransactionalSendRoute =
-  LovableEmailTransactionalSendRouteImport.update({
-    id: '/lovable/email/transactional/send',
-    path: '/lovable/email/transactional/send',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const LovableEmailQueueProcessRoute =
-  LovableEmailQueueProcessRouteImport.update({
-    id: '/lovable/email/queue/process',
-    path: '/lovable/email/queue/process',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const LovableEmailAuthWebhookRoute = LovableEmailAuthWebhookRouteImport.update({
-  id: '/lovable/email/auth/webhook',
-  path: '/lovable/email/auth/webhook',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AppPagesIdEditRoute = AppPagesIdEditRouteImport.update({
-  id: '/pages/$id/edit',
-  path: '/pages/$id/edit',
+const AppPagesIndexRoute = AppPagesIndexRouteImport.update({
+  id: '/pages/',
+  path: '/pages/',
   getParentRoute: () => AppRoute,
 } as any)
-const ApiPublicHooksSyncListingsRoute =
-  ApiPublicHooksSyncListingsRouteImport.update({
-    id: '/api/public/hooks/sync-listings',
-    path: '/api/public/hooks/sync-listings',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const ApiPublicHooksSeoSelfTestRoute =
-  ApiPublicHooksSeoSelfTestRouteImport.update({
-    id: '/api/public/hooks/seo-self-test',
-    path: '/api/public/hooks/seo-self-test',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const ApiPublicHooksSeoFixWorkerRoute =
-  ApiPublicHooksSeoFixWorkerRouteImport.update({
-    id: '/api/public/hooks/seo-fix-worker',
-    path: '/api/public/hooks/seo-fix-worker',
+const AppPagesNewRoute = AppPagesNewRouteImport.update({
+  id: '/pages/new',
+  path: '/pages/new',
+  getParentRoute: () => AppRoute,
+} as any)
+const HelpCenterCategoryIndexRoute = HelpCenterCategoryIndexRouteImport.update({
+  id: '/help-center/$category/',
+  path: '/help-center/$category/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HelpCenterCategorySlugRoute = HelpCenterCategorySlugRouteImport.update({
+  id: '/help-center/$category/$slug',
+  path: '/help-center/$category/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LovableEmailSuppressionRoute = LovableEmailSuppressionRouteImport.update({
+  id: '/lovable/email/suppression',
+  path: '/lovable/email/suppression',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiCertificatesUidPdfRoute = ApiCertificatesUidPdfRouteImport.update({
+  id: '/api/certificates/$uid/pdf',
+  path: '/api/certificates/$uid/pdf',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicHooksCompetitorRadarScanRoute =
+  ApiPublicHooksCompetitorRadarScanRouteImport.update({
+    id: '/api/public/hooks/competitor-radar-scan',
+    path: '/api/public/hooks/competitor-radar-scan',
     getParentRoute: () => rootRouteImport,
   } as any)
 const ApiPublicHooksDailySeoDigestRoute =
@@ -434,17 +405,46 @@ const ApiPublicHooksDailySeoDigestRoute =
     path: '/api/public/hooks/daily-seo-digest',
     getParentRoute: () => rootRouteImport,
   } as any)
-const ApiPublicHooksCompetitorRadarScanRoute =
-  ApiPublicHooksCompetitorRadarScanRouteImport.update({
-    id: '/api/public/hooks/competitor-radar-scan',
-    path: '/api/public/hooks/competitor-radar-scan',
+const ApiPublicHooksSeoFixWorkerRoute =
+  ApiPublicHooksSeoFixWorkerRouteImport.update({
+    id: '/api/public/hooks/seo-fix-worker',
+    path: '/api/public/hooks/seo-fix-worker',
     getParentRoute: () => rootRouteImport,
   } as any)
-const ApiCertificatesUidPdfRoute = ApiCertificatesUidPdfRouteImport.update({
-  id: '/api/certificates/$uid/pdf',
-  path: '/api/certificates/$uid/pdf',
+const ApiPublicHooksSeoSelfTestRoute =
+  ApiPublicHooksSeoSelfTestRouteImport.update({
+    id: '/api/public/hooks/seo-self-test',
+    path: '/api/public/hooks/seo-self-test',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ApiPublicHooksSyncListingsRoute =
+  ApiPublicHooksSyncListingsRouteImport.update({
+    id: '/api/public/hooks/sync-listings',
+    path: '/api/public/hooks/sync-listings',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AppPagesIdEditRoute = AppPagesIdEditRouteImport.update({
+  id: '/pages/$id/edit',
+  path: '/pages/$id/edit',
+  getParentRoute: () => AppRoute,
+} as any)
+const LovableEmailAuthWebhookRoute = LovableEmailAuthWebhookRouteImport.update({
+  id: '/lovable/email/auth/webhook',
+  path: '/lovable/email/auth/webhook',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LovableEmailQueueProcessRoute =
+  LovableEmailQueueProcessRouteImport.update({
+    id: '/lovable/email/queue/process',
+    path: '/lovable/email/queue/process',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const LovableEmailTransactionalSendRoute =
+  LovableEmailTransactionalSendRouteImport.update({
+    id: '/lovable/email/transactional/send',
+    path: '/lovable/email/transactional/send',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -929,81 +929,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/unsubscribe': {
-      id: '/unsubscribe'
-      path: '/unsubscribe'
-      fullPath: '/unsubscribe'
-      preLoaderRoute: typeof UnsubscribeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/sitemap.xml': {
-      id: '/sitemap.xml'
-      path: '/sitemap.xml'
-      fullPath: '/sitemap.xml'
-      preLoaderRoute: typeof SitemapDotxmlRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/sitemap-static.xml': {
-      id: '/sitemap-static.xml'
-      path: '/sitemap-static.xml'
-      fullPath: '/sitemap-static.xml'
-      preLoaderRoute: typeof SitemapStaticDotxmlRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/sitemap-index.xml': {
-      id: '/sitemap-index.xml'
-      path: '/sitemap-index.xml'
-      fullPath: '/sitemap-index.xml'
-      preLoaderRoute: typeof SitemapIndexDotxmlRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/sitemap-default.xml': {
-      id: '/sitemap-default.xml'
-      path: '/sitemap-default.xml'
-      fullPath: '/sitemap-default.xml'
-      preLoaderRoute: typeof SitemapDefaultDotxmlRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/robots.txt': {
-      id: '/robots.txt'
-      path: '/robots.txt'
-      fullPath: '/robots.txt'
-      preLoaderRoute: typeof RobotsDottxtRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/referral': {
-      id: '/referral'
-      path: '/referral'
-      fullPath: '/referral'
-      preLoaderRoute: typeof ReferralRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/privacy-policy': {
-      id: '/privacy-policy'
-      path: '/privacy-policy'
-      fullPath: '/privacy-policy'
-      preLoaderRoute: typeof PrivacyPolicyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/onboarding': {
-      id: '/onboarding'
-      path: '/onboarding'
-      fullPath: '/onboarding'
-      preLoaderRoute: typeof OnboardingRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/auth': {
-      id: '/auth'
-      path: '/auth'
-      fullPath: '/auth'
-      preLoaderRoute: typeof AuthRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/app': {
-      id: '/app'
-      path: '/app'
-      fullPath: '/app'
-      preLoaderRoute: typeof AppRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin': {
@@ -1013,277 +943,81 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/app': {
+      id: '/app'
+      path: '/app'
+      fullPath: '/app'
+      preLoaderRoute: typeof AppRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/templates/': {
-      id: '/templates/'
-      path: '/templates'
-      fullPath: '/templates/'
-      preLoaderRoute: typeof TemplatesIndexRouteImport
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/help-center/': {
-      id: '/help-center/'
-      path: '/help-center'
-      fullPath: '/help-center/'
-      preLoaderRoute: typeof HelpCenterIndexRouteImport
+    '/onboarding': {
+      id: '/onboarding'
+      path: '/onboarding'
+      fullPath: '/onboarding'
+      preLoaderRoute: typeof OnboardingRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/verify/$uid': {
-      id: '/verify/$uid'
-      path: '/verify/$uid'
-      fullPath: '/verify/$uid'
-      preLoaderRoute: typeof VerifyUidRouteImport
+    '/privacy-policy': {
+      id: '/privacy-policy'
+      path: '/privacy-policy'
+      fullPath: '/privacy-policy'
+      preLoaderRoute: typeof PrivacyPolicyRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/templates/$slug': {
-      id: '/templates/$slug'
-      path: '/templates/$slug'
-      fullPath: '/templates/$slug'
-      preLoaderRoute: typeof TemplatesSlugRouteImport
+    '/referral': {
+      id: '/referral'
+      path: '/referral'
+      fullPath: '/referral'
+      preLoaderRoute: typeof ReferralRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/p/$slug': {
-      id: '/p/$slug'
-      path: '/p/$slug'
-      fullPath: '/p/$slug'
-      preLoaderRoute: typeof PSlugRouteImport
+    '/robots.txt': {
+      id: '/robots.txt'
+      path: '/robots.txt'
+      fullPath: '/robots.txt'
+      preLoaderRoute: typeof RobotsDottxtRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/email/unsubscribe': {
-      id: '/email/unsubscribe'
-      path: '/email/unsubscribe'
-      fullPath: '/email/unsubscribe'
-      preLoaderRoute: typeof EmailUnsubscribeRouteImport
+    '/sitemap-default.xml': {
+      id: '/sitemap-default.xml'
+      path: '/sitemap-default.xml'
+      fullPath: '/sitemap-default.xml'
+      preLoaderRoute: typeof SitemapDefaultDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/auth/reset-password': {
-      id: '/auth/reset-password'
-      path: '/reset-password'
-      fullPath: '/auth/reset-password'
-      preLoaderRoute: typeof AuthResetPasswordRouteImport
-      parentRoute: typeof AuthRoute
+    '/sitemap-index.xml': {
+      id: '/sitemap-index.xml'
+      path: '/sitemap-index.xml'
+      fullPath: '/sitemap-index.xml'
+      preLoaderRoute: typeof SitemapIndexDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/app/dashboard': {
-      id: '/app/dashboard'
-      path: '/dashboard'
-      fullPath: '/app/dashboard'
-      preLoaderRoute: typeof AppDashboardRouteImport
-      parentRoute: typeof AppRoute
+    '/sitemap-static.xml': {
+      id: '/sitemap-static.xml'
+      path: '/sitemap-static.xml'
+      fullPath: '/sitemap-static.xml'
+      preLoaderRoute: typeof SitemapStaticDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/admin/team': {
-      id: '/admin/team'
-      path: '/team'
-      fullPath: '/admin/team'
-      preLoaderRoute: typeof AdminTeamRouteImport
-      parentRoute: typeof AdminRoute
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/admin/site-footer': {
-      id: '/admin/site-footer'
-      path: '/site-footer'
-      fullPath: '/admin/site-footer'
-      preLoaderRoute: typeof AdminSiteFooterRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/seo-health': {
-      id: '/admin/seo-health'
-      path: '/seo-health'
-      fullPath: '/admin/seo-health'
-      preLoaderRoute: typeof AdminSeoHealthRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/scrape-import': {
-      id: '/admin/scrape-import'
-      path: '/scrape-import'
-      fullPath: '/admin/scrape-import'
-      preLoaderRoute: typeof AdminScrapeImportRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/rank-tracker': {
-      id: '/admin/rank-tracker'
-      path: '/rank-tracker'
-      fullPath: '/admin/rank-tracker'
-      preLoaderRoute: typeof AdminRankTrackerRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/quick-page': {
-      id: '/admin/quick-page'
-      path: '/quick-page'
-      fullPath: '/admin/quick-page'
-      preLoaderRoute: typeof AdminQuickPageRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/plan-requests': {
-      id: '/admin/plan-requests'
-      path: '/plan-requests'
-      fullPath: '/admin/plan-requests'
-      preLoaderRoute: typeof AdminPlanRequestsRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/page-auditor': {
-      id: '/admin/page-auditor'
-      path: '/page-auditor'
-      fullPath: '/admin/page-auditor'
-      preLoaderRoute: typeof AdminPageAuditorRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/no-access': {
-      id: '/admin/no-access'
-      path: '/no-access'
-      fullPath: '/admin/no-access'
-      preLoaderRoute: typeof AdminNoAccessRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/missing-pages': {
-      id: '/admin/missing-pages'
-      path: '/missing-pages'
-      fullPath: '/admin/missing-pages'
-      preLoaderRoute: typeof AdminMissingPagesRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/link-checker': {
-      id: '/admin/link-checker'
-      path: '/link-checker'
-      fullPath: '/admin/link-checker'
-      preLoaderRoute: typeof AdminLinkCheckerRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/learning': {
-      id: '/admin/learning'
-      path: '/learning'
-      fullPath: '/admin/learning'
-      preLoaderRoute: typeof AdminLearningRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/leads': {
-      id: '/admin/leads'
-      path: '/leads'
-      fullPath: '/admin/leads'
-      preLoaderRoute: typeof AdminLeadsRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/keyword-opportunities': {
-      id: '/admin/keyword-opportunities'
-      path: '/keyword-opportunities'
-      fullPath: '/admin/keyword-opportunities'
-      preLoaderRoute: typeof AdminKeywordOpportunitiesRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/internal-links': {
-      id: '/admin/internal-links'
-      path: '/internal-links'
-      fullPath: '/admin/internal-links'
-      preLoaderRoute: typeof AdminInternalLinksRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/indexing': {
-      id: '/admin/indexing'
-      path: '/indexing'
-      fullPath: '/admin/indexing'
-      preLoaderRoute: typeof AdminIndexingRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/gsc-import': {
-      id: '/admin/gsc-import'
-      path: '/gsc-import'
-      fullPath: '/admin/gsc-import'
-      preLoaderRoute: typeof AdminGscImportRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/generate-content': {
-      id: '/admin/generate-content'
-      path: '/generate-content'
-      fullPath: '/admin/generate-content'
-      preLoaderRoute: typeof AdminGenerateContentRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/email-branding': {
-      id: '/admin/email-branding'
-      path: '/email-branding'
-      fullPath: '/admin/email-branding'
-      preLoaderRoute: typeof AdminEmailBrandingRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/directory': {
-      id: '/admin/directory'
-      path: '/directory'
-      fullPath: '/admin/directory'
-      preLoaderRoute: typeof AdminDirectoryRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/dashboard': {
-      id: '/admin/dashboard'
-      path: '/dashboard'
-      fullPath: '/admin/dashboard'
-      preLoaderRoute: typeof AdminDashboardRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/content-pages': {
-      id: '/admin/content-pages'
-      path: '/content-pages'
-      fullPath: '/admin/content-pages'
-      preLoaderRoute: typeof AdminContentPagesRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/content-migration': {
-      id: '/admin/content-migration'
-      path: '/content-migration'
-      fullPath: '/admin/content-migration'
-      preLoaderRoute: typeof AdminContentMigrationRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/competitors': {
-      id: '/admin/competitors'
-      path: '/competitors'
-      fullPath: '/admin/competitors'
-      preLoaderRoute: typeof AdminCompetitorsRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/competitor-radar': {
-      id: '/admin/competitor-radar'
-      path: '/competitor-radar'
-      fullPath: '/admin/competitor-radar'
-      preLoaderRoute: typeof AdminCompetitorRadarRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/click-report': {
-      id: '/admin/click-report'
-      path: '/click-report'
-      fullPath: '/admin/click-report'
-      preLoaderRoute: typeof AdminClickReportRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/claims': {
-      id: '/admin/claims'
-      path: '/claims'
-      fullPath: '/admin/claims'
-      preLoaderRoute: typeof AdminClaimsRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/cities-heroes': {
-      id: '/admin/cities-heroes'
-      path: '/cities-heroes'
-      fullPath: '/admin/cities-heroes'
-      preLoaderRoute: typeof AdminCitiesHeroesRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/blog': {
-      id: '/admin/blog'
-      path: '/blog'
-      fullPath: '/admin/blog'
-      preLoaderRoute: typeof AdminBlogRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/account/learning': {
-      id: '/account/learning'
-      path: '/account/learning'
-      fullPath: '/account/learning'
-      preLoaderRoute: typeof AccountLearningRouteImport
+    '/unsubscribe': {
+      id: '/unsubscribe'
+      path: '/unsubscribe'
+      fullPath: '/unsubscribe'
+      preLoaderRoute: typeof UnsubscribeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/account/billing': {
@@ -1293,60 +1027,270 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AccountBillingRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/help-center/$category/': {
-      id: '/help-center/$category/'
-      path: '/help-center/$category'
-      fullPath: '/help-center/$category/'
-      preLoaderRoute: typeof HelpCenterCategoryIndexRouteImport
+    '/account/learning': {
+      id: '/account/learning'
+      path: '/account/learning'
+      fullPath: '/account/learning'
+      preLoaderRoute: typeof AccountLearningRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/app/pages/': {
-      id: '/app/pages/'
-      path: '/pages'
-      fullPath: '/app/pages/'
-      preLoaderRoute: typeof AppPagesIndexRouteImport
+    '/admin/blog': {
+      id: '/admin/blog'
+      path: '/blog'
+      fullPath: '/admin/blog'
+      preLoaderRoute: typeof AdminBlogRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/cities-heroes': {
+      id: '/admin/cities-heroes'
+      path: '/cities-heroes'
+      fullPath: '/admin/cities-heroes'
+      preLoaderRoute: typeof AdminCitiesHeroesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/claims': {
+      id: '/admin/claims'
+      path: '/claims'
+      fullPath: '/admin/claims'
+      preLoaderRoute: typeof AdminClaimsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/click-report': {
+      id: '/admin/click-report'
+      path: '/click-report'
+      fullPath: '/admin/click-report'
+      preLoaderRoute: typeof AdminClickReportRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/competitor-radar': {
+      id: '/admin/competitor-radar'
+      path: '/competitor-radar'
+      fullPath: '/admin/competitor-radar'
+      preLoaderRoute: typeof AdminCompetitorRadarRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/competitors': {
+      id: '/admin/competitors'
+      path: '/competitors'
+      fullPath: '/admin/competitors'
+      preLoaderRoute: typeof AdminCompetitorsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/content-migration': {
+      id: '/admin/content-migration'
+      path: '/content-migration'
+      fullPath: '/admin/content-migration'
+      preLoaderRoute: typeof AdminContentMigrationRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/content-pages': {
+      id: '/admin/content-pages'
+      path: '/content-pages'
+      fullPath: '/admin/content-pages'
+      preLoaderRoute: typeof AdminContentPagesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/dashboard': {
+      id: '/admin/dashboard'
+      path: '/dashboard'
+      fullPath: '/admin/dashboard'
+      preLoaderRoute: typeof AdminDashboardRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/directory': {
+      id: '/admin/directory'
+      path: '/directory'
+      fullPath: '/admin/directory'
+      preLoaderRoute: typeof AdminDirectoryRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/email-branding': {
+      id: '/admin/email-branding'
+      path: '/email-branding'
+      fullPath: '/admin/email-branding'
+      preLoaderRoute: typeof AdminEmailBrandingRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/generate-content': {
+      id: '/admin/generate-content'
+      path: '/generate-content'
+      fullPath: '/admin/generate-content'
+      preLoaderRoute: typeof AdminGenerateContentRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/gsc-import': {
+      id: '/admin/gsc-import'
+      path: '/gsc-import'
+      fullPath: '/admin/gsc-import'
+      preLoaderRoute: typeof AdminGscImportRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/indexing': {
+      id: '/admin/indexing'
+      path: '/indexing'
+      fullPath: '/admin/indexing'
+      preLoaderRoute: typeof AdminIndexingRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/internal-links': {
+      id: '/admin/internal-links'
+      path: '/internal-links'
+      fullPath: '/admin/internal-links'
+      preLoaderRoute: typeof AdminInternalLinksRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/keyword-opportunities': {
+      id: '/admin/keyword-opportunities'
+      path: '/keyword-opportunities'
+      fullPath: '/admin/keyword-opportunities'
+      preLoaderRoute: typeof AdminKeywordOpportunitiesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/leads': {
+      id: '/admin/leads'
+      path: '/leads'
+      fullPath: '/admin/leads'
+      preLoaderRoute: typeof AdminLeadsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/learning': {
+      id: '/admin/learning'
+      path: '/learning'
+      fullPath: '/admin/learning'
+      preLoaderRoute: typeof AdminLearningRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/link-checker': {
+      id: '/admin/link-checker'
+      path: '/link-checker'
+      fullPath: '/admin/link-checker'
+      preLoaderRoute: typeof AdminLinkCheckerRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/missing-pages': {
+      id: '/admin/missing-pages'
+      path: '/missing-pages'
+      fullPath: '/admin/missing-pages'
+      preLoaderRoute: typeof AdminMissingPagesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/no-access': {
+      id: '/admin/no-access'
+      path: '/no-access'
+      fullPath: '/admin/no-access'
+      preLoaderRoute: typeof AdminNoAccessRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/page-auditor': {
+      id: '/admin/page-auditor'
+      path: '/page-auditor'
+      fullPath: '/admin/page-auditor'
+      preLoaderRoute: typeof AdminPageAuditorRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/plan-requests': {
+      id: '/admin/plan-requests'
+      path: '/plan-requests'
+      fullPath: '/admin/plan-requests'
+      preLoaderRoute: typeof AdminPlanRequestsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/quick-page': {
+      id: '/admin/quick-page'
+      path: '/quick-page'
+      fullPath: '/admin/quick-page'
+      preLoaderRoute: typeof AdminQuickPageRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/rank-tracker': {
+      id: '/admin/rank-tracker'
+      path: '/rank-tracker'
+      fullPath: '/admin/rank-tracker'
+      preLoaderRoute: typeof AdminRankTrackerRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/scrape-import': {
+      id: '/admin/scrape-import'
+      path: '/scrape-import'
+      fullPath: '/admin/scrape-import'
+      preLoaderRoute: typeof AdminScrapeImportRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/seo-health': {
+      id: '/admin/seo-health'
+      path: '/seo-health'
+      fullPath: '/admin/seo-health'
+      preLoaderRoute: typeof AdminSeoHealthRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/site-footer': {
+      id: '/admin/site-footer'
+      path: '/site-footer'
+      fullPath: '/admin/site-footer'
+      preLoaderRoute: typeof AdminSiteFooterRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/team': {
+      id: '/admin/team'
+      path: '/team'
+      fullPath: '/admin/team'
+      preLoaderRoute: typeof AdminTeamRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/app/dashboard': {
+      id: '/app/dashboard'
+      path: '/dashboard'
+      fullPath: '/app/dashboard'
+      preLoaderRoute: typeof AppDashboardRouteImport
       parentRoute: typeof AppRoute
     }
-    '/lovable/email/suppression': {
-      id: '/lovable/email/suppression'
-      path: '/lovable/email/suppression'
-      fullPath: '/lovable/email/suppression'
-      preLoaderRoute: typeof LovableEmailSuppressionRouteImport
+    '/auth/reset-password': {
+      id: '/auth/reset-password'
+      path: '/reset-password'
+      fullPath: '/auth/reset-password'
+      preLoaderRoute: typeof AuthResetPasswordRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/email/unsubscribe': {
+      id: '/email/unsubscribe'
+      path: '/email/unsubscribe'
+      fullPath: '/email/unsubscribe'
+      preLoaderRoute: typeof EmailUnsubscribeRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/help-center/$category/$slug': {
-      id: '/help-center/$category/$slug'
-      path: '/help-center/$category/$slug'
-      fullPath: '/help-center/$category/$slug'
-      preLoaderRoute: typeof HelpCenterCategorySlugRouteImport
+    '/help-center/': {
+      id: '/help-center/'
+      path: '/help-center'
+      fullPath: '/help-center/'
+      preLoaderRoute: typeof HelpCenterIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/app/pages/new': {
-      id: '/app/pages/new'
-      path: '/pages/new'
-      fullPath: '/app/pages/new'
-      preLoaderRoute: typeof AppPagesNewRouteImport
-      parentRoute: typeof AppRoute
-    }
-    '/api/public/track-city-click': {
-      id: '/api/public/track-city-click'
-      path: '/api/public/track-city-click'
-      fullPath: '/api/public/track-city-click'
-      preLoaderRoute: typeof ApiPublicTrackCityClickRouteImport
+    '/p/$slug': {
+      id: '/p/$slug'
+      path: '/p/$slug'
+      fullPath: '/p/$slug'
+      preLoaderRoute: typeof PSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/public/backfill-content-pages': {
-      id: '/api/public/backfill-content-pages'
-      path: '/api/public/backfill-content-pages'
-      fullPath: '/api/public/backfill-content-pages'
-      preLoaderRoute: typeof ApiPublicBackfillContentPagesRouteImport
+    '/templates/': {
+      id: '/templates/'
+      path: '/templates'
+      fullPath: '/templates/'
+      preLoaderRoute: typeof TemplatesIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/billing/webhook': {
-      id: '/api/billing/webhook'
-      path: '/api/billing/webhook'
-      fullPath: '/api/billing/webhook'
-      preLoaderRoute: typeof ApiBillingWebhookRouteImport
+    '/templates/$slug': {
+      id: '/templates/$slug'
+      path: '/templates/$slug'
+      fullPath: '/templates/$slug'
+      preLoaderRoute: typeof TemplatesSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/verify/$uid': {
+      id: '/verify/$uid'
+      path: '/verify/$uid'
+      fullPath: '/verify/$uid'
+      preLoaderRoute: typeof VerifyUidRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/learning/$userId': {
@@ -1356,60 +1300,67 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminLearningUserIdRouteImport
       parentRoute: typeof AdminLearningRoute
     }
-    '/lovable/email/transactional/send': {
-      id: '/lovable/email/transactional/send'
-      path: '/lovable/email/transactional/send'
-      fullPath: '/lovable/email/transactional/send'
-      preLoaderRoute: typeof LovableEmailTransactionalSendRouteImport
+    '/api/billing/webhook': {
+      id: '/api/billing/webhook'
+      path: '/api/billing/webhook'
+      fullPath: '/api/billing/webhook'
+      preLoaderRoute: typeof ApiBillingWebhookRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/lovable/email/queue/process': {
-      id: '/lovable/email/queue/process'
-      path: '/lovable/email/queue/process'
-      fullPath: '/lovable/email/queue/process'
-      preLoaderRoute: typeof LovableEmailQueueProcessRouteImport
+    '/api/public/backfill-content-pages': {
+      id: '/api/public/backfill-content-pages'
+      path: '/api/public/backfill-content-pages'
+      fullPath: '/api/public/backfill-content-pages'
+      preLoaderRoute: typeof ApiPublicBackfillContentPagesRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/lovable/email/auth/webhook': {
-      id: '/lovable/email/auth/webhook'
-      path: '/lovable/email/auth/webhook'
-      fullPath: '/lovable/email/auth/webhook'
-      preLoaderRoute: typeof LovableEmailAuthWebhookRouteImport
+    '/api/public/track-city-click': {
+      id: '/api/public/track-city-click'
+      path: '/api/public/track-city-click'
+      fullPath: '/api/public/track-city-click'
+      preLoaderRoute: typeof ApiPublicTrackCityClickRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/app/pages/$id/edit': {
-      id: '/app/pages/$id/edit'
-      path: '/pages/$id/edit'
-      fullPath: '/app/pages/$id/edit'
-      preLoaderRoute: typeof AppPagesIdEditRouteImport
+    '/app/pages/': {
+      id: '/app/pages/'
+      path: '/pages'
+      fullPath: '/app/pages/'
+      preLoaderRoute: typeof AppPagesIndexRouteImport
       parentRoute: typeof AppRoute
     }
-    '/api/public/hooks/sync-listings': {
-      id: '/api/public/hooks/sync-listings'
-      path: '/api/public/hooks/sync-listings'
-      fullPath: '/api/public/hooks/sync-listings'
-      preLoaderRoute: typeof ApiPublicHooksSyncListingsRouteImport
+    '/app/pages/new': {
+      id: '/app/pages/new'
+      path: '/pages/new'
+      fullPath: '/app/pages/new'
+      preLoaderRoute: typeof AppPagesNewRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/help-center/$category/': {
+      id: '/help-center/$category/'
+      path: '/help-center/$category'
+      fullPath: '/help-center/$category/'
+      preLoaderRoute: typeof HelpCenterCategoryIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/public/hooks/seo-self-test': {
-      id: '/api/public/hooks/seo-self-test'
-      path: '/api/public/hooks/seo-self-test'
-      fullPath: '/api/public/hooks/seo-self-test'
-      preLoaderRoute: typeof ApiPublicHooksSeoSelfTestRouteImport
+    '/help-center/$category/$slug': {
+      id: '/help-center/$category/$slug'
+      path: '/help-center/$category/$slug'
+      fullPath: '/help-center/$category/$slug'
+      preLoaderRoute: typeof HelpCenterCategorySlugRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/public/hooks/seo-fix-worker': {
-      id: '/api/public/hooks/seo-fix-worker'
-      path: '/api/public/hooks/seo-fix-worker'
-      fullPath: '/api/public/hooks/seo-fix-worker'
-      preLoaderRoute: typeof ApiPublicHooksSeoFixWorkerRouteImport
+    '/lovable/email/suppression': {
+      id: '/lovable/email/suppression'
+      path: '/lovable/email/suppression'
+      fullPath: '/lovable/email/suppression'
+      preLoaderRoute: typeof LovableEmailSuppressionRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/public/hooks/daily-seo-digest': {
-      id: '/api/public/hooks/daily-seo-digest'
-      path: '/api/public/hooks/daily-seo-digest'
-      fullPath: '/api/public/hooks/daily-seo-digest'
-      preLoaderRoute: typeof ApiPublicHooksDailySeoDigestRouteImport
+    '/api/certificates/$uid/pdf': {
+      id: '/api/certificates/$uid/pdf'
+      path: '/api/certificates/$uid/pdf'
+      fullPath: '/api/certificates/$uid/pdf'
+      preLoaderRoute: typeof ApiCertificatesUidPdfRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/public/hooks/competitor-radar-scan': {
@@ -1419,11 +1370,60 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicHooksCompetitorRadarScanRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/certificates/$uid/pdf': {
-      id: '/api/certificates/$uid/pdf'
-      path: '/api/certificates/$uid/pdf'
-      fullPath: '/api/certificates/$uid/pdf'
-      preLoaderRoute: typeof ApiCertificatesUidPdfRouteImport
+    '/api/public/hooks/daily-seo-digest': {
+      id: '/api/public/hooks/daily-seo-digest'
+      path: '/api/public/hooks/daily-seo-digest'
+      fullPath: '/api/public/hooks/daily-seo-digest'
+      preLoaderRoute: typeof ApiPublicHooksDailySeoDigestRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/hooks/seo-fix-worker': {
+      id: '/api/public/hooks/seo-fix-worker'
+      path: '/api/public/hooks/seo-fix-worker'
+      fullPath: '/api/public/hooks/seo-fix-worker'
+      preLoaderRoute: typeof ApiPublicHooksSeoFixWorkerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/hooks/seo-self-test': {
+      id: '/api/public/hooks/seo-self-test'
+      path: '/api/public/hooks/seo-self-test'
+      fullPath: '/api/public/hooks/seo-self-test'
+      preLoaderRoute: typeof ApiPublicHooksSeoSelfTestRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/hooks/sync-listings': {
+      id: '/api/public/hooks/sync-listings'
+      path: '/api/public/hooks/sync-listings'
+      fullPath: '/api/public/hooks/sync-listings'
+      preLoaderRoute: typeof ApiPublicHooksSyncListingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/app/pages/$id/edit': {
+      id: '/app/pages/$id/edit'
+      path: '/pages/$id/edit'
+      fullPath: '/app/pages/$id/edit'
+      preLoaderRoute: typeof AppPagesIdEditRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/lovable/email/auth/webhook': {
+      id: '/lovable/email/auth/webhook'
+      path: '/lovable/email/auth/webhook'
+      fullPath: '/lovable/email/auth/webhook'
+      preLoaderRoute: typeof LovableEmailAuthWebhookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lovable/email/queue/process': {
+      id: '/lovable/email/queue/process'
+      path: '/lovable/email/queue/process'
+      fullPath: '/lovable/email/queue/process'
+      preLoaderRoute: typeof LovableEmailQueueProcessRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lovable/email/transactional/send': {
+      id: '/lovable/email/transactional/send'
+      path: '/lovable/email/transactional/send'
+      fullPath: '/lovable/email/transactional/send'
+      preLoaderRoute: typeof LovableEmailTransactionalSendRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
