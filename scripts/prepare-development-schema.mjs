@@ -13,5 +13,5 @@ for(const name of readdirSync('supabase/migrations').filter(n=>n.endsWith('.sql'
  if(/\b(?:cron|net|pgmq|vault)\s*\.|\b(?:pg_cron|pg_net|supabase_vault|pgmq)\b/i.test(source))throw new Error('Unsafe infrastructure reference in '+name);
  sql+='\n-- Source: '+name+'\n'+source+'\n';manifest.push({name,hash,status});
 }
-const protection=readFileSync('docs/security/workspace-privileges.sql','utf8');sql+='\n-- Reviewed hardening draft; still unapplied\n'+protection;
+const protection=readFileSync('docs/security/workspace-privileges.sql','utf8');sql+='\n-- Reviewed hardening draft; still unapplied\n'+protection; sql+='\n'+readFileSync('docs/security/privileged-function-access.sql','utf8');
 mkdirSync('docs/security/development',{recursive:true});writeFileSync('docs/security/development/schema-review.sql',sql);writeFileSync('docs/security/development/manifest.json',JSON.stringify(manifest,null,2)+'\n');console.log('Prepared local SQL review and provenance manifest; no database contacted.');
