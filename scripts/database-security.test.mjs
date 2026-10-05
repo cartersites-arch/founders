@@ -45,6 +45,7 @@ test("workspace billing fields and direct form writes cannot bypass server autho
       INSERT INTO public.workspace_members VALUES ('${workspace}','${owner}','owner');
       INSERT INTO public.user_roles VALUES ('${owner}','user'),('${other}','admin');
     `);
+    await db.exec(readFileSync(new URL("./fixtures/billing-schema.sql", import.meta.url), "utf8"));
     await db.exec(
       readFileSync(new URL("../docs/security/apply-security.sql", import.meta.url), "utf8"),
     );

@@ -253,10 +253,13 @@ export async function handleStripeWebhookEvent(event: Stripe.Event): Promise<Web
       // customer.subscription.created — here we just make sure the workspace
       // knows its Stripe customer.
       if (session.customer && typeof session.customer === "string") {
-        await sb
+        const { data: rows, error } = await sb
           .from("workspaces")
           .update({ stripe_customer_id: session.customer })
-          .eq("id", workspaceId);
+          .eq("id", workspaceId)
+          .or(`stripe_customer_id.is.null,stripe_customer_id.eq.${session.customer}`)
+          .select("id");
+        if (error || !rows?.length) throw new Error("Billing customer update failed");
       }
       return { received: true };
     }
@@ -264,27 +267,22 @@ export async function handleStripeWebhookEvent(event: Stripe.Event): Promise<Web
     case "customer.subscription.created":
     case "customer.subscription.updated":
     case "customer.subscription.deleted": {
-      const sub = event.data.object as Stripe.Subscription;
-      const workspaceId =
-        (sub.metadata?.workspace_id as string | undefined) ??
-        (await resolveWorkspaceByCustomer(sub.customer as string));
+      const notification = event.data.object as Stripe.Subscription;
+      const customerId = typeof notification.customer === "string" ? notification.customer : notification.customer.id;
+      const workspaceId = notification.metadata?.workspace_id ?? (await resolveWorkspaceByCustomer(customerId));
       if (!workspaceId) return { received: true, ignored: true };
-
-      // Stripe events can arrive out of order — drop anything older than the
-      // last one we recorded for this workspace, otherwise a delayed
-      // `subscription.updated` (active) can clobber a newer `subscription.deleted`.
-      const eventTimeMs = event.created * 1000;
-      const { data: existing } = await sb
-        .from("customer_subscriptions")
-        .select("last_event_at")
-        .eq("workspace_id", workspaceId)
-        .maybeSingle();
-      if (existing?.last_event_at) {
-        const lastMs = new Date(existing.last_event_at as string).getTime();
-        if (Number.isFinite(lastMs) && eventTimeMs < lastMs) {
-          return { received: true, ignored: true };
-        }
-      }
+      const { data: existing, error: lookupError } = await sb.from("customer_subscriptions")
+        .select("last_event_id,last_event_at").eq("workspace_id", workspaceId).maybeSingle();
+      if (lookupError) throw new Error("Billing state lookup failed");
+      if (existing?.last_event_id === event.id || (existing?.last_event_at &&
+        new Date(existing.last_event_at).getTime() > event.created * 1000)) return { received: true, ignored: true };
+      // Notification payloads may be stale, including different events in the same second.
+      // Fetch authoritative Stripe state after reading the revision; the RPC checks that
+      // revision under a workspace lock before atomically writing both billing tables.
+      const sub = await stripe.subscriptions.retrieve(notification.id);
+      const currentCustomerId = typeof sub.customer === "string" ? sub.customer : sub.customer.id;
+      if (currentCustomerId !== customerId || (sub.metadata?.workspace_id && sub.metadata.workspace_id !== workspaceId))
+        throw new Error("Billing subscription identity mismatch");
 
       const item = sub.items.data[0];
       const priceId = item?.price?.id ?? null;
@@ -299,11 +297,15 @@ export async function handleStripeWebhookEvent(event: Stripe.Event): Promise<Web
         : null;
       const canceledAt = sub.canceled_at ? new Date(sub.canceled_at * 1000).toISOString() : null;
 
-      await sb.from("customer_subscriptions").upsert(
-        {
-          workspace_id: workspaceId,
-          stripe_customer_id: sub.customer as string,
+      const { data: applied, error } = await sb.rpc("apply_stripe_subscription_event", {
+        _workspace_id: workspaceId,
+        _event_id: event.id,
+        _event_at: new Date(event.created * 1000).toISOString(),
+        _expected_event_id: existing?.last_event_id ?? null,
+        _subscription: {
+          stripe_customer_id: currentCustomerId,
           stripe_subscription_id: sub.id,
+          allow_subscription_replacement: event.type === "customer.subscription.created",
           stripe_price_id: priceId,
           plan: plan ?? "starter",
           status,
@@ -312,22 +314,11 @@ export async function handleStripeWebhookEvent(event: Stripe.Event): Promise<Web
           current_period_end: currentPeriodEnd,
           trial_ends_at: trialEnd,
           canceled_at: canceledAt,
-          last_event_id: event.id,
-          last_event_at: new Date(event.created * 1000).toISOString(),
-          raw: sub as unknown as Record<string, unknown>,
+          raw: sub,
         },
-        { onConflict: "workspace_id" },
-      );
-
-      // Mirror onto workspaces for fast reads.
-      const updates: Record<string, unknown> = {
-        subscription_status: status,
-        trial_ends_at: trialEnd,
-        current_period_end: currentPeriodEnd,
-        stripe_subscription_id: sub.id,
-      };
-      if (plan) updates.plan = plan;
-      await sb.from("workspaces").update(updates).eq("id", workspaceId);
+      });
+      if (error) throw new Error("Billing transaction failed; retry required");
+      if (applied !== true) return { received: true, ignored: true };
 
       return { received: true };
     }
@@ -359,11 +350,12 @@ export async function handleStripeWebhookEvent(event: Stripe.Event): Promise<Web
 
 async function resolveWorkspaceByCustomer(customerId: string): Promise<string | null> {
   const sb = supabaseAdmin as any;
-  const { data } = await sb
+  const { data, error } = await sb
     .from("workspaces")
     .select("id")
     .eq("stripe_customer_id", customerId)
     .maybeSingle();
+  if (error) throw new Error("Billing workspace lookup failed");
   return data?.id ?? null;
 }
 
