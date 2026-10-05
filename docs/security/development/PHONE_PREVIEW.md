@@ -33,3 +33,7 @@ Cloudflare build settings after branch verification:
 Never place the service-role key in a VITE variable, screenshot or chat. The server runtime eventually needs development-only `SUPABASE_SERVICE_ROLE_KEY` and `SUPABASE_PUBLISHABLE_KEY` secret bindings. First verify Access denies an unauthenticated session on the primary URL and all alternate URLs before adding the service-role binding. Initial pages that need server database access may fail until that binding is installed; that is expected during this protection-first setup. No original account ID, routes, cron triggers or external integration secrets are included.
 
 After Cloudflare shows the exact origin, set development-only Auth redirect/site URLs in Supabase as reviewed. This preparation has not deployed anything; Git branch selection and the effective Access policy still need dashboard verification.
+
+### Cloudflare detached checkout correction
+
+Cloudflare's selected Git branch is checked out as a detached commit. The preflight now accepts that checkout only when `WORKERS_CI=1`, `WORKERS_CI_BRANCH=security-hardening`, and `WORKERS_CI_COMMIT_SHA` exactly matches detached HEAD. Other detached builds, main and mismatched metadata remain denied. Local builds still require the named security-hardening branch. Regression checks cover accepted and rejected cases. This supersedes the blanket detached-checkout rejection described above.

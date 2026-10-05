@@ -1,6 +1,7 @@
 import {readFileSync} from 'node:fs';
+import {assertPreviewCheckout} from './preview-checkout.mjs';
 import {assertDevelopmentSupabaseUrl} from '../src/lib/isolation-policy.ts';
-if(readFileSync('.git/HEAD','utf8').trim()!=='ref: refs/heads/security-hardening')throw new Error('Preview requires security-hardening checkout; detached/main builds are refused.');
+assertPreviewCheckout(readFileSync('.git/HEAD','utf8').trim(), process.env);
 if(process.env.VITE_DEVELOPMENT_PREVIEW!=='1')throw new Error('Preview build flag must be explicitly configured.');
 for(const name of ['SUPABASE_URL','VITE_SUPABASE_URL'])assertDevelopmentSupabaseUrl(process.env[name]);
 if(!process.env.VITE_SUPABASE_PUBLISHABLE_KEY)throw new Error('Development publishable key is required at build time.');
