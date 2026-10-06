@@ -1,0 +1,10 @@
+{
+  "started_at": "2026-10-06T06:09:53.824Z",
+  "base": "http://localhost:8081",
+  "workspace": "0944aa62-2f20-4937-9cea-e5c06992f7bc",
+  "forwarded_host": "founders-dev-preview.cartersites.workers.dev",
+  "authenticated_ui": "Existing development proof owner; session supplied to browser and same-origin requests",
+  "public_render": "Fresh browser context without authentication, with preview workspace forwarded host",
+  "runs": [],
+  "error": "locator.innerText: Error: strict mode violation: locator('main h1') resolved to 2 elements:\n    1) <h1 class=\"text-balance text-3xl font-bold tracking-tight sm:text-4xl\">AI Proof Weekend Pool Pricing October 2026</h1> aka getByRole('heading', { name: 'AI Proof Weekend Pool Pricing October 2026', exact: true })\n    2) <h1>…</h1> aka getByRole('heading', { name: 'AI Proof Weekend Pool Pricing October 2026 ## Understanding Hourly Rates - Base' })\n\nCall log:\n\u001b[2m  - waiting for locator('main h1')\u001b[22m\n"
+}

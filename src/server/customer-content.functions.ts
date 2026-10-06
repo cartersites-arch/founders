@@ -139,6 +139,8 @@ seo_title (≤60 chars) and seo_description (≤155 chars) optimized for the top
       },
       body: JSON.stringify({
         model: data.model,
+        // Leave room for reasoning and a complete 600–1200 word page.
+        max_tokens: 8192,
         messages: [
           { role: "system", content: systemPrompt },
           { role: "user", content: userPrompt },
@@ -154,6 +156,9 @@ seo_title (≤60 chars) and seo_description (≤155 chars) optimized for the top
       throw new Error(`AI gateway ${resp.status}: ${t.slice(0, 300)}`);
     }
     const json = await resp.json();
+    if (json?.choices?.[0]?.finish_reason === "length") {
+      throw new Error("AI response was truncated. Try generating the page again.");
+    }
     const tc = json?.choices?.[0]?.message?.tool_calls?.[0];
     if (!tc?.function?.arguments) throw new Error("AI response missing tool call");
     const gen = JSON.parse(tc.function.arguments) as {

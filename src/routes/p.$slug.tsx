@@ -45,7 +45,7 @@ function PublicPage() {
         <h1 className="text-balance text-3xl font-bold tracking-tight sm:text-4xl">{page.title}</h1>
       )}
       <article
-        className="prose prose-neutral mt-8 max-w-none dark:prose-invert"
+        className="public-page-content mt-8 max-w-none"
         // body_markdown is admin/AI-generated content stored in our DB.
         // Source is constrained to markdown via the generation prompt.
         dangerouslySetInnerHTML={{ __html: page.body_html }}

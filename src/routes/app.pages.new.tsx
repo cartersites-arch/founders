@@ -134,6 +134,7 @@ function NewPagePage() {
               <option value="openai/gpt-5-mini">GPT-5 mini (faster)</option>
               <option value="google/gemini-2.5-pro">Gemini 2.5 Pro</option>
               <option value="google/gemini-2.5-flash">Gemini 2.5 Flash (fastest)</option>
+              <option value="openrouter/free">Free model (availability varies)</option>
             </select>
           </div>
 

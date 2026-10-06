@@ -1,0 +1,20 @@
+{
+  "checked_at": "2026-10-06T06:14:02.201033+00:00",
+  "credential_values_logged": false,
+  "configured_readiness_observations": "unknown; direct request checks used instead",
+  "development_database_confirmed_by_user": true,
+  "openrouter_models": {
+    "status": 200
+  },
+  "openrouter_authenticated_key": {
+    "status": 200,
+    "is_free_tier": true,
+    "limit": 100,
+    "limit_remaining": 100,
+    "usage": 0
+  },
+  "preview": {
+    "status": 403,
+    "body": "error code: 1010\n"
+  }
+}
