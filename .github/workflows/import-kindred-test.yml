@@ -21,10 +21,11 @@ jobs:
           source_dir="$RUNNER_TEMP/kindred-test-source"
           git clone --depth 1 https://github.com/derekbowen/kindred-ease-space.git "$source_dir"
           test "$(git -C "$source_dir" rev-parse HEAD)" = "$EXPECTED_SHA"
-          rsync -a --delete --exclude=.git/ "$source_dir/" ./
-          for workflow in .github/workflows/*.yml .github/workflows/*.yaml; do
+          rsync -a --delete --exclude=.git/ --exclude=.github/workflows/ "$source_dir/" ./
+          mkdir -p docs/imported-workflows
+          for workflow in "$source_dir"/.github/workflows/*.yml "$source_dir"/.github/workflows/*.yaml; do
             [ -f "$workflow" ] || continue
-            mv "$workflow" "$workflow.disabled"
+            cp "$workflow" "docs/imported-workflows/$(basename "$workflow").disabled"
           done
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
