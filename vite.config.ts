@@ -1,105 +1,30 @@
-import { defineConfig } from "vite";
-import tailwindcss from "@tailwindcss/vite";
-import tsConfigPaths from "vite-tsconfig-paths";
-import { tanstackStart } from "@tanstack/react-start/plugin/vite";
-import viteReact from "@vitejs/plugin-react";
+// @lovable.dev/vite-tanstack-config already includes the following — do NOT add them manually
+// or the app will break with duplicate plugins:
+//   - tanstackStart, viteReact, tailwindcss, tsConfigPaths, cloudflare (build-only),
+//     componentTagger (dev-only), VITE_* env injection, @ path alias, React/TanStack dedupe,
+//     error logger plugins, and sandbox detection (port/host/strictPort).
+// You can pass additional config via defineConfig({ vite: { ... } }) if needed.
+import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
-export default defineConfig(async ({ command }) => {
-  // Lazy dynamic import so dev mode doesn't pull in workerd.
-  const cloudflarePlugin =
-    command === "build"
-      ? [
-          (await import("@cloudflare/vite-plugin")).cloudflare({
-            viteEnvironment: { name: "ssr" },
-          }),
-        ]
-      : [];
+// Build identity, compiled into the bundle so the running Worker can name the
+// commit it was built from. CI deploys, then asks production which build it is
+// and compares against the SHA it just shipped. A green deploy log is not
+// evidence — the previous pipeline produced those while serving stale code.
+//
+// GITHUB_SHA is set by GitHub Actions. Locally these fall back to "dev".
+const BUILD_SHA = process.env.GITHUB_SHA || process.env.BUILD_SHA || "dev";
+const BUILD_TIME = process.env.GITHUB_SHA ? new Date().toISOString() : "dev";
 
-  return {
-    plugins: [
-      tailwindcss(),
-      tsConfigPaths({ projects: ["./tsconfig.json"] }),
-      ...cloudflarePlugin,
-      tanstackStart({
-        importProtection: {
-          behavior: "error",
-          client: {
-            files: ["**/server/**"],
-            specifiers: ["server-only"],
-            // `.functions.ts(x)` files under src/server are RPC stubs —
-            // they're transformed at build time so client imports are allowed.
-            excludeFiles: [
-              "**/server/*.functions.ts",
-              "**/server/*.functions.tsx",
-              "**/server/**/*.functions.ts",
-              "**/server/**/*.functions.tsx",
-            ],
-          },
-        },
-      }),
-      viteReact(),
-    ],
-    resolve: {
-      alias: {
-        "@": `${process.cwd()}/src`,
-      },
-      dedupe: [
-        "react",
-        "react-dom",
-        "react/jsx-runtime",
-        "react/jsx-dev-runtime",
-        "@tanstack/react-query",
-        "@tanstack/query-core",
-      ],
+// Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
+// @cloudflare/vite-plugin builds from this — wrangler.jsonc main alone is insufficient.
+export default defineConfig({
+  tanstackStart: {
+    server: { entry: "server" },
+  },
+  vite: {
+    define: {
+      __BUILD_SHA__: JSON.stringify(BUILD_SHA),
+      __BUILD_TIME__: JSON.stringify(BUILD_TIME),
     },
-    server: {
-      // Bind to IPv4 (0.0.0.0) so the dev server starts in environments
-      // without IPv6 (containers, Codespaces, sandboxes). Still reachable
-      // from external network interfaces.
-      host: "0.0.0.0",
-      port: Number(process.env.PORT) || 8080,
-      strictPort: true,
-    },
-    build: {
-      // Serve built JS/CSS under /fw-assets/ so the reverse proxy can route
-      // this app's static assets without colliding with other apps on the same domain.
-      assetsDir: "fw-assets",
-      chunkSizeWarningLimit: 600,
-      rollupOptions: {
-        output: {
-          // Pull heavy vendor groups into stable, cacheable chunks instead of
-          // inlining them all into the main bundle.
-          manualChunks: {
-            "vendor-react": ["react", "react-dom", "react/jsx-runtime"],
-            "vendor-tanstack": [
-              "@tanstack/react-router",
-              "@tanstack/react-start",
-              "@tanstack/react-query",
-            ],
-            "vendor-radix": [
-              "@radix-ui/react-accordion",
-              "@radix-ui/react-alert-dialog",
-              "@radix-ui/react-avatar",
-              "@radix-ui/react-checkbox",
-              "@radix-ui/react-collapsible",
-              "@radix-ui/react-dialog",
-              "@radix-ui/react-dropdown-menu",
-              "@radix-ui/react-label",
-              "@radix-ui/react-popover",
-              "@radix-ui/react-select",
-              "@radix-ui/react-slot",
-              "@radix-ui/react-switch",
-              "@radix-ui/react-tabs",
-              "@radix-ui/react-tooltip",
-            ],
-            "vendor-charts": ["recharts"],
-            "vendor-forms": ["react-hook-form", "@hookform/resolvers", "zod"],
-            "vendor-supabase": ["@supabase/supabase-js"],
-            "vendor-stripe": ["stripe"],
-            "vendor-email": ["@react-email/components", "react-email"],
-          },
-        },
-      },
-    },
-  };
+  },
 });

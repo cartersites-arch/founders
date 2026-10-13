@@ -1,110 +1,93 @@
-# Competitor Radar — Quality fix + Conversion engine
+# AI Coach for founders.click
 
-You're right. Right now the matcher is regex-grepping any 10-digit string and shipping it as a "phone." Before we spend another dollar on PDL or BatchData, we plug the leak. Then we layer on the conversion machinery.
+A contextual, tool-using agent embedded in the app. Not a chatbot — it reads workspace data, calls tools, and returns specific actionable recommendations. Uses each tenant's BYOK keys via the existing `ai-proxy` edge function.
 
-I'm proposing this in phases so you can ship #1 today and approve the rest piece by piece.
+## Scope
 
-## Phase 1 — Stop the garbage (ship today)
+Three surfaces:
+1. **Persistent chat panel** — slide-out, ⌘J shortcut, available on every `/app/*` route
+2. **Daily briefing card** — top of `/app/dashboard`, regenerated nightly via cron
+3. **Inline coaching** — context-aware side panel on page builder, listing sync, SEO settings
 
-Goal: every card on the matches tab is either a real lead or it's gone.
+## Database (one migration)
 
-**1a. Phone validation in `host-matcher.server.ts`**
-- Replace the raw `PHONE_RE` capture with a validator that:
-  - normalizes to 10 digits (strip +1, parens, spaces, dashes)
-  - rejects if the 10-digit string appears inside a URL path, query string, or product SKU context (look at the surrounding 40 chars in source markdown — if it's wrapped in `/`, `?`, `=`, `sku`, `id=`, `product`, kill it)
-  - rejects if area code is not in the NANP valid-area-code list (we ship a small static set)
-  - rejects if the central office code starts with 0 or 1
-  - rejects obvious sequential/repeated patterns (1234567890, 5555555555)
-- Same hardening for emails: reject anything matching `noreply|no-reply|support@|info@|hello@|contact@` unless first-name match is strong, and reject any email whose domain is on a stoplist of marketplaces, CDNs, analytics vendors.
+- `coach_conversations` — workspace_id, user_id, title, context_type, context_ref_id
+- `coach_messages` — conversation_id, role, content, tool_calls jsonb, tokens_used
+- `coach_daily_briefings` — workspace_id, briefing_date (unique), insights jsonb, viewed_at
+- `coach_action_log` — workspace_id, user_id, action_type, details jsonb
+- `coach_system_prompts` — version-controlled system prompt rows so we can iterate without redeploy
+- `coach_user_preferences` — per-user mode (aggressive/steady), preferred response length, model preference
+- RLS: workspace members can read/write their workspace rows only; user prefs scoped to `auth.uid()`
 
-**1b. Confidence floor + review queue**
-- DB: add a `review` status to `competitor_host_matches` (already free-text — just use it).
-- Anything < 85 confidence is inserted as `status = 'review'`, not `'new'`.
-- Matches tab gets a 5th filter chip: `review`. Default tab stays `new` so you only see the high-quality ones. Review queue is for when you want to spot-check.
-- Bump the matcher's Gemini prompt to require BOTH a name match AND a city match for ≥85, OR a verified email/phone overlap.
+## Edge functions
 
-**1c. Domain stoplist for candidate websites**
-- Reject candidate URLs from: jansport.com, coupang.com, ebay, amazon, alibaba, etsy, pinterest, reddit (unless it's a profile), any `*.shop`, any URL with `/product/`, `/dp/`, `/itm/`, `/sku/`. These keep showing up because Gemini sees a number match and rolls with it.
+### `coach-chat` (streaming SSE)
+- Auth: workspace member check
+- Loads conversation history (last 20 messages) + workspace summary + active system prompt version
+- Resolves tenant BYOK via `tenant_get_ai_credential` (provider/model from `coach_user_preferences`, fallback OpenAI)
+- Tool-use loop, max 8 iterations: send → if `tool_use` blocks, execute → append results → repeat
+- Streams final assistant text via SSE
+- Persists every message (user, assistant, tool result) with `tokens_used`
+- Returns rolling cost estimate to client
+- Anthropic prompt caching headers on system + workspace context blocks
 
-**1d. Block enrichment on garbage**
-- `enrichHostMatch` already gates on confidence ≥ 85 for Tier 2. Add the same gate for Tier 1, plus a hard refusal if the candidate has zero validated emails, zero validated phones, AND no first-name match. No more burning $0.10 on a JanSport result.
+### `coach-tools` (internal RPC, called only from `coach-chat`)
+Single function exposing all tools — keeps deploy simple. Tools:
+- `query_pages(filters)` — over `tenant_pages`
+- `query_listings(filters)` — over `tenant_listings`
+- `get_page_seo_audit(page_id)` — word count, title/meta length, H1, internal links, schema check
+- `get_gsc_data(page_url?, days)` — pulls existing GSC data if connected, else returns `not_connected`
+- `suggest_content_additions(page_id)` — diff vs top 3 SERP results for primary keyword
+- `suggest_internal_links(page_id)` — related workspace pages that should link in
+- `generate_page_content(page_id, section, brief)` — uses BYOK to draft markdown
+- `check_listing_coverage()` — listings with no page, pages with no matching listings
+- `check_sitemap_health()` — validates sitemap, finds 404s and orphans
+- `run_competitor_analysis(query, location)` — top-3 SERP scrape via existing fetch infra
+- `apply_seo_fix(page_id, fix_type, payload)` — gated; requires `confirmed: true` flag set by client
 
-## Phase 2 — Conversion machine (ship this week)
+All tool inputs validated with Zod. Workspace isolation enforced inside every tool implementation in addition to RLS.
 
-Goal: "contacted" actually does something. Brandon doesn't think; the system tells him who to call.
+### `coach-briefing-cron` (called by pg_cron daily at 06:00 UTC)
+- For each active workspace: run analysis tools, score by `impressions × position_improvement_potential`
+- Send top 10 candidates to LLM, ask for top 3 with priority + action_type + action_payload
+- Upsert into `coach_daily_briefings` keyed by `(workspace_id, briefing_date)`
 
-**2a. Personalized landing pages**
-- New route: `src/routes/migrate-from-$source.$firstname.tsx` (e.g. `/migrate-from-swimply/sarah-h7k2`).
-- Slug is `firstname + 4-char hash of match_id` so it's unguessable but shareable.
-- Server function pulls the match row + scraped listing markdown + photos and renders:
-  - "Hey {first name} — we'll rebuild your {city} listing in 10 minutes"
-  - Photo strip from their actual scraped listing
-  - Side-by-side fee comparison (10% vs Swimply 15%)
-  - Single CTA → `/l/draft/.../new/details`
-- Each match row gets a `landing_slug` column. Generated lazily on first "contacted" action.
-- The matches card grows a "Copy landing URL" button.
+### Pg_cron
+- Schedule via `net.http_post` to `coach-briefing-cron` daily, using anon key in `apikey` header
 
-**2b. Brandon view**
-- New tab on the radar page: "Today's call list."
-- Server-side ranks `new` + enriched matches by:
-  - revenue_signal_score (already computed)
-  - × city demand multiplier (count of `pool_waitlist` rows in that city in last 30 days)
-  - × recency boost (newer first_seen = hotter)
-- Top 10. Shown as a numbered list with phone, email, landing URL, evidence, "mark contacted" button.
-- One screen, no thinking.
+## Frontend
 
-**2c. Status → action wiring**
-- "Mark contacted" fires a server function that:
-  - generates the personalized landing URL (if not already)
-  - logs the contact to a new `host_outreach_log` table (timestamp, channel, slug, user_id who clicked the button)
-  - sets `status = contacted`
-- We DO NOT auto-send SMS/email yet. See legal below. The button just preps everything Brandon then sends manually from his own inbox/phone — that's the safe path for now.
+- `src/lib/coach.functions.ts` — server fns: `listConversations`, `createConversation`, `getMessages`, `getTodayBriefing`, `dismissInsight`, `logCoachAction`, `setCoachPreferences`
+- `src/components/coach/CoachPanel.tsx` — slide-out using existing Sheet primitive; conversation list, streaming message renderer (react-markdown), tool-call collapsibles, action buttons, suggested prompts, cost footer
+- `src/components/coach/CoachLauncher.tsx` — floating button + ⌘J binding, mounted in `_authenticated` layout
+- `src/components/coach/DailyBriefing.tsx` — three insight cards on dashboard with "Take action" / "Dismiss"
+- `src/components/coach/InlineCoach.tsx` — collapsible right panel; consumes `context` prop; mounted on page builder, listing sync, SEO settings routes
+- Streaming via `fetch` to `/functions/v1/coach-chat`, SSE parser per AI gateway pattern
+- Suggested prompts library (15 starter prompts) in `src/lib/coach-prompts.ts`
 
-## Phase 3 — Signal upgrades (next sprint)
+## Constraints honored
 
-**3a. Price-drop tracker**
-- New table `competitor_price_history` (competitor_url_id, price, captured_at).
-- Daily scan re-scrapes any URL we've matched, extracts price (already parsing in `scoreRevenueSignal`), inserts a row.
-- If price drops twice in 30 days → flag match with `🔥 ripe to switch` badge + bump it to top of Brandon view.
+- All LLM calls use tenant BYOK; if missing, panel shows upgrade CTA pointing to `/app/settings/ai`
+- Destructive tools (`apply_seo_fix`, `generate_page_content` write-back) require client to pass `confirmed: true` after a Confirm click
+- Context window trimmed to last 20 messages + system + workspace summary
+- Streaming SSE; no spinners on assistant text
+- Workspace isolation: RLS + tool-level checks
+- No autonomous mutations — every write is button-triggered
 
-**3b. Giggster + Peerspace data extraction**
-- Sitemaps already tracked. Add their detail-page extractors to the matcher. Same flow.
+## Out of scope for this build
 
-**3c. "What's new" pSEO loop**
-- New route: `/p/whats-new/$city.tsx`.
-- Server function aggregates competitor_urls discovered in the last 7 days for that city.
-- "23 new pool listings added this week in Phoenix — here's what hosts are charging."
-- Sitemap entry auto-published. Self-feeding pSEO.
+- Public `/audit` lead magnet (separate workstream)
+- Cross-workspace user memory (will scaffold `coach_user_preferences` but not auto-summarize)
+- Conversation summarization rollup at 50 messages (will leave a TODO; trim-only for now)
+- Coach analytics dashboard for admins
 
-**3d. Public "Swimply Refugee" counter**
-- Tiny widget on homepage: "X hosts switched this month." Pulls `count(*) where status='converted' and updated_at > now() - 30d`.
-- Wrapped in error boundary; falls back to nothing if query fails.
+## Build order
 
-## Phase 4 — Legal cover (before any outbound automation)
-
-I'm not building auto-SMS or auto-email until this is settled. The TCPA exposure is real ($1,500/text), and after the C&D you've already gotten, Swimply's lawyers will pattern-match anything that looks like systematic poaching.
-
-What I recommend BEFORE phase 2c becomes "auto-send":
-- Run the outreach copy + flow past an actual IP/employment attorney (1-hour consult, ~$300).
-- Outreach must be educational ("hosts in your area pay 10% vs 15%"), CAN-SPAM compliant footer, single-click unsubscribe, no SMS without express written consent.
-- Only contact emails the host published themselves on the listing. Skip-traced contacts get a redder line — those go to Brandon's manual queue, not any automation.
-
-## Technical details
-
-Files I'll touch in phase 1:
-- `src/server/host-matcher.server.ts` — add `validateUSPhone`, `validateEmail`, surrounding-context check, reject noisy candidates before insert
-- `src/server/contact-enricher.server.ts` — gate Tier 1 on validated contacts, not just address presence
-- `src/routes/admin.competitor-radar.tsx` — add `review` status chip, default to `new` only
-- `src/server/admin-weapons.functions.ts` — add `review` to the status type union
-- One small migration: nothing schema-wise needed for phase 1 (status column is text); we'll add `landing_slug` and `host_outreach_log` in phase 2
-
-Phase 1 ships in one pass. Phase 2 needs a migration + new route. Phase 3 is its own batch.
-
-## What I need from you
-
-Pick one:
-1. **Just ship phase 1** (quality fix) and we re-evaluate after you see clean cards.
-2. **Phase 1 + 2** (quality + landing pages + Brandon view, no auto-send).
-3. **All of it including phase 4** (you've already got the attorney lined up).
-
-My recommendation: option 2. Phase 1 unblocks you immediately, phase 2 makes Brandon dangerous, phase 3 and the auto-send wait until you've validated the manual flow converts.
+1. Migration (tables + RLS + `coach_system_prompts` seed row)
+2. `coach-chat` edge function with full tool layer + Zod schemas + streaming
+3. `coach-briefing-cron` + pg_cron schedule
+4. `coach.functions.ts` server functions
+5. `CoachPanel` + `CoachLauncher` mounted in `_authenticated` layout
+6. `DailyBriefing` on dashboard
+7. `InlineCoach` wired into page builder route (other surfaces follow same pattern)
+8. Suggested prompts + cost footer + ⌘J shortcut

@@ -9,81 +9,113 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as UnsubscribeRouteImport } from './routes/unsubscribe'
+import { Route as TermsRouteImport } from './routes/terms'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
-import { Route as SitemapStaticDotxmlRouteImport } from './routes/sitemap-static[.]xml'
-import { Route as SitemapIndexDotxmlRouteImport } from './routes/sitemap-index[.]xml'
-import { Route as SitemapDefaultDotxmlRouteImport } from './routes/sitemap-default[.]xml'
-import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
-import { Route as ReferralRouteImport } from './routes/referral'
-import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
-import { Route as OnboardingRouteImport } from './routes/onboarding'
-import { Route as AuthRouteImport } from './routes/auth'
-import { Route as AppRouteImport } from './routes/app'
-import { Route as AdminRouteImport } from './routes/admin'
+import { Route as SignupRouteImport } from './routes/signup'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as HelpRouteImport } from './routes/help'
+import { Route as BetaRouteImport } from './routes/beta'
+import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as TemplatesIndexRouteImport } from './routes/templates.index'
-import { Route as HelpCenterIndexRouteImport } from './routes/help-center.index'
-import { Route as VerifyUidRouteImport } from './routes/verify.$uid'
-import { Route as TemplatesSlugRouteImport } from './routes/templates.$slug'
+import { Route as SharetribeTemplatesIndexRouteImport } from './routes/sharetribe-templates.index'
+import { Route as HelpIndexRouteImport } from './routes/help.index'
+import { Route as SharetribeTemplatesSlugRouteImport } from './routes/sharetribe-templates.$slug'
 import { Route as PSlugRouteImport } from './routes/p.$slug'
-import { Route as EmailUnsubscribeRouteImport } from './routes/email/unsubscribe'
-import { Route as AuthResetPasswordRouteImport } from './routes/auth.reset-password'
-import { Route as AppDashboardRouteImport } from './routes/app.dashboard'
-import { Route as AdminTeamRouteImport } from './routes/admin.team'
-import { Route as AdminSiteFooterRouteImport } from './routes/admin.site-footer'
-import { Route as AdminSeoHealthRouteImport } from './routes/admin.seo-health'
-import { Route as AdminScrapeImportRouteImport } from './routes/admin.scrape-import'
-import { Route as AdminRankTrackerRouteImport } from './routes/admin.rank-tracker'
-import { Route as AdminQuickPageRouteImport } from './routes/admin.quick-page'
-import { Route as AdminPlanRequestsRouteImport } from './routes/admin.plan-requests'
-import { Route as AdminPageAuditorRouteImport } from './routes/admin.page-auditor'
-import { Route as AdminNoAccessRouteImport } from './routes/admin.no-access'
-import { Route as AdminMissingPagesRouteImport } from './routes/admin.missing-pages'
-import { Route as AdminLinkCheckerRouteImport } from './routes/admin.link-checker'
-import { Route as AdminLearningRouteImport } from './routes/admin.learning'
-import { Route as AdminLeadsRouteImport } from './routes/admin.leads'
-import { Route as AdminKeywordOpportunitiesRouteImport } from './routes/admin.keyword-opportunities'
-import { Route as AdminInternalLinksRouteImport } from './routes/admin.internal-links'
-import { Route as AdminIndexingRouteImport } from './routes/admin.indexing'
-import { Route as AdminGscImportRouteImport } from './routes/admin.gsc-import'
-import { Route as AdminGenerateContentRouteImport } from './routes/admin.generate-content'
-import { Route as AdminEmailBrandingRouteImport } from './routes/admin.email-branding'
-import { Route as AdminDirectoryRouteImport } from './routes/admin.directory'
-import { Route as AdminDashboardRouteImport } from './routes/admin.dashboard'
-import { Route as AdminContentPagesRouteImport } from './routes/admin.content-pages'
-import { Route as AdminContentMigrationRouteImport } from './routes/admin.content-migration'
-import { Route as AdminCompetitorsRouteImport } from './routes/admin.competitors'
-import { Route as AdminCompetitorRadarRouteImport } from './routes/admin.competitor-radar'
-import { Route as AdminClickReportRouteImport } from './routes/admin.click-report'
-import { Route as AdminClaimsRouteImport } from './routes/admin.claims'
-import { Route as AdminCitiesHeroesRouteImport } from './routes/admin.cities-heroes'
-import { Route as AdminBlogRouteImport } from './routes/admin.blog'
-import { Route as AccountLearningRouteImport } from './routes/account.learning'
-import { Route as AccountBillingRouteImport } from './routes/account.billing'
-import { Route as HelpCenterCategoryIndexRouteImport } from './routes/help-center.$category.index'
-import { Route as AppPagesIndexRouteImport } from './routes/app.pages.index'
-import { Route as LovableEmailSuppressionRouteImport } from './routes/lovable/email/suppression'
-import { Route as HelpCenterCategorySlugRouteImport } from './routes/help-center.$category.$slug'
-import { Route as AppPagesNewRouteImport } from './routes/app.pages.new'
-import { Route as ApiPublicTrackCityClickRouteImport } from './routes/api/public/track-city-click'
-import { Route as ApiPublicBackfillContentPagesRouteImport } from './routes/api/public/backfill-content-pages'
-import { Route as ApiBillingWebhookRouteImport } from './routes/api/billing.webhook'
-import { Route as AdminLearningUserIdRouteImport } from './routes/admin.learning.$userId'
-import { Route as LovableEmailTransactionalSendRouteImport } from './routes/lovable/email/transactional/send'
-import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/email/queue/process'
-import { Route as LovableEmailAuthWebhookRouteImport } from './routes/lovable/email/auth/webhook'
-import { Route as AppPagesIdEditRouteImport } from './routes/app.pages.$id.edit'
-import { Route as ApiPublicHooksSyncListingsRouteImport } from './routes/api/public/hooks.sync-listings'
-import { Route as ApiPublicHooksSeoSelfTestRouteImport } from './routes/api/public/hooks.seo-self-test'
-import { Route as ApiPublicHooksSeoFixWorkerRouteImport } from './routes/api/public/hooks/seo-fix-worker'
-import { Route as ApiPublicHooksDailySeoDigestRouteImport } from './routes/api/public/hooks.daily-seo-digest'
-import { Route as ApiPublicHooksCompetitorRadarScanRouteImport } from './routes/api/public/hooks.competitor-radar-scan'
-import { Route as ApiCertificatesUidPdfRouteImport } from './routes/api/certificates.$uid.pdf'
+import { Route as HelpSitemapDotxmlRouteImport } from './routes/help.sitemap[.]xml'
+import { Route as HelpSearchRouteImport } from './routes/help.search'
+import { Route as HelpContactRouteImport } from './routes/help.contact'
+import { Route as HelpCategoryRouteImport } from './routes/help.$category'
+import { Route as ApplySlugRouteImport } from './routes/apply.$slug'
+import { Route as ASitemapDotxmlRouteImport } from './routes/a.sitemap[.]xml'
+import { Route as AFoundersDomainTestRouteImport } from './routes/a.founders-domain-test'
+import { Route as ASlugRouteImport } from './routes/a.$slug'
+import { Route as AuthenticatedAppRouteImport } from './routes/_authenticated/app'
+import { Route as AuthenticatedAppIndexRouteImport } from './routes/_authenticated/app.index'
+import { Route as SharetribeTemplatesSlugDownloadRouteImport } from './routes/sharetribe-templates.$slug_.download'
+import { Route as SWsSlugRouteImport } from './routes/s.$ws.$slug'
+import { Route as HelpCategoryArticleRouteImport } from './routes/help.$category_.$article'
+import { Route as ApiPublicVersionRouteImport } from './routes/api/public/version'
+import { Route as ApiPublicSitemapByHostRouteImport } from './routes/api/public/sitemap-by-host'
+import { Route as ApiPublicPageLookupRouteImport } from './routes/api/public/page-lookup'
+import { Route as ApiPublicEdgeHealthRouteImport } from './routes/api/public/edge-health'
+import { Route as ApiPublicDomainTokenRouteImport } from './routes/api/public/domain-token'
+import { Route as ApiPublicDomainConfigRouteImport } from './routes/api/public/domain-config'
+import { Route as AuthenticatedAppSettingsRouteImport } from './routes/_authenticated/app.settings'
+import { Route as AuthenticatedAppSeoCoachRouteImport } from './routes/_authenticated/app.seo-coach'
+import { Route as AuthenticatedAppPagesRouteImport } from './routes/_authenticated/app.pages'
+import { Route as AuthenticatedAppOpportunitiesRouteImport } from './routes/_authenticated/app.opportunities'
+import { Route as AuthenticatedAppOnboardingRouteImport } from './routes/_authenticated/app.onboarding'
+import { Route as AuthenticatedAppCoachRouteImport } from './routes/_authenticated/app.coach'
+import { Route as AuthenticatedAppBillingRouteImport } from './routes/_authenticated/app.billing'
+import { Route as AuthenticatedAppAffiliatesRouteImport } from './routes/_authenticated/app.affiliates'
+import { Route as AuthenticatedAppAddonsRouteImport } from './routes/_authenticated/app.addons'
+import { Route as ApiPublicOpsSyncHealthRouteImport } from './routes/api/public/ops/sync-health'
+import { Route as ApiPublicOpsEmailProbeRouteImport } from './routes/api/public/ops/email-probe'
+import { Route as ApiPublicHooksSyncSharetribeRouteImport } from './routes/api/public/hooks/sync-sharetribe'
+import { Route as ApiPublicHooksCanonicalAuditRouteImport } from './routes/api/public/hooks/canonical-audit'
+import { Route as ApiPublicHooksAuthSendEmailRouteImport } from './routes/api/public/hooks/auth-send-email'
+import { Route as AuthenticatedAppSettingsDomainsRouteImport } from './routes/_authenticated/app.settings.domains'
+import { Route as AuthenticatedAppSettingsApiKeysRouteImport } from './routes/_authenticated/app.settings.api-keys'
+import { Route as AuthenticatedAppSettingsAiRouteImport } from './routes/_authenticated/app.settings.ai'
+import { Route as AuthenticatedAppSeoSitemapRouteImport } from './routes/_authenticated/app.seo.sitemap'
+import { Route as AuthenticatedAppSeoScrapeImportRouteImport } from './routes/_authenticated/app.seo.scrape-import'
+import { Route as AuthenticatedAppSeoRankTrackerRouteImport } from './routes/_authenticated/app.seo.rank-tracker'
+import { Route as AuthenticatedAppSeoPageAuditorRouteImport } from './routes/_authenticated/app.seo.page-auditor'
+import { Route as AuthenticatedAppSeoMissingPagesRouteImport } from './routes/_authenticated/app.seo.missing-pages'
+import { Route as AuthenticatedAppSeoListingAuditorRouteImport } from './routes/_authenticated/app.seo.listing-auditor'
+import { Route as AuthenticatedAppSeoLinkCheckerRouteImport } from './routes/_authenticated/app.seo.link-checker'
+import { Route as AuthenticatedAppSeoLinkAuditRouteImport } from './routes/_authenticated/app.seo.link-audit'
+import { Route as AuthenticatedAppSeoKeywordOpportunitiesRouteImport } from './routes/_authenticated/app.seo.keyword-opportunities'
+import { Route as AuthenticatedAppSeoInternalLinksRouteImport } from './routes/_authenticated/app.seo.internal-links'
+import { Route as AuthenticatedAppSeoHealthRouteImport } from './routes/_authenticated/app.seo.health'
+import { Route as AuthenticatedAppSeoGscImportRouteImport } from './routes/_authenticated/app.seo.gsc-import'
+import { Route as AuthenticatedAppSeoContentHealthRouteImport } from './routes/_authenticated/app.seo.content-health'
+import { Route as AuthenticatedAppSeoCompetitorTrackerRouteImport } from './routes/_authenticated/app.seo.competitor-tracker'
+import { Route as AuthenticatedAppSeoCompetitorRadarRouteImport } from './routes/_authenticated/app.seo.competitor-radar'
+import { Route as AuthenticatedAppSeoClickReportRouteImport } from './routes/_authenticated/app.seo.click-report'
+import { Route as AuthenticatedAppSeoCanonicalAuditRouteImport } from './routes/_authenticated/app.seo.canonical-audit'
+import { Route as AuthenticatedAppPagesNewRouteImport } from './routes/_authenticated/app.pages.new'
+import { Route as AuthenticatedAppPagesBulkRouteImport } from './routes/_authenticated/app.pages.bulk'
+import { Route as AuthenticatedAppOpsSocialLeadHunterRouteImport } from './routes/_authenticated/app.ops.social-lead-hunter'
+import { Route as AuthenticatedAppOpsSiteFooterRouteImport } from './routes/_authenticated/app.ops.site-footer'
+import { Route as AuthenticatedAppOpsPlanRequestsRouteImport } from './routes/_authenticated/app.ops.plan-requests'
+import { Route as AuthenticatedAppOpsListingClaimsRouteImport } from './routes/_authenticated/app.ops.listing-claims'
+import { Route as AuthenticatedAppOpsLeadInboxRouteImport } from './routes/_authenticated/app.ops.lead-inbox'
+import { Route as AuthenticatedAppOpsIgLeadHunterRouteImport } from './routes/_authenticated/app.ops.ig-lead-hunter'
+import { Route as AuthenticatedAppOpsEmailVerifyRouteImport } from './routes/_authenticated/app.ops.email-verify'
+import { Route as AuthenticatedAppOpsEmailBrandingRouteImport } from './routes/_authenticated/app.ops.email-branding'
+import { Route as AuthenticatedAppOpsDirectoryModerationRouteImport } from './routes/_authenticated/app.ops.directory-moderation'
+import { Route as AuthenticatedAppOpsAdminTeamRouteImport } from './routes/_authenticated/app.ops.admin-team'
+import { Route as AuthenticatedAppContentQuickPageBuilderRouteImport } from './routes/_authenticated/app.content.quick-page-builder'
+import { Route as AuthenticatedAppContentMigrationRouteImport } from './routes/_authenticated/app.content.migration'
+import { Route as AuthenticatedAppContentLearningRouteImport } from './routes/_authenticated/app.content.learning'
+import { Route as AuthenticatedAppContentGenerateRouteImport } from './routes/_authenticated/app.content.generate'
+import { Route as AuthenticatedAppContentDataImportRouteImport } from './routes/_authenticated/app.content.data-import'
+import { Route as AuthenticatedAppContentDataExportRouteImport } from './routes/_authenticated/app.content.data-export'
+import { Route as AuthenticatedAppContentCityHeroesRouteImport } from './routes/_authenticated/app.content.city-heroes'
+import { Route as AuthenticatedAppContentBulkEditorRouteImport } from './routes/_authenticated/app.content.bulk-editor'
+import { Route as AuthenticatedAppContentBlogRouteImport } from './routes/_authenticated/app.content.blog'
+import { Route as AuthenticatedAppAffiliatesSettingsRouteImport } from './routes/_authenticated/app.affiliates.settings'
+import { Route as AuthenticatedAppAffiliatesProgramsRouteImport } from './routes/_authenticated/app.affiliates.programs'
+import { Route as AuthenticatedAppAffiliatesPayoutsRouteImport } from './routes/_authenticated/app.affiliates.payouts'
+import { Route as AuthenticatedAppAffiliatesDirectoryRouteImport } from './routes/_authenticated/app.affiliates.directory'
+import { Route as AuthenticatedAppAffiliatesCustomiseRouteImport } from './routes/_authenticated/app.affiliates.customise'
+import { Route as AuthenticatedAppAdminTemplateStoreRouteImport } from './routes/_authenticated/app.admin.template-store'
+import { Route as AuthenticatedAppAdminEmailTemplatesRouteImport } from './routes/_authenticated/app.admin.email-templates'
+import { Route as AuthenticatedAppSettingsIntegrationsSharetribeRouteImport } from './routes/_authenticated/app.settings.integrations.sharetribe'
+import { Route as AuthenticatedAppPagesIdEditRouteImport } from './routes/_authenticated/app.pages.$id.edit'
+import { Route as AuthenticatedAppAdminHelpTicketsRouteImport } from './routes/_authenticated/app.admin.help.tickets'
+import { Route as AuthenticatedAppAdminHelpFeedbackRouteImport } from './routes/_authenticated/app.admin.help.feedback'
+import { Route as AuthenticatedAppAdminHelpCategoriesRouteImport } from './routes/_authenticated/app.admin.help.categories'
+import { Route as AuthenticatedAppAdminHelpArticlesRouteImport } from './routes/_authenticated/app.admin.help.articles'
+import { Route as AuthenticatedAppAffiliatesProgramsIdEditRouteImport } from './routes/_authenticated/app.affiliates.programs.$id.edit'
+import { Route as AuthenticatedAppAdminHelpArticlesIdRouteImport } from './routes/_authenticated/app.admin.help.articles.$id'
 
-const UnsubscribeRoute = UnsubscribeRouteImport.update({
-  id: '/unsubscribe',
-  path: '/unsubscribe',
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
@@ -91,54 +123,38 @@ const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SitemapStaticDotxmlRoute = SitemapStaticDotxmlRouteImport.update({
-  id: '/sitemap-static.xml',
-  path: '/sitemap-static.xml',
+const SignupRoute = SignupRouteImport.update({
+  id: '/signup',
+  path: '/signup',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SitemapIndexDotxmlRoute = SitemapIndexDotxmlRouteImport.update({
-  id: '/sitemap-index.xml',
-  path: '/sitemap-index.xml',
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SitemapDefaultDotxmlRoute = SitemapDefaultDotxmlRouteImport.update({
-  id: '/sitemap-default.xml',
-  path: '/sitemap-default.xml',
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
   getParentRoute: () => rootRouteImport,
 } as any)
-const RobotsDottxtRoute = RobotsDottxtRouteImport.update({
-  id: '/robots.txt',
-  path: '/robots.txt',
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ReferralRoute = ReferralRouteImport.update({
-  id: '/referral',
-  path: '/referral',
+const HelpRoute = HelpRouteImport.update({
+  id: '/help',
+  path: '/help',
   getParentRoute: () => rootRouteImport,
 } as any)
-const PrivacyPolicyRoute = PrivacyPolicyRouteImport.update({
-  id: '/privacy-policy',
-  path: '/privacy-policy',
+const BetaRoute = BetaRouteImport.update({
+  id: '/beta',
+  path: '/beta',
   getParentRoute: () => rootRouteImport,
 } as any)
-const OnboardingRoute = OnboardingRouteImport.update({
-  id: '/onboarding',
-  path: '/onboarding',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AuthRoute = AuthRouteImport.update({
-  id: '/auth',
-  path: '/auth',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AppRoute = AppRouteImport.update({
-  id: '/app',
-  path: '/app',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminRoute = AdminRouteImport.update({
-  id: '/admin',
-  path: '/admin',
+const AuthenticatedRoute = AuthenticatedRouteImport.update({
+  id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -146,24 +162,20 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const TemplatesIndexRoute = TemplatesIndexRouteImport.update({
-  id: '/templates/',
-  path: '/templates/',
-  getParentRoute: () => rootRouteImport,
+const SharetribeTemplatesIndexRoute =
+  SharetribeTemplatesIndexRouteImport.update({
+    id: '/sharetribe-templates/',
+    path: '/sharetribe-templates/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const HelpIndexRoute = HelpIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => HelpRoute,
 } as any)
-const HelpCenterIndexRoute = HelpCenterIndexRouteImport.update({
-  id: '/help-center/',
-  path: '/help-center/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const VerifyUidRoute = VerifyUidRouteImport.update({
-  id: '/verify/$uid',
-  path: '/verify/$uid',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const TemplatesSlugRoute = TemplatesSlugRouteImport.update({
-  id: '/templates/$slug',
-  path: '/templates/$slug',
+const SharetribeTemplatesSlugRoute = SharetribeTemplatesSlugRouteImport.update({
+  id: '/sharetribe-templates/$slug',
+  path: '/sharetribe-templates/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PSlugRoute = PSlugRouteImport.update({
@@ -171,769 +183,1183 @@ const PSlugRoute = PSlugRouteImport.update({
   path: '/p/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
-const EmailUnsubscribeRoute = EmailUnsubscribeRouteImport.update({
-  id: '/email/unsubscribe',
-  path: '/email/unsubscribe',
+const HelpSitemapDotxmlRoute = HelpSitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => HelpRoute,
+} as any)
+const HelpSearchRoute = HelpSearchRouteImport.update({
+  id: '/search',
+  path: '/search',
+  getParentRoute: () => HelpRoute,
+} as any)
+const HelpContactRoute = HelpContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => HelpRoute,
+} as any)
+const HelpCategoryRoute = HelpCategoryRouteImport.update({
+  id: '/$category',
+  path: '/$category',
+  getParentRoute: () => HelpRoute,
+} as any)
+const ApplySlugRoute = ApplySlugRouteImport.update({
+  id: '/apply/$slug',
+  path: '/apply/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthResetPasswordRoute = AuthResetPasswordRouteImport.update({
-  id: '/reset-password',
-  path: '/reset-password',
-  getParentRoute: () => AuthRoute,
-} as any)
-const AppDashboardRoute = AppDashboardRouteImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
-  getParentRoute: () => AppRoute,
-} as any)
-const AdminTeamRoute = AdminTeamRouteImport.update({
-  id: '/team',
-  path: '/team',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminSiteFooterRoute = AdminSiteFooterRouteImport.update({
-  id: '/site-footer',
-  path: '/site-footer',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminSeoHealthRoute = AdminSeoHealthRouteImport.update({
-  id: '/seo-health',
-  path: '/seo-health',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminScrapeImportRoute = AdminScrapeImportRouteImport.update({
-  id: '/scrape-import',
-  path: '/scrape-import',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminRankTrackerRoute = AdminRankTrackerRouteImport.update({
-  id: '/rank-tracker',
-  path: '/rank-tracker',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminQuickPageRoute = AdminQuickPageRouteImport.update({
-  id: '/quick-page',
-  path: '/quick-page',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminPlanRequestsRoute = AdminPlanRequestsRouteImport.update({
-  id: '/plan-requests',
-  path: '/plan-requests',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminPageAuditorRoute = AdminPageAuditorRouteImport.update({
-  id: '/page-auditor',
-  path: '/page-auditor',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminNoAccessRoute = AdminNoAccessRouteImport.update({
-  id: '/no-access',
-  path: '/no-access',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminMissingPagesRoute = AdminMissingPagesRouteImport.update({
-  id: '/missing-pages',
-  path: '/missing-pages',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminLinkCheckerRoute = AdminLinkCheckerRouteImport.update({
-  id: '/link-checker',
-  path: '/link-checker',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminLearningRoute = AdminLearningRouteImport.update({
-  id: '/learning',
-  path: '/learning',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminLeadsRoute = AdminLeadsRouteImport.update({
-  id: '/leads',
-  path: '/leads',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminKeywordOpportunitiesRoute =
-  AdminKeywordOpportunitiesRouteImport.update({
-    id: '/keyword-opportunities',
-    path: '/keyword-opportunities',
-    getParentRoute: () => AdminRoute,
-  } as any)
-const AdminInternalLinksRoute = AdminInternalLinksRouteImport.update({
-  id: '/internal-links',
-  path: '/internal-links',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminIndexingRoute = AdminIndexingRouteImport.update({
-  id: '/indexing',
-  path: '/indexing',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminGscImportRoute = AdminGscImportRouteImport.update({
-  id: '/gsc-import',
-  path: '/gsc-import',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminGenerateContentRoute = AdminGenerateContentRouteImport.update({
-  id: '/generate-content',
-  path: '/generate-content',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminEmailBrandingRoute = AdminEmailBrandingRouteImport.update({
-  id: '/email-branding',
-  path: '/email-branding',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminDirectoryRoute = AdminDirectoryRouteImport.update({
-  id: '/directory',
-  path: '/directory',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminDashboardRoute = AdminDashboardRouteImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminContentPagesRoute = AdminContentPagesRouteImport.update({
-  id: '/content-pages',
-  path: '/content-pages',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminContentMigrationRoute = AdminContentMigrationRouteImport.update({
-  id: '/content-migration',
-  path: '/content-migration',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminCompetitorsRoute = AdminCompetitorsRouteImport.update({
-  id: '/competitors',
-  path: '/competitors',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminCompetitorRadarRoute = AdminCompetitorRadarRouteImport.update({
-  id: '/competitor-radar',
-  path: '/competitor-radar',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminClickReportRoute = AdminClickReportRouteImport.update({
-  id: '/click-report',
-  path: '/click-report',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminClaimsRoute = AdminClaimsRouteImport.update({
-  id: '/claims',
-  path: '/claims',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminCitiesHeroesRoute = AdminCitiesHeroesRouteImport.update({
-  id: '/cities-heroes',
-  path: '/cities-heroes',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminBlogRoute = AdminBlogRouteImport.update({
-  id: '/blog',
-  path: '/blog',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AccountLearningRoute = AccountLearningRouteImport.update({
-  id: '/account/learning',
-  path: '/account/learning',
+const ASitemapDotxmlRoute = ASitemapDotxmlRouteImport.update({
+  id: '/a/sitemap.xml',
+  path: '/a/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AccountBillingRoute = AccountBillingRouteImport.update({
-  id: '/account/billing',
-  path: '/account/billing',
+const AFoundersDomainTestRoute = AFoundersDomainTestRouteImport.update({
+  id: '/a/founders-domain-test',
+  path: '/a/founders-domain-test',
   getParentRoute: () => rootRouteImport,
 } as any)
-const HelpCenterCategoryIndexRoute = HelpCenterCategoryIndexRouteImport.update({
-  id: '/help-center/$category/',
-  path: '/help-center/$category/',
+const ASlugRoute = ASlugRouteImport.update({
+  id: '/a/$slug',
+  path: '/a/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AppPagesIndexRoute = AppPagesIndexRouteImport.update({
-  id: '/pages/',
-  path: '/pages/',
-  getParentRoute: () => AppRoute,
+const AuthenticatedAppRoute = AuthenticatedAppRouteImport.update({
+  id: '/app',
+  path: '/app',
+  getParentRoute: () => AuthenticatedRoute,
 } as any)
-const LovableEmailSuppressionRoute = LovableEmailSuppressionRouteImport.update({
-  id: '/lovable/email/suppression',
-  path: '/lovable/email/suppression',
-  getParentRoute: () => rootRouteImport,
+const AuthenticatedAppIndexRoute = AuthenticatedAppIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AuthenticatedAppRoute,
 } as any)
-const HelpCenterCategorySlugRoute = HelpCenterCategorySlugRouteImport.update({
-  id: '/help-center/$category/$slug',
-  path: '/help-center/$category/$slug',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AppPagesNewRoute = AppPagesNewRouteImport.update({
-  id: '/pages/new',
-  path: '/pages/new',
-  getParentRoute: () => AppRoute,
-} as any)
-const ApiPublicTrackCityClickRoute = ApiPublicTrackCityClickRouteImport.update({
-  id: '/api/public/track-city-click',
-  path: '/api/public/track-city-click',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiPublicBackfillContentPagesRoute =
-  ApiPublicBackfillContentPagesRouteImport.update({
-    id: '/api/public/backfill-content-pages',
-    path: '/api/public/backfill-content-pages',
+const SharetribeTemplatesSlugDownloadRoute =
+  SharetribeTemplatesSlugDownloadRouteImport.update({
+    id: '/sharetribe-templates/$slug_/download',
+    path: '/sharetribe-templates/$slug/download',
     getParentRoute: () => rootRouteImport,
   } as any)
-const ApiBillingWebhookRoute = ApiBillingWebhookRouteImport.update({
-  id: '/api/billing/webhook',
-  path: '/api/billing/webhook',
+const SWsSlugRoute = SWsSlugRouteImport.update({
+  id: '/s/$ws/$slug',
+  path: '/s/$ws/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminLearningUserIdRoute = AdminLearningUserIdRouteImport.update({
-  id: '/$userId',
-  path: '/$userId',
-  getParentRoute: () => AdminLearningRoute,
+const HelpCategoryArticleRoute = HelpCategoryArticleRouteImport.update({
+  id: '/$category_/$article',
+  path: '/$category/$article',
+  getParentRoute: () => HelpRoute,
 } as any)
-const LovableEmailTransactionalSendRoute =
-  LovableEmailTransactionalSendRouteImport.update({
-    id: '/lovable/email/transactional/send',
-    path: '/lovable/email/transactional/send',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const LovableEmailQueueProcessRoute =
-  LovableEmailQueueProcessRouteImport.update({
-    id: '/lovable/email/queue/process',
-    path: '/lovable/email/queue/process',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const LovableEmailAuthWebhookRoute = LovableEmailAuthWebhookRouteImport.update({
-  id: '/lovable/email/auth/webhook',
-  path: '/lovable/email/auth/webhook',
+const ApiPublicVersionRoute = ApiPublicVersionRouteImport.update({
+  id: '/api/public/version',
+  path: '/api/public/version',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AppPagesIdEditRoute = AppPagesIdEditRouteImport.update({
-  id: '/pages/$id/edit',
-  path: '/pages/$id/edit',
-  getParentRoute: () => AppRoute,
-} as any)
-const ApiPublicHooksSyncListingsRoute =
-  ApiPublicHooksSyncListingsRouteImport.update({
-    id: '/api/public/hooks/sync-listings',
-    path: '/api/public/hooks/sync-listings',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const ApiPublicHooksSeoSelfTestRoute =
-  ApiPublicHooksSeoSelfTestRouteImport.update({
-    id: '/api/public/hooks/seo-self-test',
-    path: '/api/public/hooks/seo-self-test',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const ApiPublicHooksSeoFixWorkerRoute =
-  ApiPublicHooksSeoFixWorkerRouteImport.update({
-    id: '/api/public/hooks/seo-fix-worker',
-    path: '/api/public/hooks/seo-fix-worker',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const ApiPublicHooksDailySeoDigestRoute =
-  ApiPublicHooksDailySeoDigestRouteImport.update({
-    id: '/api/public/hooks/daily-seo-digest',
-    path: '/api/public/hooks/daily-seo-digest',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const ApiPublicHooksCompetitorRadarScanRoute =
-  ApiPublicHooksCompetitorRadarScanRouteImport.update({
-    id: '/api/public/hooks/competitor-radar-scan',
-    path: '/api/public/hooks/competitor-radar-scan',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const ApiCertificatesUidPdfRoute = ApiCertificatesUidPdfRouteImport.update({
-  id: '/api/certificates/$uid/pdf',
-  path: '/api/certificates/$uid/pdf',
+const ApiPublicSitemapByHostRoute = ApiPublicSitemapByHostRouteImport.update({
+  id: '/api/public/sitemap-by-host',
+  path: '/api/public/sitemap-by-host',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicPageLookupRoute = ApiPublicPageLookupRouteImport.update({
+  id: '/api/public/page-lookup',
+  path: '/api/public/page-lookup',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicEdgeHealthRoute = ApiPublicEdgeHealthRouteImport.update({
+  id: '/api/public/edge-health',
+  path: '/api/public/edge-health',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicDomainTokenRoute = ApiPublicDomainTokenRouteImport.update({
+  id: '/api/public/domain-token',
+  path: '/api/public/domain-token',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicDomainConfigRoute = ApiPublicDomainConfigRouteImport.update({
+  id: '/api/public/domain-config',
+  path: '/api/public/domain-config',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedAppSettingsRoute =
+  AuthenticatedAppSettingsRouteImport.update({
+    id: '/settings',
+    path: '/settings',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppSeoCoachRoute =
+  AuthenticatedAppSeoCoachRouteImport.update({
+    id: '/seo-coach',
+    path: '/seo-coach',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppPagesRoute = AuthenticatedAppPagesRouteImport.update({
+  id: '/pages',
+  path: '/pages',
+  getParentRoute: () => AuthenticatedAppRoute,
+} as any)
+const AuthenticatedAppOpportunitiesRoute =
+  AuthenticatedAppOpportunitiesRouteImport.update({
+    id: '/opportunities',
+    path: '/opportunities',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppOnboardingRoute =
+  AuthenticatedAppOnboardingRouteImport.update({
+    id: '/onboarding',
+    path: '/onboarding',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppCoachRoute = AuthenticatedAppCoachRouteImport.update({
+  id: '/coach',
+  path: '/coach',
+  getParentRoute: () => AuthenticatedAppRoute,
+} as any)
+const AuthenticatedAppBillingRoute = AuthenticatedAppBillingRouteImport.update({
+  id: '/billing',
+  path: '/billing',
+  getParentRoute: () => AuthenticatedAppRoute,
+} as any)
+const AuthenticatedAppAffiliatesRoute =
+  AuthenticatedAppAffiliatesRouteImport.update({
+    id: '/affiliates',
+    path: '/affiliates',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppAddonsRoute = AuthenticatedAppAddonsRouteImport.update({
+  id: '/addons',
+  path: '/addons',
+  getParentRoute: () => AuthenticatedAppRoute,
+} as any)
+const ApiPublicOpsSyncHealthRoute = ApiPublicOpsSyncHealthRouteImport.update({
+  id: '/api/public/ops/sync-health',
+  path: '/api/public/ops/sync-health',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicOpsEmailProbeRoute = ApiPublicOpsEmailProbeRouteImport.update({
+  id: '/api/public/ops/email-probe',
+  path: '/api/public/ops/email-probe',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicHooksSyncSharetribeRoute =
+  ApiPublicHooksSyncSharetribeRouteImport.update({
+    id: '/api/public/hooks/sync-sharetribe',
+    path: '/api/public/hooks/sync-sharetribe',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ApiPublicHooksCanonicalAuditRoute =
+  ApiPublicHooksCanonicalAuditRouteImport.update({
+    id: '/api/public/hooks/canonical-audit',
+    path: '/api/public/hooks/canonical-audit',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ApiPublicHooksAuthSendEmailRoute =
+  ApiPublicHooksAuthSendEmailRouteImport.update({
+    id: '/api/public/hooks/auth-send-email',
+    path: '/api/public/hooks/auth-send-email',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AuthenticatedAppSettingsDomainsRoute =
+  AuthenticatedAppSettingsDomainsRouteImport.update({
+    id: '/domains',
+    path: '/domains',
+    getParentRoute: () => AuthenticatedAppSettingsRoute,
+  } as any)
+const AuthenticatedAppSettingsApiKeysRoute =
+  AuthenticatedAppSettingsApiKeysRouteImport.update({
+    id: '/api-keys',
+    path: '/api-keys',
+    getParentRoute: () => AuthenticatedAppSettingsRoute,
+  } as any)
+const AuthenticatedAppSettingsAiRoute =
+  AuthenticatedAppSettingsAiRouteImport.update({
+    id: '/ai',
+    path: '/ai',
+    getParentRoute: () => AuthenticatedAppSettingsRoute,
+  } as any)
+const AuthenticatedAppSeoSitemapRoute =
+  AuthenticatedAppSeoSitemapRouteImport.update({
+    id: '/seo/sitemap',
+    path: '/seo/sitemap',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppSeoScrapeImportRoute =
+  AuthenticatedAppSeoScrapeImportRouteImport.update({
+    id: '/seo/scrape-import',
+    path: '/seo/scrape-import',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppSeoRankTrackerRoute =
+  AuthenticatedAppSeoRankTrackerRouteImport.update({
+    id: '/seo/rank-tracker',
+    path: '/seo/rank-tracker',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppSeoPageAuditorRoute =
+  AuthenticatedAppSeoPageAuditorRouteImport.update({
+    id: '/seo/page-auditor',
+    path: '/seo/page-auditor',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppSeoMissingPagesRoute =
+  AuthenticatedAppSeoMissingPagesRouteImport.update({
+    id: '/seo/missing-pages',
+    path: '/seo/missing-pages',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppSeoListingAuditorRoute =
+  AuthenticatedAppSeoListingAuditorRouteImport.update({
+    id: '/seo/listing-auditor',
+    path: '/seo/listing-auditor',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppSeoLinkCheckerRoute =
+  AuthenticatedAppSeoLinkCheckerRouteImport.update({
+    id: '/seo/link-checker',
+    path: '/seo/link-checker',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppSeoLinkAuditRoute =
+  AuthenticatedAppSeoLinkAuditRouteImport.update({
+    id: '/seo/link-audit',
+    path: '/seo/link-audit',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppSeoKeywordOpportunitiesRoute =
+  AuthenticatedAppSeoKeywordOpportunitiesRouteImport.update({
+    id: '/seo/keyword-opportunities',
+    path: '/seo/keyword-opportunities',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppSeoInternalLinksRoute =
+  AuthenticatedAppSeoInternalLinksRouteImport.update({
+    id: '/seo/internal-links',
+    path: '/seo/internal-links',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppSeoHealthRoute =
+  AuthenticatedAppSeoHealthRouteImport.update({
+    id: '/seo/health',
+    path: '/seo/health',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppSeoGscImportRoute =
+  AuthenticatedAppSeoGscImportRouteImport.update({
+    id: '/seo/gsc-import',
+    path: '/seo/gsc-import',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppSeoContentHealthRoute =
+  AuthenticatedAppSeoContentHealthRouteImport.update({
+    id: '/seo/content-health',
+    path: '/seo/content-health',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppSeoCompetitorTrackerRoute =
+  AuthenticatedAppSeoCompetitorTrackerRouteImport.update({
+    id: '/seo/competitor-tracker',
+    path: '/seo/competitor-tracker',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppSeoCompetitorRadarRoute =
+  AuthenticatedAppSeoCompetitorRadarRouteImport.update({
+    id: '/seo/competitor-radar',
+    path: '/seo/competitor-radar',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppSeoClickReportRoute =
+  AuthenticatedAppSeoClickReportRouteImport.update({
+    id: '/seo/click-report',
+    path: '/seo/click-report',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppSeoCanonicalAuditRoute =
+  AuthenticatedAppSeoCanonicalAuditRouteImport.update({
+    id: '/seo/canonical-audit',
+    path: '/seo/canonical-audit',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppPagesNewRoute =
+  AuthenticatedAppPagesNewRouteImport.update({
+    id: '/new',
+    path: '/new',
+    getParentRoute: () => AuthenticatedAppPagesRoute,
+  } as any)
+const AuthenticatedAppPagesBulkRoute =
+  AuthenticatedAppPagesBulkRouteImport.update({
+    id: '/bulk',
+    path: '/bulk',
+    getParentRoute: () => AuthenticatedAppPagesRoute,
+  } as any)
+const AuthenticatedAppOpsSocialLeadHunterRoute =
+  AuthenticatedAppOpsSocialLeadHunterRouteImport.update({
+    id: '/ops/social-lead-hunter',
+    path: '/ops/social-lead-hunter',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppOpsSiteFooterRoute =
+  AuthenticatedAppOpsSiteFooterRouteImport.update({
+    id: '/ops/site-footer',
+    path: '/ops/site-footer',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppOpsPlanRequestsRoute =
+  AuthenticatedAppOpsPlanRequestsRouteImport.update({
+    id: '/ops/plan-requests',
+    path: '/ops/plan-requests',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppOpsListingClaimsRoute =
+  AuthenticatedAppOpsListingClaimsRouteImport.update({
+    id: '/ops/listing-claims',
+    path: '/ops/listing-claims',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppOpsLeadInboxRoute =
+  AuthenticatedAppOpsLeadInboxRouteImport.update({
+    id: '/ops/lead-inbox',
+    path: '/ops/lead-inbox',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppOpsIgLeadHunterRoute =
+  AuthenticatedAppOpsIgLeadHunterRouteImport.update({
+    id: '/ops/ig-lead-hunter',
+    path: '/ops/ig-lead-hunter',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppOpsEmailVerifyRoute =
+  AuthenticatedAppOpsEmailVerifyRouteImport.update({
+    id: '/ops/email-verify',
+    path: '/ops/email-verify',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppOpsEmailBrandingRoute =
+  AuthenticatedAppOpsEmailBrandingRouteImport.update({
+    id: '/ops/email-branding',
+    path: '/ops/email-branding',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppOpsDirectoryModerationRoute =
+  AuthenticatedAppOpsDirectoryModerationRouteImport.update({
+    id: '/ops/directory-moderation',
+    path: '/ops/directory-moderation',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppOpsAdminTeamRoute =
+  AuthenticatedAppOpsAdminTeamRouteImport.update({
+    id: '/ops/admin-team',
+    path: '/ops/admin-team',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppContentQuickPageBuilderRoute =
+  AuthenticatedAppContentQuickPageBuilderRouteImport.update({
+    id: '/content/quick-page-builder',
+    path: '/content/quick-page-builder',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppContentMigrationRoute =
+  AuthenticatedAppContentMigrationRouteImport.update({
+    id: '/content/migration',
+    path: '/content/migration',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppContentLearningRoute =
+  AuthenticatedAppContentLearningRouteImport.update({
+    id: '/content/learning',
+    path: '/content/learning',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppContentGenerateRoute =
+  AuthenticatedAppContentGenerateRouteImport.update({
+    id: '/content/generate',
+    path: '/content/generate',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppContentDataImportRoute =
+  AuthenticatedAppContentDataImportRouteImport.update({
+    id: '/content/data-import',
+    path: '/content/data-import',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppContentDataExportRoute =
+  AuthenticatedAppContentDataExportRouteImport.update({
+    id: '/content/data-export',
+    path: '/content/data-export',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppContentCityHeroesRoute =
+  AuthenticatedAppContentCityHeroesRouteImport.update({
+    id: '/content/city-heroes',
+    path: '/content/city-heroes',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppContentBulkEditorRoute =
+  AuthenticatedAppContentBulkEditorRouteImport.update({
+    id: '/content/bulk-editor',
+    path: '/content/bulk-editor',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppContentBlogRoute =
+  AuthenticatedAppContentBlogRouteImport.update({
+    id: '/content/blog',
+    path: '/content/blog',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppAffiliatesSettingsRoute =
+  AuthenticatedAppAffiliatesSettingsRouteImport.update({
+    id: '/settings',
+    path: '/settings',
+    getParentRoute: () => AuthenticatedAppAffiliatesRoute,
+  } as any)
+const AuthenticatedAppAffiliatesProgramsRoute =
+  AuthenticatedAppAffiliatesProgramsRouteImport.update({
+    id: '/programs',
+    path: '/programs',
+    getParentRoute: () => AuthenticatedAppAffiliatesRoute,
+  } as any)
+const AuthenticatedAppAffiliatesPayoutsRoute =
+  AuthenticatedAppAffiliatesPayoutsRouteImport.update({
+    id: '/payouts',
+    path: '/payouts',
+    getParentRoute: () => AuthenticatedAppAffiliatesRoute,
+  } as any)
+const AuthenticatedAppAffiliatesDirectoryRoute =
+  AuthenticatedAppAffiliatesDirectoryRouteImport.update({
+    id: '/directory',
+    path: '/directory',
+    getParentRoute: () => AuthenticatedAppAffiliatesRoute,
+  } as any)
+const AuthenticatedAppAffiliatesCustomiseRoute =
+  AuthenticatedAppAffiliatesCustomiseRouteImport.update({
+    id: '/customise',
+    path: '/customise',
+    getParentRoute: () => AuthenticatedAppAffiliatesRoute,
+  } as any)
+const AuthenticatedAppAdminTemplateStoreRoute =
+  AuthenticatedAppAdminTemplateStoreRouteImport.update({
+    id: '/admin/template-store',
+    path: '/admin/template-store',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppAdminEmailTemplatesRoute =
+  AuthenticatedAppAdminEmailTemplatesRouteImport.update({
+    id: '/admin/email-templates',
+    path: '/admin/email-templates',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppSettingsIntegrationsSharetribeRoute =
+  AuthenticatedAppSettingsIntegrationsSharetribeRouteImport.update({
+    id: '/integrations/sharetribe',
+    path: '/integrations/sharetribe',
+    getParentRoute: () => AuthenticatedAppSettingsRoute,
+  } as any)
+const AuthenticatedAppPagesIdEditRoute =
+  AuthenticatedAppPagesIdEditRouteImport.update({
+    id: '/$id/edit',
+    path: '/$id/edit',
+    getParentRoute: () => AuthenticatedAppPagesRoute,
+  } as any)
+const AuthenticatedAppAdminHelpTicketsRoute =
+  AuthenticatedAppAdminHelpTicketsRouteImport.update({
+    id: '/admin/help/tickets',
+    path: '/admin/help/tickets',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppAdminHelpFeedbackRoute =
+  AuthenticatedAppAdminHelpFeedbackRouteImport.update({
+    id: '/admin/help/feedback',
+    path: '/admin/help/feedback',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppAdminHelpCategoriesRoute =
+  AuthenticatedAppAdminHelpCategoriesRouteImport.update({
+    id: '/admin/help/categories',
+    path: '/admin/help/categories',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppAdminHelpArticlesRoute =
+  AuthenticatedAppAdminHelpArticlesRouteImport.update({
+    id: '/admin/help/articles',
+    path: '/admin/help/articles',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppAffiliatesProgramsIdEditRoute =
+  AuthenticatedAppAffiliatesProgramsIdEditRouteImport.update({
+    id: '/$id/edit',
+    path: '/$id/edit',
+    getParentRoute: () => AuthenticatedAppAffiliatesProgramsRoute,
+  } as any)
+const AuthenticatedAppAdminHelpArticlesIdRoute =
+  AuthenticatedAppAdminHelpArticlesIdRouteImport.update({
+    id: '/$id',
+    path: '/$id',
+    getParentRoute: () => AuthenticatedAppAdminHelpArticlesRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/admin': typeof AdminRouteWithChildren
-  '/app': typeof AppRouteWithChildren
-  '/auth': typeof AuthRouteWithChildren
-  '/onboarding': typeof OnboardingRoute
-  '/privacy-policy': typeof PrivacyPolicyRoute
-  '/referral': typeof ReferralRoute
-  '/robots.txt': typeof RobotsDottxtRoute
-  '/sitemap-default.xml': typeof SitemapDefaultDotxmlRoute
-  '/sitemap-index.xml': typeof SitemapIndexDotxmlRoute
-  '/sitemap-static.xml': typeof SitemapStaticDotxmlRoute
+  '/beta': typeof BetaRoute
+  '/help': typeof HelpRouteWithChildren
+  '/login': typeof LoginRoute
+  '/privacy': typeof PrivacyRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/signup': typeof SignupRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/unsubscribe': typeof UnsubscribeRoute
-  '/account/billing': typeof AccountBillingRoute
-  '/account/learning': typeof AccountLearningRoute
-  '/admin/blog': typeof AdminBlogRoute
-  '/admin/cities-heroes': typeof AdminCitiesHeroesRoute
-  '/admin/claims': typeof AdminClaimsRoute
-  '/admin/click-report': typeof AdminClickReportRoute
-  '/admin/competitor-radar': typeof AdminCompetitorRadarRoute
-  '/admin/competitors': typeof AdminCompetitorsRoute
-  '/admin/content-migration': typeof AdminContentMigrationRoute
-  '/admin/content-pages': typeof AdminContentPagesRoute
-  '/admin/dashboard': typeof AdminDashboardRoute
-  '/admin/directory': typeof AdminDirectoryRoute
-  '/admin/email-branding': typeof AdminEmailBrandingRoute
-  '/admin/generate-content': typeof AdminGenerateContentRoute
-  '/admin/gsc-import': typeof AdminGscImportRoute
-  '/admin/indexing': typeof AdminIndexingRoute
-  '/admin/internal-links': typeof AdminInternalLinksRoute
-  '/admin/keyword-opportunities': typeof AdminKeywordOpportunitiesRoute
-  '/admin/leads': typeof AdminLeadsRoute
-  '/admin/learning': typeof AdminLearningRouteWithChildren
-  '/admin/link-checker': typeof AdminLinkCheckerRoute
-  '/admin/missing-pages': typeof AdminMissingPagesRoute
-  '/admin/no-access': typeof AdminNoAccessRoute
-  '/admin/page-auditor': typeof AdminPageAuditorRoute
-  '/admin/plan-requests': typeof AdminPlanRequestsRoute
-  '/admin/quick-page': typeof AdminQuickPageRoute
-  '/admin/rank-tracker': typeof AdminRankTrackerRoute
-  '/admin/scrape-import': typeof AdminScrapeImportRoute
-  '/admin/seo-health': typeof AdminSeoHealthRoute
-  '/admin/site-footer': typeof AdminSiteFooterRoute
-  '/admin/team': typeof AdminTeamRoute
-  '/app/dashboard': typeof AppDashboardRoute
-  '/auth/reset-password': typeof AuthResetPasswordRoute
-  '/email/unsubscribe': typeof EmailUnsubscribeRoute
+  '/terms': typeof TermsRoute
+  '/app': typeof AuthenticatedAppRouteWithChildren
+  '/a/$slug': typeof ASlugRoute
+  '/a/founders-domain-test': typeof AFoundersDomainTestRoute
+  '/a/sitemap.xml': typeof ASitemapDotxmlRoute
+  '/apply/$slug': typeof ApplySlugRoute
+  '/help/$category': typeof HelpCategoryRoute
+  '/help/contact': typeof HelpContactRoute
+  '/help/search': typeof HelpSearchRoute
+  '/help/sitemap.xml': typeof HelpSitemapDotxmlRoute
   '/p/$slug': typeof PSlugRoute
-  '/templates/$slug': typeof TemplatesSlugRoute
-  '/verify/$uid': typeof VerifyUidRoute
-  '/help-center/': typeof HelpCenterIndexRoute
-  '/templates/': typeof TemplatesIndexRoute
-  '/admin/learning/$userId': typeof AdminLearningUserIdRoute
-  '/api/billing/webhook': typeof ApiBillingWebhookRoute
-  '/api/public/backfill-content-pages': typeof ApiPublicBackfillContentPagesRoute
-  '/api/public/track-city-click': typeof ApiPublicTrackCityClickRoute
-  '/app/pages/new': typeof AppPagesNewRoute
-  '/help-center/$category/$slug': typeof HelpCenterCategorySlugRoute
-  '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
-  '/app/pages/': typeof AppPagesIndexRoute
-  '/help-center/$category/': typeof HelpCenterCategoryIndexRoute
-  '/api/certificates/$uid/pdf': typeof ApiCertificatesUidPdfRoute
-  '/api/public/hooks/competitor-radar-scan': typeof ApiPublicHooksCompetitorRadarScanRoute
-  '/api/public/hooks/daily-seo-digest': typeof ApiPublicHooksDailySeoDigestRoute
-  '/api/public/hooks/seo-fix-worker': typeof ApiPublicHooksSeoFixWorkerRoute
-  '/api/public/hooks/seo-self-test': typeof ApiPublicHooksSeoSelfTestRoute
-  '/api/public/hooks/sync-listings': typeof ApiPublicHooksSyncListingsRoute
-  '/app/pages/$id/edit': typeof AppPagesIdEditRoute
-  '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
-  '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
-  '/lovable/email/transactional/send': typeof LovableEmailTransactionalSendRoute
+  '/sharetribe-templates/$slug': typeof SharetribeTemplatesSlugRoute
+  '/help/': typeof HelpIndexRoute
+  '/sharetribe-templates/': typeof SharetribeTemplatesIndexRoute
+  '/app/addons': typeof AuthenticatedAppAddonsRoute
+  '/app/affiliates': typeof AuthenticatedAppAffiliatesRouteWithChildren
+  '/app/billing': typeof AuthenticatedAppBillingRoute
+  '/app/coach': typeof AuthenticatedAppCoachRoute
+  '/app/onboarding': typeof AuthenticatedAppOnboardingRoute
+  '/app/opportunities': typeof AuthenticatedAppOpportunitiesRoute
+  '/app/pages': typeof AuthenticatedAppPagesRouteWithChildren
+  '/app/seo-coach': typeof AuthenticatedAppSeoCoachRoute
+  '/app/settings': typeof AuthenticatedAppSettingsRouteWithChildren
+  '/api/public/domain-config': typeof ApiPublicDomainConfigRoute
+  '/api/public/domain-token': typeof ApiPublicDomainTokenRoute
+  '/api/public/edge-health': typeof ApiPublicEdgeHealthRoute
+  '/api/public/page-lookup': typeof ApiPublicPageLookupRoute
+  '/api/public/sitemap-by-host': typeof ApiPublicSitemapByHostRoute
+  '/api/public/version': typeof ApiPublicVersionRoute
+  '/help/$category/$article': typeof HelpCategoryArticleRoute
+  '/s/$ws/$slug': typeof SWsSlugRoute
+  '/sharetribe-templates/$slug/download': typeof SharetribeTemplatesSlugDownloadRoute
+  '/app/': typeof AuthenticatedAppIndexRoute
+  '/app/admin/email-templates': typeof AuthenticatedAppAdminEmailTemplatesRoute
+  '/app/admin/template-store': typeof AuthenticatedAppAdminTemplateStoreRoute
+  '/app/affiliates/customise': typeof AuthenticatedAppAffiliatesCustomiseRoute
+  '/app/affiliates/directory': typeof AuthenticatedAppAffiliatesDirectoryRoute
+  '/app/affiliates/payouts': typeof AuthenticatedAppAffiliatesPayoutsRoute
+  '/app/affiliates/programs': typeof AuthenticatedAppAffiliatesProgramsRouteWithChildren
+  '/app/affiliates/settings': typeof AuthenticatedAppAffiliatesSettingsRoute
+  '/app/content/blog': typeof AuthenticatedAppContentBlogRoute
+  '/app/content/bulk-editor': typeof AuthenticatedAppContentBulkEditorRoute
+  '/app/content/city-heroes': typeof AuthenticatedAppContentCityHeroesRoute
+  '/app/content/data-export': typeof AuthenticatedAppContentDataExportRoute
+  '/app/content/data-import': typeof AuthenticatedAppContentDataImportRoute
+  '/app/content/generate': typeof AuthenticatedAppContentGenerateRoute
+  '/app/content/learning': typeof AuthenticatedAppContentLearningRoute
+  '/app/content/migration': typeof AuthenticatedAppContentMigrationRoute
+  '/app/content/quick-page-builder': typeof AuthenticatedAppContentQuickPageBuilderRoute
+  '/app/ops/admin-team': typeof AuthenticatedAppOpsAdminTeamRoute
+  '/app/ops/directory-moderation': typeof AuthenticatedAppOpsDirectoryModerationRoute
+  '/app/ops/email-branding': typeof AuthenticatedAppOpsEmailBrandingRoute
+  '/app/ops/email-verify': typeof AuthenticatedAppOpsEmailVerifyRoute
+  '/app/ops/ig-lead-hunter': typeof AuthenticatedAppOpsIgLeadHunterRoute
+  '/app/ops/lead-inbox': typeof AuthenticatedAppOpsLeadInboxRoute
+  '/app/ops/listing-claims': typeof AuthenticatedAppOpsListingClaimsRoute
+  '/app/ops/plan-requests': typeof AuthenticatedAppOpsPlanRequestsRoute
+  '/app/ops/site-footer': typeof AuthenticatedAppOpsSiteFooterRoute
+  '/app/ops/social-lead-hunter': typeof AuthenticatedAppOpsSocialLeadHunterRoute
+  '/app/pages/bulk': typeof AuthenticatedAppPagesBulkRoute
+  '/app/pages/new': typeof AuthenticatedAppPagesNewRoute
+  '/app/seo/canonical-audit': typeof AuthenticatedAppSeoCanonicalAuditRoute
+  '/app/seo/click-report': typeof AuthenticatedAppSeoClickReportRoute
+  '/app/seo/competitor-radar': typeof AuthenticatedAppSeoCompetitorRadarRoute
+  '/app/seo/competitor-tracker': typeof AuthenticatedAppSeoCompetitorTrackerRoute
+  '/app/seo/content-health': typeof AuthenticatedAppSeoContentHealthRoute
+  '/app/seo/gsc-import': typeof AuthenticatedAppSeoGscImportRoute
+  '/app/seo/health': typeof AuthenticatedAppSeoHealthRoute
+  '/app/seo/internal-links': typeof AuthenticatedAppSeoInternalLinksRoute
+  '/app/seo/keyword-opportunities': typeof AuthenticatedAppSeoKeywordOpportunitiesRoute
+  '/app/seo/link-audit': typeof AuthenticatedAppSeoLinkAuditRoute
+  '/app/seo/link-checker': typeof AuthenticatedAppSeoLinkCheckerRoute
+  '/app/seo/listing-auditor': typeof AuthenticatedAppSeoListingAuditorRoute
+  '/app/seo/missing-pages': typeof AuthenticatedAppSeoMissingPagesRoute
+  '/app/seo/page-auditor': typeof AuthenticatedAppSeoPageAuditorRoute
+  '/app/seo/rank-tracker': typeof AuthenticatedAppSeoRankTrackerRoute
+  '/app/seo/scrape-import': typeof AuthenticatedAppSeoScrapeImportRoute
+  '/app/seo/sitemap': typeof AuthenticatedAppSeoSitemapRoute
+  '/app/settings/ai': typeof AuthenticatedAppSettingsAiRoute
+  '/app/settings/api-keys': typeof AuthenticatedAppSettingsApiKeysRoute
+  '/app/settings/domains': typeof AuthenticatedAppSettingsDomainsRoute
+  '/api/public/hooks/auth-send-email': typeof ApiPublicHooksAuthSendEmailRoute
+  '/api/public/hooks/canonical-audit': typeof ApiPublicHooksCanonicalAuditRoute
+  '/api/public/hooks/sync-sharetribe': typeof ApiPublicHooksSyncSharetribeRoute
+  '/api/public/ops/email-probe': typeof ApiPublicOpsEmailProbeRoute
+  '/api/public/ops/sync-health': typeof ApiPublicOpsSyncHealthRoute
+  '/app/admin/help/articles': typeof AuthenticatedAppAdminHelpArticlesRouteWithChildren
+  '/app/admin/help/categories': typeof AuthenticatedAppAdminHelpCategoriesRoute
+  '/app/admin/help/feedback': typeof AuthenticatedAppAdminHelpFeedbackRoute
+  '/app/admin/help/tickets': typeof AuthenticatedAppAdminHelpTicketsRoute
+  '/app/pages/$id/edit': typeof AuthenticatedAppPagesIdEditRoute
+  '/app/settings/integrations/sharetribe': typeof AuthenticatedAppSettingsIntegrationsSharetribeRoute
+  '/app/admin/help/articles/$id': typeof AuthenticatedAppAdminHelpArticlesIdRoute
+  '/app/affiliates/programs/$id/edit': typeof AuthenticatedAppAffiliatesProgramsIdEditRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/admin': typeof AdminRouteWithChildren
-  '/app': typeof AppRouteWithChildren
-  '/auth': typeof AuthRouteWithChildren
-  '/onboarding': typeof OnboardingRoute
-  '/privacy-policy': typeof PrivacyPolicyRoute
-  '/referral': typeof ReferralRoute
-  '/robots.txt': typeof RobotsDottxtRoute
-  '/sitemap-default.xml': typeof SitemapDefaultDotxmlRoute
-  '/sitemap-index.xml': typeof SitemapIndexDotxmlRoute
-  '/sitemap-static.xml': typeof SitemapStaticDotxmlRoute
+  '/beta': typeof BetaRoute
+  '/login': typeof LoginRoute
+  '/privacy': typeof PrivacyRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/signup': typeof SignupRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/unsubscribe': typeof UnsubscribeRoute
-  '/account/billing': typeof AccountBillingRoute
-  '/account/learning': typeof AccountLearningRoute
-  '/admin/blog': typeof AdminBlogRoute
-  '/admin/cities-heroes': typeof AdminCitiesHeroesRoute
-  '/admin/claims': typeof AdminClaimsRoute
-  '/admin/click-report': typeof AdminClickReportRoute
-  '/admin/competitor-radar': typeof AdminCompetitorRadarRoute
-  '/admin/competitors': typeof AdminCompetitorsRoute
-  '/admin/content-migration': typeof AdminContentMigrationRoute
-  '/admin/content-pages': typeof AdminContentPagesRoute
-  '/admin/dashboard': typeof AdminDashboardRoute
-  '/admin/directory': typeof AdminDirectoryRoute
-  '/admin/email-branding': typeof AdminEmailBrandingRoute
-  '/admin/generate-content': typeof AdminGenerateContentRoute
-  '/admin/gsc-import': typeof AdminGscImportRoute
-  '/admin/indexing': typeof AdminIndexingRoute
-  '/admin/internal-links': typeof AdminInternalLinksRoute
-  '/admin/keyword-opportunities': typeof AdminKeywordOpportunitiesRoute
-  '/admin/leads': typeof AdminLeadsRoute
-  '/admin/learning': typeof AdminLearningRouteWithChildren
-  '/admin/link-checker': typeof AdminLinkCheckerRoute
-  '/admin/missing-pages': typeof AdminMissingPagesRoute
-  '/admin/no-access': typeof AdminNoAccessRoute
-  '/admin/page-auditor': typeof AdminPageAuditorRoute
-  '/admin/plan-requests': typeof AdminPlanRequestsRoute
-  '/admin/quick-page': typeof AdminQuickPageRoute
-  '/admin/rank-tracker': typeof AdminRankTrackerRoute
-  '/admin/scrape-import': typeof AdminScrapeImportRoute
-  '/admin/seo-health': typeof AdminSeoHealthRoute
-  '/admin/site-footer': typeof AdminSiteFooterRoute
-  '/admin/team': typeof AdminTeamRoute
-  '/app/dashboard': typeof AppDashboardRoute
-  '/auth/reset-password': typeof AuthResetPasswordRoute
-  '/email/unsubscribe': typeof EmailUnsubscribeRoute
+  '/terms': typeof TermsRoute
+  '/a/$slug': typeof ASlugRoute
+  '/a/founders-domain-test': typeof AFoundersDomainTestRoute
+  '/a/sitemap.xml': typeof ASitemapDotxmlRoute
+  '/apply/$slug': typeof ApplySlugRoute
+  '/help/$category': typeof HelpCategoryRoute
+  '/help/contact': typeof HelpContactRoute
+  '/help/search': typeof HelpSearchRoute
+  '/help/sitemap.xml': typeof HelpSitemapDotxmlRoute
   '/p/$slug': typeof PSlugRoute
-  '/templates/$slug': typeof TemplatesSlugRoute
-  '/verify/$uid': typeof VerifyUidRoute
-  '/help-center': typeof HelpCenterIndexRoute
-  '/templates': typeof TemplatesIndexRoute
-  '/admin/learning/$userId': typeof AdminLearningUserIdRoute
-  '/api/billing/webhook': typeof ApiBillingWebhookRoute
-  '/api/public/backfill-content-pages': typeof ApiPublicBackfillContentPagesRoute
-  '/api/public/track-city-click': typeof ApiPublicTrackCityClickRoute
-  '/app/pages/new': typeof AppPagesNewRoute
-  '/help-center/$category/$slug': typeof HelpCenterCategorySlugRoute
-  '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
-  '/app/pages': typeof AppPagesIndexRoute
-  '/help-center/$category': typeof HelpCenterCategoryIndexRoute
-  '/api/certificates/$uid/pdf': typeof ApiCertificatesUidPdfRoute
-  '/api/public/hooks/competitor-radar-scan': typeof ApiPublicHooksCompetitorRadarScanRoute
-  '/api/public/hooks/daily-seo-digest': typeof ApiPublicHooksDailySeoDigestRoute
-  '/api/public/hooks/seo-fix-worker': typeof ApiPublicHooksSeoFixWorkerRoute
-  '/api/public/hooks/seo-self-test': typeof ApiPublicHooksSeoSelfTestRoute
-  '/api/public/hooks/sync-listings': typeof ApiPublicHooksSyncListingsRoute
-  '/app/pages/$id/edit': typeof AppPagesIdEditRoute
-  '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
-  '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
-  '/lovable/email/transactional/send': typeof LovableEmailTransactionalSendRoute
+  '/sharetribe-templates/$slug': typeof SharetribeTemplatesSlugRoute
+  '/help': typeof HelpIndexRoute
+  '/sharetribe-templates': typeof SharetribeTemplatesIndexRoute
+  '/app/addons': typeof AuthenticatedAppAddonsRoute
+  '/app/affiliates': typeof AuthenticatedAppAffiliatesRouteWithChildren
+  '/app/billing': typeof AuthenticatedAppBillingRoute
+  '/app/coach': typeof AuthenticatedAppCoachRoute
+  '/app/onboarding': typeof AuthenticatedAppOnboardingRoute
+  '/app/opportunities': typeof AuthenticatedAppOpportunitiesRoute
+  '/app/pages': typeof AuthenticatedAppPagesRouteWithChildren
+  '/app/seo-coach': typeof AuthenticatedAppSeoCoachRoute
+  '/app/settings': typeof AuthenticatedAppSettingsRouteWithChildren
+  '/api/public/domain-config': typeof ApiPublicDomainConfigRoute
+  '/api/public/domain-token': typeof ApiPublicDomainTokenRoute
+  '/api/public/edge-health': typeof ApiPublicEdgeHealthRoute
+  '/api/public/page-lookup': typeof ApiPublicPageLookupRoute
+  '/api/public/sitemap-by-host': typeof ApiPublicSitemapByHostRoute
+  '/api/public/version': typeof ApiPublicVersionRoute
+  '/help/$category/$article': typeof HelpCategoryArticleRoute
+  '/s/$ws/$slug': typeof SWsSlugRoute
+  '/sharetribe-templates/$slug/download': typeof SharetribeTemplatesSlugDownloadRoute
+  '/app': typeof AuthenticatedAppIndexRoute
+  '/app/admin/email-templates': typeof AuthenticatedAppAdminEmailTemplatesRoute
+  '/app/admin/template-store': typeof AuthenticatedAppAdminTemplateStoreRoute
+  '/app/affiliates/customise': typeof AuthenticatedAppAffiliatesCustomiseRoute
+  '/app/affiliates/directory': typeof AuthenticatedAppAffiliatesDirectoryRoute
+  '/app/affiliates/payouts': typeof AuthenticatedAppAffiliatesPayoutsRoute
+  '/app/affiliates/programs': typeof AuthenticatedAppAffiliatesProgramsRouteWithChildren
+  '/app/affiliates/settings': typeof AuthenticatedAppAffiliatesSettingsRoute
+  '/app/content/blog': typeof AuthenticatedAppContentBlogRoute
+  '/app/content/bulk-editor': typeof AuthenticatedAppContentBulkEditorRoute
+  '/app/content/city-heroes': typeof AuthenticatedAppContentCityHeroesRoute
+  '/app/content/data-export': typeof AuthenticatedAppContentDataExportRoute
+  '/app/content/data-import': typeof AuthenticatedAppContentDataImportRoute
+  '/app/content/generate': typeof AuthenticatedAppContentGenerateRoute
+  '/app/content/learning': typeof AuthenticatedAppContentLearningRoute
+  '/app/content/migration': typeof AuthenticatedAppContentMigrationRoute
+  '/app/content/quick-page-builder': typeof AuthenticatedAppContentQuickPageBuilderRoute
+  '/app/ops/admin-team': typeof AuthenticatedAppOpsAdminTeamRoute
+  '/app/ops/directory-moderation': typeof AuthenticatedAppOpsDirectoryModerationRoute
+  '/app/ops/email-branding': typeof AuthenticatedAppOpsEmailBrandingRoute
+  '/app/ops/email-verify': typeof AuthenticatedAppOpsEmailVerifyRoute
+  '/app/ops/ig-lead-hunter': typeof AuthenticatedAppOpsIgLeadHunterRoute
+  '/app/ops/lead-inbox': typeof AuthenticatedAppOpsLeadInboxRoute
+  '/app/ops/listing-claims': typeof AuthenticatedAppOpsListingClaimsRoute
+  '/app/ops/plan-requests': typeof AuthenticatedAppOpsPlanRequestsRoute
+  '/app/ops/site-footer': typeof AuthenticatedAppOpsSiteFooterRoute
+  '/app/ops/social-lead-hunter': typeof AuthenticatedAppOpsSocialLeadHunterRoute
+  '/app/pages/bulk': typeof AuthenticatedAppPagesBulkRoute
+  '/app/pages/new': typeof AuthenticatedAppPagesNewRoute
+  '/app/seo/canonical-audit': typeof AuthenticatedAppSeoCanonicalAuditRoute
+  '/app/seo/click-report': typeof AuthenticatedAppSeoClickReportRoute
+  '/app/seo/competitor-radar': typeof AuthenticatedAppSeoCompetitorRadarRoute
+  '/app/seo/competitor-tracker': typeof AuthenticatedAppSeoCompetitorTrackerRoute
+  '/app/seo/content-health': typeof AuthenticatedAppSeoContentHealthRoute
+  '/app/seo/gsc-import': typeof AuthenticatedAppSeoGscImportRoute
+  '/app/seo/health': typeof AuthenticatedAppSeoHealthRoute
+  '/app/seo/internal-links': typeof AuthenticatedAppSeoInternalLinksRoute
+  '/app/seo/keyword-opportunities': typeof AuthenticatedAppSeoKeywordOpportunitiesRoute
+  '/app/seo/link-audit': typeof AuthenticatedAppSeoLinkAuditRoute
+  '/app/seo/link-checker': typeof AuthenticatedAppSeoLinkCheckerRoute
+  '/app/seo/listing-auditor': typeof AuthenticatedAppSeoListingAuditorRoute
+  '/app/seo/missing-pages': typeof AuthenticatedAppSeoMissingPagesRoute
+  '/app/seo/page-auditor': typeof AuthenticatedAppSeoPageAuditorRoute
+  '/app/seo/rank-tracker': typeof AuthenticatedAppSeoRankTrackerRoute
+  '/app/seo/scrape-import': typeof AuthenticatedAppSeoScrapeImportRoute
+  '/app/seo/sitemap': typeof AuthenticatedAppSeoSitemapRoute
+  '/app/settings/ai': typeof AuthenticatedAppSettingsAiRoute
+  '/app/settings/api-keys': typeof AuthenticatedAppSettingsApiKeysRoute
+  '/app/settings/domains': typeof AuthenticatedAppSettingsDomainsRoute
+  '/api/public/hooks/auth-send-email': typeof ApiPublicHooksAuthSendEmailRoute
+  '/api/public/hooks/canonical-audit': typeof ApiPublicHooksCanonicalAuditRoute
+  '/api/public/hooks/sync-sharetribe': typeof ApiPublicHooksSyncSharetribeRoute
+  '/api/public/ops/email-probe': typeof ApiPublicOpsEmailProbeRoute
+  '/api/public/ops/sync-health': typeof ApiPublicOpsSyncHealthRoute
+  '/app/admin/help/articles': typeof AuthenticatedAppAdminHelpArticlesRouteWithChildren
+  '/app/admin/help/categories': typeof AuthenticatedAppAdminHelpCategoriesRoute
+  '/app/admin/help/feedback': typeof AuthenticatedAppAdminHelpFeedbackRoute
+  '/app/admin/help/tickets': typeof AuthenticatedAppAdminHelpTicketsRoute
+  '/app/pages/$id/edit': typeof AuthenticatedAppPagesIdEditRoute
+  '/app/settings/integrations/sharetribe': typeof AuthenticatedAppSettingsIntegrationsSharetribeRoute
+  '/app/admin/help/articles/$id': typeof AuthenticatedAppAdminHelpArticlesIdRoute
+  '/app/affiliates/programs/$id/edit': typeof AuthenticatedAppAffiliatesProgramsIdEditRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/admin': typeof AdminRouteWithChildren
-  '/app': typeof AppRouteWithChildren
-  '/auth': typeof AuthRouteWithChildren
-  '/onboarding': typeof OnboardingRoute
-  '/privacy-policy': typeof PrivacyPolicyRoute
-  '/referral': typeof ReferralRoute
-  '/robots.txt': typeof RobotsDottxtRoute
-  '/sitemap-default.xml': typeof SitemapDefaultDotxmlRoute
-  '/sitemap-index.xml': typeof SitemapIndexDotxmlRoute
-  '/sitemap-static.xml': typeof SitemapStaticDotxmlRoute
+  '/_authenticated': typeof AuthenticatedRouteWithChildren
+  '/beta': typeof BetaRoute
+  '/help': typeof HelpRouteWithChildren
+  '/login': typeof LoginRoute
+  '/privacy': typeof PrivacyRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/signup': typeof SignupRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/unsubscribe': typeof UnsubscribeRoute
-  '/account/billing': typeof AccountBillingRoute
-  '/account/learning': typeof AccountLearningRoute
-  '/admin/blog': typeof AdminBlogRoute
-  '/admin/cities-heroes': typeof AdminCitiesHeroesRoute
-  '/admin/claims': typeof AdminClaimsRoute
-  '/admin/click-report': typeof AdminClickReportRoute
-  '/admin/competitor-radar': typeof AdminCompetitorRadarRoute
-  '/admin/competitors': typeof AdminCompetitorsRoute
-  '/admin/content-migration': typeof AdminContentMigrationRoute
-  '/admin/content-pages': typeof AdminContentPagesRoute
-  '/admin/dashboard': typeof AdminDashboardRoute
-  '/admin/directory': typeof AdminDirectoryRoute
-  '/admin/email-branding': typeof AdminEmailBrandingRoute
-  '/admin/generate-content': typeof AdminGenerateContentRoute
-  '/admin/gsc-import': typeof AdminGscImportRoute
-  '/admin/indexing': typeof AdminIndexingRoute
-  '/admin/internal-links': typeof AdminInternalLinksRoute
-  '/admin/keyword-opportunities': typeof AdminKeywordOpportunitiesRoute
-  '/admin/leads': typeof AdminLeadsRoute
-  '/admin/learning': typeof AdminLearningRouteWithChildren
-  '/admin/link-checker': typeof AdminLinkCheckerRoute
-  '/admin/missing-pages': typeof AdminMissingPagesRoute
-  '/admin/no-access': typeof AdminNoAccessRoute
-  '/admin/page-auditor': typeof AdminPageAuditorRoute
-  '/admin/plan-requests': typeof AdminPlanRequestsRoute
-  '/admin/quick-page': typeof AdminQuickPageRoute
-  '/admin/rank-tracker': typeof AdminRankTrackerRoute
-  '/admin/scrape-import': typeof AdminScrapeImportRoute
-  '/admin/seo-health': typeof AdminSeoHealthRoute
-  '/admin/site-footer': typeof AdminSiteFooterRoute
-  '/admin/team': typeof AdminTeamRoute
-  '/app/dashboard': typeof AppDashboardRoute
-  '/auth/reset-password': typeof AuthResetPasswordRoute
-  '/email/unsubscribe': typeof EmailUnsubscribeRoute
+  '/terms': typeof TermsRoute
+  '/_authenticated/app': typeof AuthenticatedAppRouteWithChildren
+  '/a/$slug': typeof ASlugRoute
+  '/a/founders-domain-test': typeof AFoundersDomainTestRoute
+  '/a/sitemap.xml': typeof ASitemapDotxmlRoute
+  '/apply/$slug': typeof ApplySlugRoute
+  '/help/$category': typeof HelpCategoryRoute
+  '/help/contact': typeof HelpContactRoute
+  '/help/search': typeof HelpSearchRoute
+  '/help/sitemap.xml': typeof HelpSitemapDotxmlRoute
   '/p/$slug': typeof PSlugRoute
-  '/templates/$slug': typeof TemplatesSlugRoute
-  '/verify/$uid': typeof VerifyUidRoute
-  '/help-center/': typeof HelpCenterIndexRoute
-  '/templates/': typeof TemplatesIndexRoute
-  '/admin/learning/$userId': typeof AdminLearningUserIdRoute
-  '/api/billing/webhook': typeof ApiBillingWebhookRoute
-  '/api/public/backfill-content-pages': typeof ApiPublicBackfillContentPagesRoute
-  '/api/public/track-city-click': typeof ApiPublicTrackCityClickRoute
-  '/app/pages/new': typeof AppPagesNewRoute
-  '/help-center/$category/$slug': typeof HelpCenterCategorySlugRoute
-  '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
-  '/app/pages/': typeof AppPagesIndexRoute
-  '/help-center/$category/': typeof HelpCenterCategoryIndexRoute
-  '/api/certificates/$uid/pdf': typeof ApiCertificatesUidPdfRoute
-  '/api/public/hooks/competitor-radar-scan': typeof ApiPublicHooksCompetitorRadarScanRoute
-  '/api/public/hooks/daily-seo-digest': typeof ApiPublicHooksDailySeoDigestRoute
-  '/api/public/hooks/seo-fix-worker': typeof ApiPublicHooksSeoFixWorkerRoute
-  '/api/public/hooks/seo-self-test': typeof ApiPublicHooksSeoSelfTestRoute
-  '/api/public/hooks/sync-listings': typeof ApiPublicHooksSyncListingsRoute
-  '/app/pages/$id/edit': typeof AppPagesIdEditRoute
-  '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
-  '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
-  '/lovable/email/transactional/send': typeof LovableEmailTransactionalSendRoute
+  '/sharetribe-templates/$slug': typeof SharetribeTemplatesSlugRoute
+  '/help/': typeof HelpIndexRoute
+  '/sharetribe-templates/': typeof SharetribeTemplatesIndexRoute
+  '/_authenticated/app/addons': typeof AuthenticatedAppAddonsRoute
+  '/_authenticated/app/affiliates': typeof AuthenticatedAppAffiliatesRouteWithChildren
+  '/_authenticated/app/billing': typeof AuthenticatedAppBillingRoute
+  '/_authenticated/app/coach': typeof AuthenticatedAppCoachRoute
+  '/_authenticated/app/onboarding': typeof AuthenticatedAppOnboardingRoute
+  '/_authenticated/app/opportunities': typeof AuthenticatedAppOpportunitiesRoute
+  '/_authenticated/app/pages': typeof AuthenticatedAppPagesRouteWithChildren
+  '/_authenticated/app/seo-coach': typeof AuthenticatedAppSeoCoachRoute
+  '/_authenticated/app/settings': typeof AuthenticatedAppSettingsRouteWithChildren
+  '/api/public/domain-config': typeof ApiPublicDomainConfigRoute
+  '/api/public/domain-token': typeof ApiPublicDomainTokenRoute
+  '/api/public/edge-health': typeof ApiPublicEdgeHealthRoute
+  '/api/public/page-lookup': typeof ApiPublicPageLookupRoute
+  '/api/public/sitemap-by-host': typeof ApiPublicSitemapByHostRoute
+  '/api/public/version': typeof ApiPublicVersionRoute
+  '/help/$category_/$article': typeof HelpCategoryArticleRoute
+  '/s/$ws/$slug': typeof SWsSlugRoute
+  '/sharetribe-templates/$slug_/download': typeof SharetribeTemplatesSlugDownloadRoute
+  '/_authenticated/app/': typeof AuthenticatedAppIndexRoute
+  '/_authenticated/app/admin/email-templates': typeof AuthenticatedAppAdminEmailTemplatesRoute
+  '/_authenticated/app/admin/template-store': typeof AuthenticatedAppAdminTemplateStoreRoute
+  '/_authenticated/app/affiliates/customise': typeof AuthenticatedAppAffiliatesCustomiseRoute
+  '/_authenticated/app/affiliates/directory': typeof AuthenticatedAppAffiliatesDirectoryRoute
+  '/_authenticated/app/affiliates/payouts': typeof AuthenticatedAppAffiliatesPayoutsRoute
+  '/_authenticated/app/affiliates/programs': typeof AuthenticatedAppAffiliatesProgramsRouteWithChildren
+  '/_authenticated/app/affiliates/settings': typeof AuthenticatedAppAffiliatesSettingsRoute
+  '/_authenticated/app/content/blog': typeof AuthenticatedAppContentBlogRoute
+  '/_authenticated/app/content/bulk-editor': typeof AuthenticatedAppContentBulkEditorRoute
+  '/_authenticated/app/content/city-heroes': typeof AuthenticatedAppContentCityHeroesRoute
+  '/_authenticated/app/content/data-export': typeof AuthenticatedAppContentDataExportRoute
+  '/_authenticated/app/content/data-import': typeof AuthenticatedAppContentDataImportRoute
+  '/_authenticated/app/content/generate': typeof AuthenticatedAppContentGenerateRoute
+  '/_authenticated/app/content/learning': typeof AuthenticatedAppContentLearningRoute
+  '/_authenticated/app/content/migration': typeof AuthenticatedAppContentMigrationRoute
+  '/_authenticated/app/content/quick-page-builder': typeof AuthenticatedAppContentQuickPageBuilderRoute
+  '/_authenticated/app/ops/admin-team': typeof AuthenticatedAppOpsAdminTeamRoute
+  '/_authenticated/app/ops/directory-moderation': typeof AuthenticatedAppOpsDirectoryModerationRoute
+  '/_authenticated/app/ops/email-branding': typeof AuthenticatedAppOpsEmailBrandingRoute
+  '/_authenticated/app/ops/email-verify': typeof AuthenticatedAppOpsEmailVerifyRoute
+  '/_authenticated/app/ops/ig-lead-hunter': typeof AuthenticatedAppOpsIgLeadHunterRoute
+  '/_authenticated/app/ops/lead-inbox': typeof AuthenticatedAppOpsLeadInboxRoute
+  '/_authenticated/app/ops/listing-claims': typeof AuthenticatedAppOpsListingClaimsRoute
+  '/_authenticated/app/ops/plan-requests': typeof AuthenticatedAppOpsPlanRequestsRoute
+  '/_authenticated/app/ops/site-footer': typeof AuthenticatedAppOpsSiteFooterRoute
+  '/_authenticated/app/ops/social-lead-hunter': typeof AuthenticatedAppOpsSocialLeadHunterRoute
+  '/_authenticated/app/pages/bulk': typeof AuthenticatedAppPagesBulkRoute
+  '/_authenticated/app/pages/new': typeof AuthenticatedAppPagesNewRoute
+  '/_authenticated/app/seo/canonical-audit': typeof AuthenticatedAppSeoCanonicalAuditRoute
+  '/_authenticated/app/seo/click-report': typeof AuthenticatedAppSeoClickReportRoute
+  '/_authenticated/app/seo/competitor-radar': typeof AuthenticatedAppSeoCompetitorRadarRoute
+  '/_authenticated/app/seo/competitor-tracker': typeof AuthenticatedAppSeoCompetitorTrackerRoute
+  '/_authenticated/app/seo/content-health': typeof AuthenticatedAppSeoContentHealthRoute
+  '/_authenticated/app/seo/gsc-import': typeof AuthenticatedAppSeoGscImportRoute
+  '/_authenticated/app/seo/health': typeof AuthenticatedAppSeoHealthRoute
+  '/_authenticated/app/seo/internal-links': typeof AuthenticatedAppSeoInternalLinksRoute
+  '/_authenticated/app/seo/keyword-opportunities': typeof AuthenticatedAppSeoKeywordOpportunitiesRoute
+  '/_authenticated/app/seo/link-audit': typeof AuthenticatedAppSeoLinkAuditRoute
+  '/_authenticated/app/seo/link-checker': typeof AuthenticatedAppSeoLinkCheckerRoute
+  '/_authenticated/app/seo/listing-auditor': typeof AuthenticatedAppSeoListingAuditorRoute
+  '/_authenticated/app/seo/missing-pages': typeof AuthenticatedAppSeoMissingPagesRoute
+  '/_authenticated/app/seo/page-auditor': typeof AuthenticatedAppSeoPageAuditorRoute
+  '/_authenticated/app/seo/rank-tracker': typeof AuthenticatedAppSeoRankTrackerRoute
+  '/_authenticated/app/seo/scrape-import': typeof AuthenticatedAppSeoScrapeImportRoute
+  '/_authenticated/app/seo/sitemap': typeof AuthenticatedAppSeoSitemapRoute
+  '/_authenticated/app/settings/ai': typeof AuthenticatedAppSettingsAiRoute
+  '/_authenticated/app/settings/api-keys': typeof AuthenticatedAppSettingsApiKeysRoute
+  '/_authenticated/app/settings/domains': typeof AuthenticatedAppSettingsDomainsRoute
+  '/api/public/hooks/auth-send-email': typeof ApiPublicHooksAuthSendEmailRoute
+  '/api/public/hooks/canonical-audit': typeof ApiPublicHooksCanonicalAuditRoute
+  '/api/public/hooks/sync-sharetribe': typeof ApiPublicHooksSyncSharetribeRoute
+  '/api/public/ops/email-probe': typeof ApiPublicOpsEmailProbeRoute
+  '/api/public/ops/sync-health': typeof ApiPublicOpsSyncHealthRoute
+  '/_authenticated/app/admin/help/articles': typeof AuthenticatedAppAdminHelpArticlesRouteWithChildren
+  '/_authenticated/app/admin/help/categories': typeof AuthenticatedAppAdminHelpCategoriesRoute
+  '/_authenticated/app/admin/help/feedback': typeof AuthenticatedAppAdminHelpFeedbackRoute
+  '/_authenticated/app/admin/help/tickets': typeof AuthenticatedAppAdminHelpTicketsRoute
+  '/_authenticated/app/pages/$id/edit': typeof AuthenticatedAppPagesIdEditRoute
+  '/_authenticated/app/settings/integrations/sharetribe': typeof AuthenticatedAppSettingsIntegrationsSharetribeRoute
+  '/_authenticated/app/admin/help/articles/$id': typeof AuthenticatedAppAdminHelpArticlesIdRoute
+  '/_authenticated/app/affiliates/programs/$id/edit': typeof AuthenticatedAppAffiliatesProgramsIdEditRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/admin'
-    | '/app'
-    | '/auth'
-    | '/onboarding'
-    | '/privacy-policy'
-    | '/referral'
-    | '/robots.txt'
-    | '/sitemap-default.xml'
-    | '/sitemap-index.xml'
-    | '/sitemap-static.xml'
+    | '/beta'
+    | '/help'
+    | '/login'
+    | '/privacy'
+    | '/reset-password'
+    | '/signup'
     | '/sitemap.xml'
-    | '/unsubscribe'
-    | '/account/billing'
-    | '/account/learning'
-    | '/admin/blog'
-    | '/admin/cities-heroes'
-    | '/admin/claims'
-    | '/admin/click-report'
-    | '/admin/competitor-radar'
-    | '/admin/competitors'
-    | '/admin/content-migration'
-    | '/admin/content-pages'
-    | '/admin/dashboard'
-    | '/admin/directory'
-    | '/admin/email-branding'
-    | '/admin/generate-content'
-    | '/admin/gsc-import'
-    | '/admin/indexing'
-    | '/admin/internal-links'
-    | '/admin/keyword-opportunities'
-    | '/admin/leads'
-    | '/admin/learning'
-    | '/admin/link-checker'
-    | '/admin/missing-pages'
-    | '/admin/no-access'
-    | '/admin/page-auditor'
-    | '/admin/plan-requests'
-    | '/admin/quick-page'
-    | '/admin/rank-tracker'
-    | '/admin/scrape-import'
-    | '/admin/seo-health'
-    | '/admin/site-footer'
-    | '/admin/team'
-    | '/app/dashboard'
-    | '/auth/reset-password'
-    | '/email/unsubscribe'
+    | '/terms'
+    | '/app'
+    | '/a/$slug'
+    | '/a/founders-domain-test'
+    | '/a/sitemap.xml'
+    | '/apply/$slug'
+    | '/help/$category'
+    | '/help/contact'
+    | '/help/search'
+    | '/help/sitemap.xml'
     | '/p/$slug'
-    | '/templates/$slug'
-    | '/verify/$uid'
-    | '/help-center/'
-    | '/templates/'
-    | '/admin/learning/$userId'
-    | '/api/billing/webhook'
-    | '/api/public/backfill-content-pages'
-    | '/api/public/track-city-click'
+    | '/sharetribe-templates/$slug'
+    | '/help/'
+    | '/sharetribe-templates/'
+    | '/app/addons'
+    | '/app/affiliates'
+    | '/app/billing'
+    | '/app/coach'
+    | '/app/onboarding'
+    | '/app/opportunities'
+    | '/app/pages'
+    | '/app/seo-coach'
+    | '/app/settings'
+    | '/api/public/domain-config'
+    | '/api/public/domain-token'
+    | '/api/public/edge-health'
+    | '/api/public/page-lookup'
+    | '/api/public/sitemap-by-host'
+    | '/api/public/version'
+    | '/help/$category/$article'
+    | '/s/$ws/$slug'
+    | '/sharetribe-templates/$slug/download'
+    | '/app/'
+    | '/app/admin/email-templates'
+    | '/app/admin/template-store'
+    | '/app/affiliates/customise'
+    | '/app/affiliates/directory'
+    | '/app/affiliates/payouts'
+    | '/app/affiliates/programs'
+    | '/app/affiliates/settings'
+    | '/app/content/blog'
+    | '/app/content/bulk-editor'
+    | '/app/content/city-heroes'
+    | '/app/content/data-export'
+    | '/app/content/data-import'
+    | '/app/content/generate'
+    | '/app/content/learning'
+    | '/app/content/migration'
+    | '/app/content/quick-page-builder'
+    | '/app/ops/admin-team'
+    | '/app/ops/directory-moderation'
+    | '/app/ops/email-branding'
+    | '/app/ops/email-verify'
+    | '/app/ops/ig-lead-hunter'
+    | '/app/ops/lead-inbox'
+    | '/app/ops/listing-claims'
+    | '/app/ops/plan-requests'
+    | '/app/ops/site-footer'
+    | '/app/ops/social-lead-hunter'
+    | '/app/pages/bulk'
     | '/app/pages/new'
-    | '/help-center/$category/$slug'
-    | '/lovable/email/suppression'
-    | '/app/pages/'
-    | '/help-center/$category/'
-    | '/api/certificates/$uid/pdf'
-    | '/api/public/hooks/competitor-radar-scan'
-    | '/api/public/hooks/daily-seo-digest'
-    | '/api/public/hooks/seo-fix-worker'
-    | '/api/public/hooks/seo-self-test'
-    | '/api/public/hooks/sync-listings'
+    | '/app/seo/canonical-audit'
+    | '/app/seo/click-report'
+    | '/app/seo/competitor-radar'
+    | '/app/seo/competitor-tracker'
+    | '/app/seo/content-health'
+    | '/app/seo/gsc-import'
+    | '/app/seo/health'
+    | '/app/seo/internal-links'
+    | '/app/seo/keyword-opportunities'
+    | '/app/seo/link-audit'
+    | '/app/seo/link-checker'
+    | '/app/seo/listing-auditor'
+    | '/app/seo/missing-pages'
+    | '/app/seo/page-auditor'
+    | '/app/seo/rank-tracker'
+    | '/app/seo/scrape-import'
+    | '/app/seo/sitemap'
+    | '/app/settings/ai'
+    | '/app/settings/api-keys'
+    | '/app/settings/domains'
+    | '/api/public/hooks/auth-send-email'
+    | '/api/public/hooks/canonical-audit'
+    | '/api/public/hooks/sync-sharetribe'
+    | '/api/public/ops/email-probe'
+    | '/api/public/ops/sync-health'
+    | '/app/admin/help/articles'
+    | '/app/admin/help/categories'
+    | '/app/admin/help/feedback'
+    | '/app/admin/help/tickets'
     | '/app/pages/$id/edit'
-    | '/lovable/email/auth/webhook'
-    | '/lovable/email/queue/process'
-    | '/lovable/email/transactional/send'
+    | '/app/settings/integrations/sharetribe'
+    | '/app/admin/help/articles/$id'
+    | '/app/affiliates/programs/$id/edit'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/admin'
-    | '/app'
-    | '/auth'
-    | '/onboarding'
-    | '/privacy-policy'
-    | '/referral'
-    | '/robots.txt'
-    | '/sitemap-default.xml'
-    | '/sitemap-index.xml'
-    | '/sitemap-static.xml'
+    | '/beta'
+    | '/login'
+    | '/privacy'
+    | '/reset-password'
+    | '/signup'
     | '/sitemap.xml'
-    | '/unsubscribe'
-    | '/account/billing'
-    | '/account/learning'
-    | '/admin/blog'
-    | '/admin/cities-heroes'
-    | '/admin/claims'
-    | '/admin/click-report'
-    | '/admin/competitor-radar'
-    | '/admin/competitors'
-    | '/admin/content-migration'
-    | '/admin/content-pages'
-    | '/admin/dashboard'
-    | '/admin/directory'
-    | '/admin/email-branding'
-    | '/admin/generate-content'
-    | '/admin/gsc-import'
-    | '/admin/indexing'
-    | '/admin/internal-links'
-    | '/admin/keyword-opportunities'
-    | '/admin/leads'
-    | '/admin/learning'
-    | '/admin/link-checker'
-    | '/admin/missing-pages'
-    | '/admin/no-access'
-    | '/admin/page-auditor'
-    | '/admin/plan-requests'
-    | '/admin/quick-page'
-    | '/admin/rank-tracker'
-    | '/admin/scrape-import'
-    | '/admin/seo-health'
-    | '/admin/site-footer'
-    | '/admin/team'
-    | '/app/dashboard'
-    | '/auth/reset-password'
-    | '/email/unsubscribe'
+    | '/terms'
+    | '/a/$slug'
+    | '/a/founders-domain-test'
+    | '/a/sitemap.xml'
+    | '/apply/$slug'
+    | '/help/$category'
+    | '/help/contact'
+    | '/help/search'
+    | '/help/sitemap.xml'
     | '/p/$slug'
-    | '/templates/$slug'
-    | '/verify/$uid'
-    | '/help-center'
-    | '/templates'
-    | '/admin/learning/$userId'
-    | '/api/billing/webhook'
-    | '/api/public/backfill-content-pages'
-    | '/api/public/track-city-click'
-    | '/app/pages/new'
-    | '/help-center/$category/$slug'
-    | '/lovable/email/suppression'
+    | '/sharetribe-templates/$slug'
+    | '/help'
+    | '/sharetribe-templates'
+    | '/app/addons'
+    | '/app/affiliates'
+    | '/app/billing'
+    | '/app/coach'
+    | '/app/onboarding'
+    | '/app/opportunities'
     | '/app/pages'
-    | '/help-center/$category'
-    | '/api/certificates/$uid/pdf'
-    | '/api/public/hooks/competitor-radar-scan'
-    | '/api/public/hooks/daily-seo-digest'
-    | '/api/public/hooks/seo-fix-worker'
-    | '/api/public/hooks/seo-self-test'
-    | '/api/public/hooks/sync-listings'
+    | '/app/seo-coach'
+    | '/app/settings'
+    | '/api/public/domain-config'
+    | '/api/public/domain-token'
+    | '/api/public/edge-health'
+    | '/api/public/page-lookup'
+    | '/api/public/sitemap-by-host'
+    | '/api/public/version'
+    | '/help/$category/$article'
+    | '/s/$ws/$slug'
+    | '/sharetribe-templates/$slug/download'
+    | '/app'
+    | '/app/admin/email-templates'
+    | '/app/admin/template-store'
+    | '/app/affiliates/customise'
+    | '/app/affiliates/directory'
+    | '/app/affiliates/payouts'
+    | '/app/affiliates/programs'
+    | '/app/affiliates/settings'
+    | '/app/content/blog'
+    | '/app/content/bulk-editor'
+    | '/app/content/city-heroes'
+    | '/app/content/data-export'
+    | '/app/content/data-import'
+    | '/app/content/generate'
+    | '/app/content/learning'
+    | '/app/content/migration'
+    | '/app/content/quick-page-builder'
+    | '/app/ops/admin-team'
+    | '/app/ops/directory-moderation'
+    | '/app/ops/email-branding'
+    | '/app/ops/email-verify'
+    | '/app/ops/ig-lead-hunter'
+    | '/app/ops/lead-inbox'
+    | '/app/ops/listing-claims'
+    | '/app/ops/plan-requests'
+    | '/app/ops/site-footer'
+    | '/app/ops/social-lead-hunter'
+    | '/app/pages/bulk'
+    | '/app/pages/new'
+    | '/app/seo/canonical-audit'
+    | '/app/seo/click-report'
+    | '/app/seo/competitor-radar'
+    | '/app/seo/competitor-tracker'
+    | '/app/seo/content-health'
+    | '/app/seo/gsc-import'
+    | '/app/seo/health'
+    | '/app/seo/internal-links'
+    | '/app/seo/keyword-opportunities'
+    | '/app/seo/link-audit'
+    | '/app/seo/link-checker'
+    | '/app/seo/listing-auditor'
+    | '/app/seo/missing-pages'
+    | '/app/seo/page-auditor'
+    | '/app/seo/rank-tracker'
+    | '/app/seo/scrape-import'
+    | '/app/seo/sitemap'
+    | '/app/settings/ai'
+    | '/app/settings/api-keys'
+    | '/app/settings/domains'
+    | '/api/public/hooks/auth-send-email'
+    | '/api/public/hooks/canonical-audit'
+    | '/api/public/hooks/sync-sharetribe'
+    | '/api/public/ops/email-probe'
+    | '/api/public/ops/sync-health'
+    | '/app/admin/help/articles'
+    | '/app/admin/help/categories'
+    | '/app/admin/help/feedback'
+    | '/app/admin/help/tickets'
     | '/app/pages/$id/edit'
-    | '/lovable/email/auth/webhook'
-    | '/lovable/email/queue/process'
-    | '/lovable/email/transactional/send'
+    | '/app/settings/integrations/sharetribe'
+    | '/app/admin/help/articles/$id'
+    | '/app/affiliates/programs/$id/edit'
   id:
     | '__root__'
     | '/'
-    | '/admin'
-    | '/app'
-    | '/auth'
-    | '/onboarding'
-    | '/privacy-policy'
-    | '/referral'
-    | '/robots.txt'
-    | '/sitemap-default.xml'
-    | '/sitemap-index.xml'
-    | '/sitemap-static.xml'
+    | '/_authenticated'
+    | '/beta'
+    | '/help'
+    | '/login'
+    | '/privacy'
+    | '/reset-password'
+    | '/signup'
     | '/sitemap.xml'
-    | '/unsubscribe'
-    | '/account/billing'
-    | '/account/learning'
-    | '/admin/blog'
-    | '/admin/cities-heroes'
-    | '/admin/claims'
-    | '/admin/click-report'
-    | '/admin/competitor-radar'
-    | '/admin/competitors'
-    | '/admin/content-migration'
-    | '/admin/content-pages'
-    | '/admin/dashboard'
-    | '/admin/directory'
-    | '/admin/email-branding'
-    | '/admin/generate-content'
-    | '/admin/gsc-import'
-    | '/admin/indexing'
-    | '/admin/internal-links'
-    | '/admin/keyword-opportunities'
-    | '/admin/leads'
-    | '/admin/learning'
-    | '/admin/link-checker'
-    | '/admin/missing-pages'
-    | '/admin/no-access'
-    | '/admin/page-auditor'
-    | '/admin/plan-requests'
-    | '/admin/quick-page'
-    | '/admin/rank-tracker'
-    | '/admin/scrape-import'
-    | '/admin/seo-health'
-    | '/admin/site-footer'
-    | '/admin/team'
-    | '/app/dashboard'
-    | '/auth/reset-password'
-    | '/email/unsubscribe'
+    | '/terms'
+    | '/_authenticated/app'
+    | '/a/$slug'
+    | '/a/founders-domain-test'
+    | '/a/sitemap.xml'
+    | '/apply/$slug'
+    | '/help/$category'
+    | '/help/contact'
+    | '/help/search'
+    | '/help/sitemap.xml'
     | '/p/$slug'
-    | '/templates/$slug'
-    | '/verify/$uid'
-    | '/help-center/'
-    | '/templates/'
-    | '/admin/learning/$userId'
-    | '/api/billing/webhook'
-    | '/api/public/backfill-content-pages'
-    | '/api/public/track-city-click'
-    | '/app/pages/new'
-    | '/help-center/$category/$slug'
-    | '/lovable/email/suppression'
-    | '/app/pages/'
-    | '/help-center/$category/'
-    | '/api/certificates/$uid/pdf'
-    | '/api/public/hooks/competitor-radar-scan'
-    | '/api/public/hooks/daily-seo-digest'
-    | '/api/public/hooks/seo-fix-worker'
-    | '/api/public/hooks/seo-self-test'
-    | '/api/public/hooks/sync-listings'
-    | '/app/pages/$id/edit'
-    | '/lovable/email/auth/webhook'
-    | '/lovable/email/queue/process'
-    | '/lovable/email/transactional/send'
+    | '/sharetribe-templates/$slug'
+    | '/help/'
+    | '/sharetribe-templates/'
+    | '/_authenticated/app/addons'
+    | '/_authenticated/app/affiliates'
+    | '/_authenticated/app/billing'
+    | '/_authenticated/app/coach'
+    | '/_authenticated/app/onboarding'
+    | '/_authenticated/app/opportunities'
+    | '/_authenticated/app/pages'
+    | '/_authenticated/app/seo-coach'
+    | '/_authenticated/app/settings'
+    | '/api/public/domain-config'
+    | '/api/public/domain-token'
+    | '/api/public/edge-health'
+    | '/api/public/page-lookup'
+    | '/api/public/sitemap-by-host'
+    | '/api/public/version'
+    | '/help/$category_/$article'
+    | '/s/$ws/$slug'
+    | '/sharetribe-templates/$slug_/download'
+    | '/_authenticated/app/'
+    | '/_authenticated/app/admin/email-templates'
+    | '/_authenticated/app/admin/template-store'
+    | '/_authenticated/app/affiliates/customise'
+    | '/_authenticated/app/affiliates/directory'
+    | '/_authenticated/app/affiliates/payouts'
+    | '/_authenticated/app/affiliates/programs'
+    | '/_authenticated/app/affiliates/settings'
+    | '/_authenticated/app/content/blog'
+    | '/_authenticated/app/content/bulk-editor'
+    | '/_authenticated/app/content/city-heroes'
+    | '/_authenticated/app/content/data-export'
+    | '/_authenticated/app/content/data-import'
+    | '/_authenticated/app/content/generate'
+    | '/_authenticated/app/content/learning'
+    | '/_authenticated/app/content/migration'
+    | '/_authenticated/app/content/quick-page-builder'
+    | '/_authenticated/app/ops/admin-team'
+    | '/_authenticated/app/ops/directory-moderation'
+    | '/_authenticated/app/ops/email-branding'
+    | '/_authenticated/app/ops/email-verify'
+    | '/_authenticated/app/ops/ig-lead-hunter'
+    | '/_authenticated/app/ops/lead-inbox'
+    | '/_authenticated/app/ops/listing-claims'
+    | '/_authenticated/app/ops/plan-requests'
+    | '/_authenticated/app/ops/site-footer'
+    | '/_authenticated/app/ops/social-lead-hunter'
+    | '/_authenticated/app/pages/bulk'
+    | '/_authenticated/app/pages/new'
+    | '/_authenticated/app/seo/canonical-audit'
+    | '/_authenticated/app/seo/click-report'
+    | '/_authenticated/app/seo/competitor-radar'
+    | '/_authenticated/app/seo/competitor-tracker'
+    | '/_authenticated/app/seo/content-health'
+    | '/_authenticated/app/seo/gsc-import'
+    | '/_authenticated/app/seo/health'
+    | '/_authenticated/app/seo/internal-links'
+    | '/_authenticated/app/seo/keyword-opportunities'
+    | '/_authenticated/app/seo/link-audit'
+    | '/_authenticated/app/seo/link-checker'
+    | '/_authenticated/app/seo/listing-auditor'
+    | '/_authenticated/app/seo/missing-pages'
+    | '/_authenticated/app/seo/page-auditor'
+    | '/_authenticated/app/seo/rank-tracker'
+    | '/_authenticated/app/seo/scrape-import'
+    | '/_authenticated/app/seo/sitemap'
+    | '/_authenticated/app/settings/ai'
+    | '/_authenticated/app/settings/api-keys'
+    | '/_authenticated/app/settings/domains'
+    | '/api/public/hooks/auth-send-email'
+    | '/api/public/hooks/canonical-audit'
+    | '/api/public/hooks/sync-sharetribe'
+    | '/api/public/ops/email-probe'
+    | '/api/public/ops/sync-health'
+    | '/_authenticated/app/admin/help/articles'
+    | '/_authenticated/app/admin/help/categories'
+    | '/_authenticated/app/admin/help/feedback'
+    | '/_authenticated/app/admin/help/tickets'
+    | '/_authenticated/app/pages/$id/edit'
+    | '/_authenticated/app/settings/integrations/sharetribe'
+    | '/_authenticated/app/admin/help/articles/$id'
+    | '/_authenticated/app/affiliates/programs/$id/edit'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AdminRoute: typeof AdminRouteWithChildren
-  AppRoute: typeof AppRouteWithChildren
-  AuthRoute: typeof AuthRouteWithChildren
-  OnboardingRoute: typeof OnboardingRoute
-  PrivacyPolicyRoute: typeof PrivacyPolicyRoute
-  ReferralRoute: typeof ReferralRoute
-  RobotsDottxtRoute: typeof RobotsDottxtRoute
-  SitemapDefaultDotxmlRoute: typeof SitemapDefaultDotxmlRoute
-  SitemapIndexDotxmlRoute: typeof SitemapIndexDotxmlRoute
-  SitemapStaticDotxmlRoute: typeof SitemapStaticDotxmlRoute
+  AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
+  BetaRoute: typeof BetaRoute
+  HelpRoute: typeof HelpRouteWithChildren
+  LoginRoute: typeof LoginRoute
+  PrivacyRoute: typeof PrivacyRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
+  SignupRoute: typeof SignupRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
-  UnsubscribeRoute: typeof UnsubscribeRoute
-  AccountBillingRoute: typeof AccountBillingRoute
-  AccountLearningRoute: typeof AccountLearningRoute
-  EmailUnsubscribeRoute: typeof EmailUnsubscribeRoute
+  TermsRoute: typeof TermsRoute
+  ASlugRoute: typeof ASlugRoute
+  AFoundersDomainTestRoute: typeof AFoundersDomainTestRoute
+  ASitemapDotxmlRoute: typeof ASitemapDotxmlRoute
+  ApplySlugRoute: typeof ApplySlugRoute
   PSlugRoute: typeof PSlugRoute
-  TemplatesSlugRoute: typeof TemplatesSlugRoute
-  VerifyUidRoute: typeof VerifyUidRoute
-  HelpCenterIndexRoute: typeof HelpCenterIndexRoute
-  TemplatesIndexRoute: typeof TemplatesIndexRoute
-  ApiBillingWebhookRoute: typeof ApiBillingWebhookRoute
-  ApiPublicBackfillContentPagesRoute: typeof ApiPublicBackfillContentPagesRoute
-  ApiPublicTrackCityClickRoute: typeof ApiPublicTrackCityClickRoute
-  HelpCenterCategorySlugRoute: typeof HelpCenterCategorySlugRoute
-  LovableEmailSuppressionRoute: typeof LovableEmailSuppressionRoute
-  HelpCenterCategoryIndexRoute: typeof HelpCenterCategoryIndexRoute
-  ApiCertificatesUidPdfRoute: typeof ApiCertificatesUidPdfRoute
-  ApiPublicHooksCompetitorRadarScanRoute: typeof ApiPublicHooksCompetitorRadarScanRoute
-  ApiPublicHooksDailySeoDigestRoute: typeof ApiPublicHooksDailySeoDigestRoute
-  ApiPublicHooksSeoFixWorkerRoute: typeof ApiPublicHooksSeoFixWorkerRoute
-  ApiPublicHooksSeoSelfTestRoute: typeof ApiPublicHooksSeoSelfTestRoute
-  ApiPublicHooksSyncListingsRoute: typeof ApiPublicHooksSyncListingsRoute
-  LovableEmailAuthWebhookRoute: typeof LovableEmailAuthWebhookRoute
-  LovableEmailQueueProcessRoute: typeof LovableEmailQueueProcessRoute
-  LovableEmailTransactionalSendRoute: typeof LovableEmailTransactionalSendRoute
+  SharetribeTemplatesSlugRoute: typeof SharetribeTemplatesSlugRoute
+  SharetribeTemplatesIndexRoute: typeof SharetribeTemplatesIndexRoute
+  ApiPublicDomainConfigRoute: typeof ApiPublicDomainConfigRoute
+  ApiPublicDomainTokenRoute: typeof ApiPublicDomainTokenRoute
+  ApiPublicEdgeHealthRoute: typeof ApiPublicEdgeHealthRoute
+  ApiPublicPageLookupRoute: typeof ApiPublicPageLookupRoute
+  ApiPublicSitemapByHostRoute: typeof ApiPublicSitemapByHostRoute
+  ApiPublicVersionRoute: typeof ApiPublicVersionRoute
+  SWsSlugRoute: typeof SWsSlugRoute
+  SharetribeTemplatesSlugDownloadRoute: typeof SharetribeTemplatesSlugDownloadRoute
+  ApiPublicHooksAuthSendEmailRoute: typeof ApiPublicHooksAuthSendEmailRoute
+  ApiPublicHooksCanonicalAuditRoute: typeof ApiPublicHooksCanonicalAuditRoute
+  ApiPublicHooksSyncSharetribeRoute: typeof ApiPublicHooksSyncSharetribeRoute
+  ApiPublicOpsEmailProbeRoute: typeof ApiPublicOpsEmailProbeRoute
+  ApiPublicOpsSyncHealthRoute: typeof ApiPublicOpsSyncHealthRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/unsubscribe': {
-      id: '/unsubscribe'
-      path: '/unsubscribe'
-      fullPath: '/unsubscribe'
-      preLoaderRoute: typeof UnsubscribeRouteImport
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/sitemap.xml': {
@@ -943,74 +1369,53 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/sitemap-static.xml': {
-      id: '/sitemap-static.xml'
-      path: '/sitemap-static.xml'
-      fullPath: '/sitemap-static.xml'
-      preLoaderRoute: typeof SitemapStaticDotxmlRouteImport
+    '/signup': {
+      id: '/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof SignupRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/sitemap-index.xml': {
-      id: '/sitemap-index.xml'
-      path: '/sitemap-index.xml'
-      fullPath: '/sitemap-index.xml'
-      preLoaderRoute: typeof SitemapIndexDotxmlRouteImport
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/sitemap-default.xml': {
-      id: '/sitemap-default.xml'
-      path: '/sitemap-default.xml'
-      fullPath: '/sitemap-default.xml'
-      preLoaderRoute: typeof SitemapDefaultDotxmlRouteImport
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/robots.txt': {
-      id: '/robots.txt'
-      path: '/robots.txt'
-      fullPath: '/robots.txt'
-      preLoaderRoute: typeof RobotsDottxtRouteImport
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/referral': {
-      id: '/referral'
-      path: '/referral'
-      fullPath: '/referral'
-      preLoaderRoute: typeof ReferralRouteImport
+    '/help': {
+      id: '/help'
+      path: '/help'
+      fullPath: '/help'
+      preLoaderRoute: typeof HelpRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/privacy-policy': {
-      id: '/privacy-policy'
-      path: '/privacy-policy'
-      fullPath: '/privacy-policy'
-      preLoaderRoute: typeof PrivacyPolicyRouteImport
+    '/beta': {
+      id: '/beta'
+      path: '/beta'
+      fullPath: '/beta'
+      preLoaderRoute: typeof BetaRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/onboarding': {
-      id: '/onboarding'
-      path: '/onboarding'
-      fullPath: '/onboarding'
-      preLoaderRoute: typeof OnboardingRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/auth': {
-      id: '/auth'
-      path: '/auth'
-      fullPath: '/auth'
-      preLoaderRoute: typeof AuthRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/app': {
-      id: '/app'
-      path: '/app'
-      fullPath: '/app'
-      preLoaderRoute: typeof AppRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin': {
-      id: '/admin'
-      path: '/admin'
-      fullPath: '/admin'
-      preLoaderRoute: typeof AdminRouteImport
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -1020,32 +1425,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/templates/': {
-      id: '/templates/'
-      path: '/templates'
-      fullPath: '/templates/'
-      preLoaderRoute: typeof TemplatesIndexRouteImport
+    '/sharetribe-templates/': {
+      id: '/sharetribe-templates/'
+      path: '/sharetribe-templates'
+      fullPath: '/sharetribe-templates/'
+      preLoaderRoute: typeof SharetribeTemplatesIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/help-center/': {
-      id: '/help-center/'
-      path: '/help-center'
-      fullPath: '/help-center/'
-      preLoaderRoute: typeof HelpCenterIndexRouteImport
-      parentRoute: typeof rootRouteImport
+    '/help/': {
+      id: '/help/'
+      path: '/'
+      fullPath: '/help/'
+      preLoaderRoute: typeof HelpIndexRouteImport
+      parentRoute: typeof HelpRoute
     }
-    '/verify/$uid': {
-      id: '/verify/$uid'
-      path: '/verify/$uid'
-      fullPath: '/verify/$uid'
-      preLoaderRoute: typeof VerifyUidRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/templates/$slug': {
-      id: '/templates/$slug'
-      path: '/templates/$slug'
-      fullPath: '/templates/$slug'
-      preLoaderRoute: typeof TemplatesSlugRouteImport
+    '/sharetribe-templates/$slug': {
+      id: '/sharetribe-templates/$slug'
+      path: '/sharetribe-templates/$slug'
+      fullPath: '/sharetribe-templates/$slug'
+      preLoaderRoute: typeof SharetribeTemplatesSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/p/$slug': {
@@ -1055,522 +1453,920 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/email/unsubscribe': {
-      id: '/email/unsubscribe'
-      path: '/email/unsubscribe'
-      fullPath: '/email/unsubscribe'
-      preLoaderRoute: typeof EmailUnsubscribeRouteImport
+    '/help/sitemap.xml': {
+      id: '/help/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/help/sitemap.xml'
+      preLoaderRoute: typeof HelpSitemapDotxmlRouteImport
+      parentRoute: typeof HelpRoute
+    }
+    '/help/search': {
+      id: '/help/search'
+      path: '/search'
+      fullPath: '/help/search'
+      preLoaderRoute: typeof HelpSearchRouteImport
+      parentRoute: typeof HelpRoute
+    }
+    '/help/contact': {
+      id: '/help/contact'
+      path: '/contact'
+      fullPath: '/help/contact'
+      preLoaderRoute: typeof HelpContactRouteImport
+      parentRoute: typeof HelpRoute
+    }
+    '/help/$category': {
+      id: '/help/$category'
+      path: '/$category'
+      fullPath: '/help/$category'
+      preLoaderRoute: typeof HelpCategoryRouteImport
+      parentRoute: typeof HelpRoute
+    }
+    '/apply/$slug': {
+      id: '/apply/$slug'
+      path: '/apply/$slug'
+      fullPath: '/apply/$slug'
+      preLoaderRoute: typeof ApplySlugRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/auth/reset-password': {
-      id: '/auth/reset-password'
-      path: '/reset-password'
-      fullPath: '/auth/reset-password'
-      preLoaderRoute: typeof AuthResetPasswordRouteImport
-      parentRoute: typeof AuthRoute
-    }
-    '/app/dashboard': {
-      id: '/app/dashboard'
-      path: '/dashboard'
-      fullPath: '/app/dashboard'
-      preLoaderRoute: typeof AppDashboardRouteImport
-      parentRoute: typeof AppRoute
-    }
-    '/admin/team': {
-      id: '/admin/team'
-      path: '/team'
-      fullPath: '/admin/team'
-      preLoaderRoute: typeof AdminTeamRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/site-footer': {
-      id: '/admin/site-footer'
-      path: '/site-footer'
-      fullPath: '/admin/site-footer'
-      preLoaderRoute: typeof AdminSiteFooterRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/seo-health': {
-      id: '/admin/seo-health'
-      path: '/seo-health'
-      fullPath: '/admin/seo-health'
-      preLoaderRoute: typeof AdminSeoHealthRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/scrape-import': {
-      id: '/admin/scrape-import'
-      path: '/scrape-import'
-      fullPath: '/admin/scrape-import'
-      preLoaderRoute: typeof AdminScrapeImportRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/rank-tracker': {
-      id: '/admin/rank-tracker'
-      path: '/rank-tracker'
-      fullPath: '/admin/rank-tracker'
-      preLoaderRoute: typeof AdminRankTrackerRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/quick-page': {
-      id: '/admin/quick-page'
-      path: '/quick-page'
-      fullPath: '/admin/quick-page'
-      preLoaderRoute: typeof AdminQuickPageRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/plan-requests': {
-      id: '/admin/plan-requests'
-      path: '/plan-requests'
-      fullPath: '/admin/plan-requests'
-      preLoaderRoute: typeof AdminPlanRequestsRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/page-auditor': {
-      id: '/admin/page-auditor'
-      path: '/page-auditor'
-      fullPath: '/admin/page-auditor'
-      preLoaderRoute: typeof AdminPageAuditorRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/no-access': {
-      id: '/admin/no-access'
-      path: '/no-access'
-      fullPath: '/admin/no-access'
-      preLoaderRoute: typeof AdminNoAccessRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/missing-pages': {
-      id: '/admin/missing-pages'
-      path: '/missing-pages'
-      fullPath: '/admin/missing-pages'
-      preLoaderRoute: typeof AdminMissingPagesRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/link-checker': {
-      id: '/admin/link-checker'
-      path: '/link-checker'
-      fullPath: '/admin/link-checker'
-      preLoaderRoute: typeof AdminLinkCheckerRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/learning': {
-      id: '/admin/learning'
-      path: '/learning'
-      fullPath: '/admin/learning'
-      preLoaderRoute: typeof AdminLearningRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/leads': {
-      id: '/admin/leads'
-      path: '/leads'
-      fullPath: '/admin/leads'
-      preLoaderRoute: typeof AdminLeadsRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/keyword-opportunities': {
-      id: '/admin/keyword-opportunities'
-      path: '/keyword-opportunities'
-      fullPath: '/admin/keyword-opportunities'
-      preLoaderRoute: typeof AdminKeywordOpportunitiesRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/internal-links': {
-      id: '/admin/internal-links'
-      path: '/internal-links'
-      fullPath: '/admin/internal-links'
-      preLoaderRoute: typeof AdminInternalLinksRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/indexing': {
-      id: '/admin/indexing'
-      path: '/indexing'
-      fullPath: '/admin/indexing'
-      preLoaderRoute: typeof AdminIndexingRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/gsc-import': {
-      id: '/admin/gsc-import'
-      path: '/gsc-import'
-      fullPath: '/admin/gsc-import'
-      preLoaderRoute: typeof AdminGscImportRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/generate-content': {
-      id: '/admin/generate-content'
-      path: '/generate-content'
-      fullPath: '/admin/generate-content'
-      preLoaderRoute: typeof AdminGenerateContentRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/email-branding': {
-      id: '/admin/email-branding'
-      path: '/email-branding'
-      fullPath: '/admin/email-branding'
-      preLoaderRoute: typeof AdminEmailBrandingRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/directory': {
-      id: '/admin/directory'
-      path: '/directory'
-      fullPath: '/admin/directory'
-      preLoaderRoute: typeof AdminDirectoryRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/dashboard': {
-      id: '/admin/dashboard'
-      path: '/dashboard'
-      fullPath: '/admin/dashboard'
-      preLoaderRoute: typeof AdminDashboardRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/content-pages': {
-      id: '/admin/content-pages'
-      path: '/content-pages'
-      fullPath: '/admin/content-pages'
-      preLoaderRoute: typeof AdminContentPagesRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/content-migration': {
-      id: '/admin/content-migration'
-      path: '/content-migration'
-      fullPath: '/admin/content-migration'
-      preLoaderRoute: typeof AdminContentMigrationRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/competitors': {
-      id: '/admin/competitors'
-      path: '/competitors'
-      fullPath: '/admin/competitors'
-      preLoaderRoute: typeof AdminCompetitorsRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/competitor-radar': {
-      id: '/admin/competitor-radar'
-      path: '/competitor-radar'
-      fullPath: '/admin/competitor-radar'
-      preLoaderRoute: typeof AdminCompetitorRadarRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/click-report': {
-      id: '/admin/click-report'
-      path: '/click-report'
-      fullPath: '/admin/click-report'
-      preLoaderRoute: typeof AdminClickReportRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/claims': {
-      id: '/admin/claims'
-      path: '/claims'
-      fullPath: '/admin/claims'
-      preLoaderRoute: typeof AdminClaimsRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/cities-heroes': {
-      id: '/admin/cities-heroes'
-      path: '/cities-heroes'
-      fullPath: '/admin/cities-heroes'
-      preLoaderRoute: typeof AdminCitiesHeroesRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/blog': {
-      id: '/admin/blog'
-      path: '/blog'
-      fullPath: '/admin/blog'
-      preLoaderRoute: typeof AdminBlogRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/account/learning': {
-      id: '/account/learning'
-      path: '/account/learning'
-      fullPath: '/account/learning'
-      preLoaderRoute: typeof AccountLearningRouteImport
+    '/a/sitemap.xml': {
+      id: '/a/sitemap.xml'
+      path: '/a/sitemap.xml'
+      fullPath: '/a/sitemap.xml'
+      preLoaderRoute: typeof ASitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/account/billing': {
-      id: '/account/billing'
-      path: '/account/billing'
-      fullPath: '/account/billing'
-      preLoaderRoute: typeof AccountBillingRouteImport
+    '/a/founders-domain-test': {
+      id: '/a/founders-domain-test'
+      path: '/a/founders-domain-test'
+      fullPath: '/a/founders-domain-test'
+      preLoaderRoute: typeof AFoundersDomainTestRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/help-center/$category/': {
-      id: '/help-center/$category/'
-      path: '/help-center/$category'
-      fullPath: '/help-center/$category/'
-      preLoaderRoute: typeof HelpCenterCategoryIndexRouteImport
+    '/a/$slug': {
+      id: '/a/$slug'
+      path: '/a/$slug'
+      fullPath: '/a/$slug'
+      preLoaderRoute: typeof ASlugRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/app/pages/': {
-      id: '/app/pages/'
+    '/_authenticated/app': {
+      id: '/_authenticated/app'
+      path: '/app'
+      fullPath: '/app'
+      preLoaderRoute: typeof AuthenticatedAppRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/app/': {
+      id: '/_authenticated/app/'
+      path: '/'
+      fullPath: '/app/'
+      preLoaderRoute: typeof AuthenticatedAppIndexRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/sharetribe-templates/$slug_/download': {
+      id: '/sharetribe-templates/$slug_/download'
+      path: '/sharetribe-templates/$slug/download'
+      fullPath: '/sharetribe-templates/$slug/download'
+      preLoaderRoute: typeof SharetribeTemplatesSlugDownloadRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/s/$ws/$slug': {
+      id: '/s/$ws/$slug'
+      path: '/s/$ws/$slug'
+      fullPath: '/s/$ws/$slug'
+      preLoaderRoute: typeof SWsSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/help/$category_/$article': {
+      id: '/help/$category_/$article'
+      path: '/$category/$article'
+      fullPath: '/help/$category/$article'
+      preLoaderRoute: typeof HelpCategoryArticleRouteImport
+      parentRoute: typeof HelpRoute
+    }
+    '/api/public/version': {
+      id: '/api/public/version'
+      path: '/api/public/version'
+      fullPath: '/api/public/version'
+      preLoaderRoute: typeof ApiPublicVersionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/sitemap-by-host': {
+      id: '/api/public/sitemap-by-host'
+      path: '/api/public/sitemap-by-host'
+      fullPath: '/api/public/sitemap-by-host'
+      preLoaderRoute: typeof ApiPublicSitemapByHostRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/page-lookup': {
+      id: '/api/public/page-lookup'
+      path: '/api/public/page-lookup'
+      fullPath: '/api/public/page-lookup'
+      preLoaderRoute: typeof ApiPublicPageLookupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/edge-health': {
+      id: '/api/public/edge-health'
+      path: '/api/public/edge-health'
+      fullPath: '/api/public/edge-health'
+      preLoaderRoute: typeof ApiPublicEdgeHealthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/domain-token': {
+      id: '/api/public/domain-token'
+      path: '/api/public/domain-token'
+      fullPath: '/api/public/domain-token'
+      preLoaderRoute: typeof ApiPublicDomainTokenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/domain-config': {
+      id: '/api/public/domain-config'
+      path: '/api/public/domain-config'
+      fullPath: '/api/public/domain-config'
+      preLoaderRoute: typeof ApiPublicDomainConfigRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/app/settings': {
+      id: '/_authenticated/app/settings'
+      path: '/settings'
+      fullPath: '/app/settings'
+      preLoaderRoute: typeof AuthenticatedAppSettingsRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/seo-coach': {
+      id: '/_authenticated/app/seo-coach'
+      path: '/seo-coach'
+      fullPath: '/app/seo-coach'
+      preLoaderRoute: typeof AuthenticatedAppSeoCoachRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/pages': {
+      id: '/_authenticated/app/pages'
       path: '/pages'
-      fullPath: '/app/pages/'
-      preLoaderRoute: typeof AppPagesIndexRouteImport
-      parentRoute: typeof AppRoute
+      fullPath: '/app/pages'
+      preLoaderRoute: typeof AuthenticatedAppPagesRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
     }
-    '/lovable/email/suppression': {
-      id: '/lovable/email/suppression'
-      path: '/lovable/email/suppression'
-      fullPath: '/lovable/email/suppression'
-      preLoaderRoute: typeof LovableEmailSuppressionRouteImport
+    '/_authenticated/app/opportunities': {
+      id: '/_authenticated/app/opportunities'
+      path: '/opportunities'
+      fullPath: '/app/opportunities'
+      preLoaderRoute: typeof AuthenticatedAppOpportunitiesRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/onboarding': {
+      id: '/_authenticated/app/onboarding'
+      path: '/onboarding'
+      fullPath: '/app/onboarding'
+      preLoaderRoute: typeof AuthenticatedAppOnboardingRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/coach': {
+      id: '/_authenticated/app/coach'
+      path: '/coach'
+      fullPath: '/app/coach'
+      preLoaderRoute: typeof AuthenticatedAppCoachRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/billing': {
+      id: '/_authenticated/app/billing'
+      path: '/billing'
+      fullPath: '/app/billing'
+      preLoaderRoute: typeof AuthenticatedAppBillingRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/affiliates': {
+      id: '/_authenticated/app/affiliates'
+      path: '/affiliates'
+      fullPath: '/app/affiliates'
+      preLoaderRoute: typeof AuthenticatedAppAffiliatesRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/addons': {
+      id: '/_authenticated/app/addons'
+      path: '/addons'
+      fullPath: '/app/addons'
+      preLoaderRoute: typeof AuthenticatedAppAddonsRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/api/public/ops/sync-health': {
+      id: '/api/public/ops/sync-health'
+      path: '/api/public/ops/sync-health'
+      fullPath: '/api/public/ops/sync-health'
+      preLoaderRoute: typeof ApiPublicOpsSyncHealthRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/help-center/$category/$slug': {
-      id: '/help-center/$category/$slug'
-      path: '/help-center/$category/$slug'
-      fullPath: '/help-center/$category/$slug'
-      preLoaderRoute: typeof HelpCenterCategorySlugRouteImport
+    '/api/public/ops/email-probe': {
+      id: '/api/public/ops/email-probe'
+      path: '/api/public/ops/email-probe'
+      fullPath: '/api/public/ops/email-probe'
+      preLoaderRoute: typeof ApiPublicOpsEmailProbeRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/app/pages/new': {
-      id: '/app/pages/new'
-      path: '/pages/new'
+    '/api/public/hooks/sync-sharetribe': {
+      id: '/api/public/hooks/sync-sharetribe'
+      path: '/api/public/hooks/sync-sharetribe'
+      fullPath: '/api/public/hooks/sync-sharetribe'
+      preLoaderRoute: typeof ApiPublicHooksSyncSharetribeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/hooks/canonical-audit': {
+      id: '/api/public/hooks/canonical-audit'
+      path: '/api/public/hooks/canonical-audit'
+      fullPath: '/api/public/hooks/canonical-audit'
+      preLoaderRoute: typeof ApiPublicHooksCanonicalAuditRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/hooks/auth-send-email': {
+      id: '/api/public/hooks/auth-send-email'
+      path: '/api/public/hooks/auth-send-email'
+      fullPath: '/api/public/hooks/auth-send-email'
+      preLoaderRoute: typeof ApiPublicHooksAuthSendEmailRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/app/settings/domains': {
+      id: '/_authenticated/app/settings/domains'
+      path: '/domains'
+      fullPath: '/app/settings/domains'
+      preLoaderRoute: typeof AuthenticatedAppSettingsDomainsRouteImport
+      parentRoute: typeof AuthenticatedAppSettingsRoute
+    }
+    '/_authenticated/app/settings/api-keys': {
+      id: '/_authenticated/app/settings/api-keys'
+      path: '/api-keys'
+      fullPath: '/app/settings/api-keys'
+      preLoaderRoute: typeof AuthenticatedAppSettingsApiKeysRouteImport
+      parentRoute: typeof AuthenticatedAppSettingsRoute
+    }
+    '/_authenticated/app/settings/ai': {
+      id: '/_authenticated/app/settings/ai'
+      path: '/ai'
+      fullPath: '/app/settings/ai'
+      preLoaderRoute: typeof AuthenticatedAppSettingsAiRouteImport
+      parentRoute: typeof AuthenticatedAppSettingsRoute
+    }
+    '/_authenticated/app/seo/sitemap': {
+      id: '/_authenticated/app/seo/sitemap'
+      path: '/seo/sitemap'
+      fullPath: '/app/seo/sitemap'
+      preLoaderRoute: typeof AuthenticatedAppSeoSitemapRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/seo/scrape-import': {
+      id: '/_authenticated/app/seo/scrape-import'
+      path: '/seo/scrape-import'
+      fullPath: '/app/seo/scrape-import'
+      preLoaderRoute: typeof AuthenticatedAppSeoScrapeImportRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/seo/rank-tracker': {
+      id: '/_authenticated/app/seo/rank-tracker'
+      path: '/seo/rank-tracker'
+      fullPath: '/app/seo/rank-tracker'
+      preLoaderRoute: typeof AuthenticatedAppSeoRankTrackerRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/seo/page-auditor': {
+      id: '/_authenticated/app/seo/page-auditor'
+      path: '/seo/page-auditor'
+      fullPath: '/app/seo/page-auditor'
+      preLoaderRoute: typeof AuthenticatedAppSeoPageAuditorRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/seo/missing-pages': {
+      id: '/_authenticated/app/seo/missing-pages'
+      path: '/seo/missing-pages'
+      fullPath: '/app/seo/missing-pages'
+      preLoaderRoute: typeof AuthenticatedAppSeoMissingPagesRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/seo/listing-auditor': {
+      id: '/_authenticated/app/seo/listing-auditor'
+      path: '/seo/listing-auditor'
+      fullPath: '/app/seo/listing-auditor'
+      preLoaderRoute: typeof AuthenticatedAppSeoListingAuditorRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/seo/link-checker': {
+      id: '/_authenticated/app/seo/link-checker'
+      path: '/seo/link-checker'
+      fullPath: '/app/seo/link-checker'
+      preLoaderRoute: typeof AuthenticatedAppSeoLinkCheckerRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/seo/link-audit': {
+      id: '/_authenticated/app/seo/link-audit'
+      path: '/seo/link-audit'
+      fullPath: '/app/seo/link-audit'
+      preLoaderRoute: typeof AuthenticatedAppSeoLinkAuditRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/seo/keyword-opportunities': {
+      id: '/_authenticated/app/seo/keyword-opportunities'
+      path: '/seo/keyword-opportunities'
+      fullPath: '/app/seo/keyword-opportunities'
+      preLoaderRoute: typeof AuthenticatedAppSeoKeywordOpportunitiesRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/seo/internal-links': {
+      id: '/_authenticated/app/seo/internal-links'
+      path: '/seo/internal-links'
+      fullPath: '/app/seo/internal-links'
+      preLoaderRoute: typeof AuthenticatedAppSeoInternalLinksRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/seo/health': {
+      id: '/_authenticated/app/seo/health'
+      path: '/seo/health'
+      fullPath: '/app/seo/health'
+      preLoaderRoute: typeof AuthenticatedAppSeoHealthRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/seo/gsc-import': {
+      id: '/_authenticated/app/seo/gsc-import'
+      path: '/seo/gsc-import'
+      fullPath: '/app/seo/gsc-import'
+      preLoaderRoute: typeof AuthenticatedAppSeoGscImportRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/seo/content-health': {
+      id: '/_authenticated/app/seo/content-health'
+      path: '/seo/content-health'
+      fullPath: '/app/seo/content-health'
+      preLoaderRoute: typeof AuthenticatedAppSeoContentHealthRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/seo/competitor-tracker': {
+      id: '/_authenticated/app/seo/competitor-tracker'
+      path: '/seo/competitor-tracker'
+      fullPath: '/app/seo/competitor-tracker'
+      preLoaderRoute: typeof AuthenticatedAppSeoCompetitorTrackerRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/seo/competitor-radar': {
+      id: '/_authenticated/app/seo/competitor-radar'
+      path: '/seo/competitor-radar'
+      fullPath: '/app/seo/competitor-radar'
+      preLoaderRoute: typeof AuthenticatedAppSeoCompetitorRadarRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/seo/click-report': {
+      id: '/_authenticated/app/seo/click-report'
+      path: '/seo/click-report'
+      fullPath: '/app/seo/click-report'
+      preLoaderRoute: typeof AuthenticatedAppSeoClickReportRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/seo/canonical-audit': {
+      id: '/_authenticated/app/seo/canonical-audit'
+      path: '/seo/canonical-audit'
+      fullPath: '/app/seo/canonical-audit'
+      preLoaderRoute: typeof AuthenticatedAppSeoCanonicalAuditRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/pages/new': {
+      id: '/_authenticated/app/pages/new'
+      path: '/new'
       fullPath: '/app/pages/new'
-      preLoaderRoute: typeof AppPagesNewRouteImport
-      parentRoute: typeof AppRoute
+      preLoaderRoute: typeof AuthenticatedAppPagesNewRouteImport
+      parentRoute: typeof AuthenticatedAppPagesRoute
     }
-    '/api/public/track-city-click': {
-      id: '/api/public/track-city-click'
-      path: '/api/public/track-city-click'
-      fullPath: '/api/public/track-city-click'
-      preLoaderRoute: typeof ApiPublicTrackCityClickRouteImport
-      parentRoute: typeof rootRouteImport
+    '/_authenticated/app/pages/bulk': {
+      id: '/_authenticated/app/pages/bulk'
+      path: '/bulk'
+      fullPath: '/app/pages/bulk'
+      preLoaderRoute: typeof AuthenticatedAppPagesBulkRouteImport
+      parentRoute: typeof AuthenticatedAppPagesRoute
     }
-    '/api/public/backfill-content-pages': {
-      id: '/api/public/backfill-content-pages'
-      path: '/api/public/backfill-content-pages'
-      fullPath: '/api/public/backfill-content-pages'
-      preLoaderRoute: typeof ApiPublicBackfillContentPagesRouteImport
-      parentRoute: typeof rootRouteImport
+    '/_authenticated/app/ops/social-lead-hunter': {
+      id: '/_authenticated/app/ops/social-lead-hunter'
+      path: '/ops/social-lead-hunter'
+      fullPath: '/app/ops/social-lead-hunter'
+      preLoaderRoute: typeof AuthenticatedAppOpsSocialLeadHunterRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
     }
-    '/api/billing/webhook': {
-      id: '/api/billing/webhook'
-      path: '/api/billing/webhook'
-      fullPath: '/api/billing/webhook'
-      preLoaderRoute: typeof ApiBillingWebhookRouteImport
-      parentRoute: typeof rootRouteImport
+    '/_authenticated/app/ops/site-footer': {
+      id: '/_authenticated/app/ops/site-footer'
+      path: '/ops/site-footer'
+      fullPath: '/app/ops/site-footer'
+      preLoaderRoute: typeof AuthenticatedAppOpsSiteFooterRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
     }
-    '/admin/learning/$userId': {
-      id: '/admin/learning/$userId'
-      path: '/$userId'
-      fullPath: '/admin/learning/$userId'
-      preLoaderRoute: typeof AdminLearningUserIdRouteImport
-      parentRoute: typeof AdminLearningRoute
+    '/_authenticated/app/ops/plan-requests': {
+      id: '/_authenticated/app/ops/plan-requests'
+      path: '/ops/plan-requests'
+      fullPath: '/app/ops/plan-requests'
+      preLoaderRoute: typeof AuthenticatedAppOpsPlanRequestsRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
     }
-    '/lovable/email/transactional/send': {
-      id: '/lovable/email/transactional/send'
-      path: '/lovable/email/transactional/send'
-      fullPath: '/lovable/email/transactional/send'
-      preLoaderRoute: typeof LovableEmailTransactionalSendRouteImport
-      parentRoute: typeof rootRouteImport
+    '/_authenticated/app/ops/listing-claims': {
+      id: '/_authenticated/app/ops/listing-claims'
+      path: '/ops/listing-claims'
+      fullPath: '/app/ops/listing-claims'
+      preLoaderRoute: typeof AuthenticatedAppOpsListingClaimsRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
     }
-    '/lovable/email/queue/process': {
-      id: '/lovable/email/queue/process'
-      path: '/lovable/email/queue/process'
-      fullPath: '/lovable/email/queue/process'
-      preLoaderRoute: typeof LovableEmailQueueProcessRouteImport
-      parentRoute: typeof rootRouteImport
+    '/_authenticated/app/ops/lead-inbox': {
+      id: '/_authenticated/app/ops/lead-inbox'
+      path: '/ops/lead-inbox'
+      fullPath: '/app/ops/lead-inbox'
+      preLoaderRoute: typeof AuthenticatedAppOpsLeadInboxRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
     }
-    '/lovable/email/auth/webhook': {
-      id: '/lovable/email/auth/webhook'
-      path: '/lovable/email/auth/webhook'
-      fullPath: '/lovable/email/auth/webhook'
-      preLoaderRoute: typeof LovableEmailAuthWebhookRouteImport
-      parentRoute: typeof rootRouteImport
+    '/_authenticated/app/ops/ig-lead-hunter': {
+      id: '/_authenticated/app/ops/ig-lead-hunter'
+      path: '/ops/ig-lead-hunter'
+      fullPath: '/app/ops/ig-lead-hunter'
+      preLoaderRoute: typeof AuthenticatedAppOpsIgLeadHunterRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
     }
-    '/app/pages/$id/edit': {
-      id: '/app/pages/$id/edit'
-      path: '/pages/$id/edit'
+    '/_authenticated/app/ops/email-verify': {
+      id: '/_authenticated/app/ops/email-verify'
+      path: '/ops/email-verify'
+      fullPath: '/app/ops/email-verify'
+      preLoaderRoute: typeof AuthenticatedAppOpsEmailVerifyRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/ops/email-branding': {
+      id: '/_authenticated/app/ops/email-branding'
+      path: '/ops/email-branding'
+      fullPath: '/app/ops/email-branding'
+      preLoaderRoute: typeof AuthenticatedAppOpsEmailBrandingRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/ops/directory-moderation': {
+      id: '/_authenticated/app/ops/directory-moderation'
+      path: '/ops/directory-moderation'
+      fullPath: '/app/ops/directory-moderation'
+      preLoaderRoute: typeof AuthenticatedAppOpsDirectoryModerationRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/ops/admin-team': {
+      id: '/_authenticated/app/ops/admin-team'
+      path: '/ops/admin-team'
+      fullPath: '/app/ops/admin-team'
+      preLoaderRoute: typeof AuthenticatedAppOpsAdminTeamRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/content/quick-page-builder': {
+      id: '/_authenticated/app/content/quick-page-builder'
+      path: '/content/quick-page-builder'
+      fullPath: '/app/content/quick-page-builder'
+      preLoaderRoute: typeof AuthenticatedAppContentQuickPageBuilderRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/content/migration': {
+      id: '/_authenticated/app/content/migration'
+      path: '/content/migration'
+      fullPath: '/app/content/migration'
+      preLoaderRoute: typeof AuthenticatedAppContentMigrationRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/content/learning': {
+      id: '/_authenticated/app/content/learning'
+      path: '/content/learning'
+      fullPath: '/app/content/learning'
+      preLoaderRoute: typeof AuthenticatedAppContentLearningRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/content/generate': {
+      id: '/_authenticated/app/content/generate'
+      path: '/content/generate'
+      fullPath: '/app/content/generate'
+      preLoaderRoute: typeof AuthenticatedAppContentGenerateRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/content/data-import': {
+      id: '/_authenticated/app/content/data-import'
+      path: '/content/data-import'
+      fullPath: '/app/content/data-import'
+      preLoaderRoute: typeof AuthenticatedAppContentDataImportRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/content/data-export': {
+      id: '/_authenticated/app/content/data-export'
+      path: '/content/data-export'
+      fullPath: '/app/content/data-export'
+      preLoaderRoute: typeof AuthenticatedAppContentDataExportRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/content/city-heroes': {
+      id: '/_authenticated/app/content/city-heroes'
+      path: '/content/city-heroes'
+      fullPath: '/app/content/city-heroes'
+      preLoaderRoute: typeof AuthenticatedAppContentCityHeroesRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/content/bulk-editor': {
+      id: '/_authenticated/app/content/bulk-editor'
+      path: '/content/bulk-editor'
+      fullPath: '/app/content/bulk-editor'
+      preLoaderRoute: typeof AuthenticatedAppContentBulkEditorRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/content/blog': {
+      id: '/_authenticated/app/content/blog'
+      path: '/content/blog'
+      fullPath: '/app/content/blog'
+      preLoaderRoute: typeof AuthenticatedAppContentBlogRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/affiliates/settings': {
+      id: '/_authenticated/app/affiliates/settings'
+      path: '/settings'
+      fullPath: '/app/affiliates/settings'
+      preLoaderRoute: typeof AuthenticatedAppAffiliatesSettingsRouteImport
+      parentRoute: typeof AuthenticatedAppAffiliatesRoute
+    }
+    '/_authenticated/app/affiliates/programs': {
+      id: '/_authenticated/app/affiliates/programs'
+      path: '/programs'
+      fullPath: '/app/affiliates/programs'
+      preLoaderRoute: typeof AuthenticatedAppAffiliatesProgramsRouteImport
+      parentRoute: typeof AuthenticatedAppAffiliatesRoute
+    }
+    '/_authenticated/app/affiliates/payouts': {
+      id: '/_authenticated/app/affiliates/payouts'
+      path: '/payouts'
+      fullPath: '/app/affiliates/payouts'
+      preLoaderRoute: typeof AuthenticatedAppAffiliatesPayoutsRouteImport
+      parentRoute: typeof AuthenticatedAppAffiliatesRoute
+    }
+    '/_authenticated/app/affiliates/directory': {
+      id: '/_authenticated/app/affiliates/directory'
+      path: '/directory'
+      fullPath: '/app/affiliates/directory'
+      preLoaderRoute: typeof AuthenticatedAppAffiliatesDirectoryRouteImport
+      parentRoute: typeof AuthenticatedAppAffiliatesRoute
+    }
+    '/_authenticated/app/affiliates/customise': {
+      id: '/_authenticated/app/affiliates/customise'
+      path: '/customise'
+      fullPath: '/app/affiliates/customise'
+      preLoaderRoute: typeof AuthenticatedAppAffiliatesCustomiseRouteImport
+      parentRoute: typeof AuthenticatedAppAffiliatesRoute
+    }
+    '/_authenticated/app/admin/template-store': {
+      id: '/_authenticated/app/admin/template-store'
+      path: '/admin/template-store'
+      fullPath: '/app/admin/template-store'
+      preLoaderRoute: typeof AuthenticatedAppAdminTemplateStoreRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/admin/email-templates': {
+      id: '/_authenticated/app/admin/email-templates'
+      path: '/admin/email-templates'
+      fullPath: '/app/admin/email-templates'
+      preLoaderRoute: typeof AuthenticatedAppAdminEmailTemplatesRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/settings/integrations/sharetribe': {
+      id: '/_authenticated/app/settings/integrations/sharetribe'
+      path: '/integrations/sharetribe'
+      fullPath: '/app/settings/integrations/sharetribe'
+      preLoaderRoute: typeof AuthenticatedAppSettingsIntegrationsSharetribeRouteImport
+      parentRoute: typeof AuthenticatedAppSettingsRoute
+    }
+    '/_authenticated/app/pages/$id/edit': {
+      id: '/_authenticated/app/pages/$id/edit'
+      path: '/$id/edit'
       fullPath: '/app/pages/$id/edit'
-      preLoaderRoute: typeof AppPagesIdEditRouteImport
-      parentRoute: typeof AppRoute
+      preLoaderRoute: typeof AuthenticatedAppPagesIdEditRouteImport
+      parentRoute: typeof AuthenticatedAppPagesRoute
     }
-    '/api/public/hooks/sync-listings': {
-      id: '/api/public/hooks/sync-listings'
-      path: '/api/public/hooks/sync-listings'
-      fullPath: '/api/public/hooks/sync-listings'
-      preLoaderRoute: typeof ApiPublicHooksSyncListingsRouteImport
-      parentRoute: typeof rootRouteImport
+    '/_authenticated/app/admin/help/tickets': {
+      id: '/_authenticated/app/admin/help/tickets'
+      path: '/admin/help/tickets'
+      fullPath: '/app/admin/help/tickets'
+      preLoaderRoute: typeof AuthenticatedAppAdminHelpTicketsRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
     }
-    '/api/public/hooks/seo-self-test': {
-      id: '/api/public/hooks/seo-self-test'
-      path: '/api/public/hooks/seo-self-test'
-      fullPath: '/api/public/hooks/seo-self-test'
-      preLoaderRoute: typeof ApiPublicHooksSeoSelfTestRouteImport
-      parentRoute: typeof rootRouteImport
+    '/_authenticated/app/admin/help/feedback': {
+      id: '/_authenticated/app/admin/help/feedback'
+      path: '/admin/help/feedback'
+      fullPath: '/app/admin/help/feedback'
+      preLoaderRoute: typeof AuthenticatedAppAdminHelpFeedbackRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
     }
-    '/api/public/hooks/seo-fix-worker': {
-      id: '/api/public/hooks/seo-fix-worker'
-      path: '/api/public/hooks/seo-fix-worker'
-      fullPath: '/api/public/hooks/seo-fix-worker'
-      preLoaderRoute: typeof ApiPublicHooksSeoFixWorkerRouteImport
-      parentRoute: typeof rootRouteImport
+    '/_authenticated/app/admin/help/categories': {
+      id: '/_authenticated/app/admin/help/categories'
+      path: '/admin/help/categories'
+      fullPath: '/app/admin/help/categories'
+      preLoaderRoute: typeof AuthenticatedAppAdminHelpCategoriesRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
     }
-    '/api/public/hooks/daily-seo-digest': {
-      id: '/api/public/hooks/daily-seo-digest'
-      path: '/api/public/hooks/daily-seo-digest'
-      fullPath: '/api/public/hooks/daily-seo-digest'
-      preLoaderRoute: typeof ApiPublicHooksDailySeoDigestRouteImport
-      parentRoute: typeof rootRouteImport
+    '/_authenticated/app/admin/help/articles': {
+      id: '/_authenticated/app/admin/help/articles'
+      path: '/admin/help/articles'
+      fullPath: '/app/admin/help/articles'
+      preLoaderRoute: typeof AuthenticatedAppAdminHelpArticlesRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
     }
-    '/api/public/hooks/competitor-radar-scan': {
-      id: '/api/public/hooks/competitor-radar-scan'
-      path: '/api/public/hooks/competitor-radar-scan'
-      fullPath: '/api/public/hooks/competitor-radar-scan'
-      preLoaderRoute: typeof ApiPublicHooksCompetitorRadarScanRouteImport
-      parentRoute: typeof rootRouteImport
+    '/_authenticated/app/affiliates/programs/$id/edit': {
+      id: '/_authenticated/app/affiliates/programs/$id/edit'
+      path: '/$id/edit'
+      fullPath: '/app/affiliates/programs/$id/edit'
+      preLoaderRoute: typeof AuthenticatedAppAffiliatesProgramsIdEditRouteImport
+      parentRoute: typeof AuthenticatedAppAffiliatesProgramsRoute
     }
-    '/api/certificates/$uid/pdf': {
-      id: '/api/certificates/$uid/pdf'
-      path: '/api/certificates/$uid/pdf'
-      fullPath: '/api/certificates/$uid/pdf'
-      preLoaderRoute: typeof ApiCertificatesUidPdfRouteImport
-      parentRoute: typeof rootRouteImport
+    '/_authenticated/app/admin/help/articles/$id': {
+      id: '/_authenticated/app/admin/help/articles/$id'
+      path: '/$id'
+      fullPath: '/app/admin/help/articles/$id'
+      preLoaderRoute: typeof AuthenticatedAppAdminHelpArticlesIdRouteImport
+      parentRoute: typeof AuthenticatedAppAdminHelpArticlesRoute
     }
   }
 }
 
-interface AdminLearningRouteChildren {
-  AdminLearningUserIdRoute: typeof AdminLearningUserIdRoute
+interface AuthenticatedAppAffiliatesProgramsRouteChildren {
+  AuthenticatedAppAffiliatesProgramsIdEditRoute: typeof AuthenticatedAppAffiliatesProgramsIdEditRoute
 }
 
-const AdminLearningRouteChildren: AdminLearningRouteChildren = {
-  AdminLearningUserIdRoute: AdminLearningUserIdRoute,
+const AuthenticatedAppAffiliatesProgramsRouteChildren: AuthenticatedAppAffiliatesProgramsRouteChildren =
+  {
+    AuthenticatedAppAffiliatesProgramsIdEditRoute:
+      AuthenticatedAppAffiliatesProgramsIdEditRoute,
+  }
+
+const AuthenticatedAppAffiliatesProgramsRouteWithChildren =
+  AuthenticatedAppAffiliatesProgramsRoute._addFileChildren(
+    AuthenticatedAppAffiliatesProgramsRouteChildren,
+  )
+
+interface AuthenticatedAppAffiliatesRouteChildren {
+  AuthenticatedAppAffiliatesCustomiseRoute: typeof AuthenticatedAppAffiliatesCustomiseRoute
+  AuthenticatedAppAffiliatesDirectoryRoute: typeof AuthenticatedAppAffiliatesDirectoryRoute
+  AuthenticatedAppAffiliatesPayoutsRoute: typeof AuthenticatedAppAffiliatesPayoutsRoute
+  AuthenticatedAppAffiliatesProgramsRoute: typeof AuthenticatedAppAffiliatesProgramsRouteWithChildren
+  AuthenticatedAppAffiliatesSettingsRoute: typeof AuthenticatedAppAffiliatesSettingsRoute
 }
 
-const AdminLearningRouteWithChildren = AdminLearningRoute._addFileChildren(
-  AdminLearningRouteChildren,
+const AuthenticatedAppAffiliatesRouteChildren: AuthenticatedAppAffiliatesRouteChildren =
+  {
+    AuthenticatedAppAffiliatesCustomiseRoute:
+      AuthenticatedAppAffiliatesCustomiseRoute,
+    AuthenticatedAppAffiliatesDirectoryRoute:
+      AuthenticatedAppAffiliatesDirectoryRoute,
+    AuthenticatedAppAffiliatesPayoutsRoute:
+      AuthenticatedAppAffiliatesPayoutsRoute,
+    AuthenticatedAppAffiliatesProgramsRoute:
+      AuthenticatedAppAffiliatesProgramsRouteWithChildren,
+    AuthenticatedAppAffiliatesSettingsRoute:
+      AuthenticatedAppAffiliatesSettingsRoute,
+  }
+
+const AuthenticatedAppAffiliatesRouteWithChildren =
+  AuthenticatedAppAffiliatesRoute._addFileChildren(
+    AuthenticatedAppAffiliatesRouteChildren,
+  )
+
+interface AuthenticatedAppPagesRouteChildren {
+  AuthenticatedAppPagesBulkRoute: typeof AuthenticatedAppPagesBulkRoute
+  AuthenticatedAppPagesNewRoute: typeof AuthenticatedAppPagesNewRoute
+  AuthenticatedAppPagesIdEditRoute: typeof AuthenticatedAppPagesIdEditRoute
+}
+
+const AuthenticatedAppPagesRouteChildren: AuthenticatedAppPagesRouteChildren = {
+  AuthenticatedAppPagesBulkRoute: AuthenticatedAppPagesBulkRoute,
+  AuthenticatedAppPagesNewRoute: AuthenticatedAppPagesNewRoute,
+  AuthenticatedAppPagesIdEditRoute: AuthenticatedAppPagesIdEditRoute,
+}
+
+const AuthenticatedAppPagesRouteWithChildren =
+  AuthenticatedAppPagesRoute._addFileChildren(
+    AuthenticatedAppPagesRouteChildren,
+  )
+
+interface AuthenticatedAppSettingsRouteChildren {
+  AuthenticatedAppSettingsAiRoute: typeof AuthenticatedAppSettingsAiRoute
+  AuthenticatedAppSettingsApiKeysRoute: typeof AuthenticatedAppSettingsApiKeysRoute
+  AuthenticatedAppSettingsDomainsRoute: typeof AuthenticatedAppSettingsDomainsRoute
+  AuthenticatedAppSettingsIntegrationsSharetribeRoute: typeof AuthenticatedAppSettingsIntegrationsSharetribeRoute
+}
+
+const AuthenticatedAppSettingsRouteChildren: AuthenticatedAppSettingsRouteChildren =
+  {
+    AuthenticatedAppSettingsAiRoute: AuthenticatedAppSettingsAiRoute,
+    AuthenticatedAppSettingsApiKeysRoute: AuthenticatedAppSettingsApiKeysRoute,
+    AuthenticatedAppSettingsDomainsRoute: AuthenticatedAppSettingsDomainsRoute,
+    AuthenticatedAppSettingsIntegrationsSharetribeRoute:
+      AuthenticatedAppSettingsIntegrationsSharetribeRoute,
+  }
+
+const AuthenticatedAppSettingsRouteWithChildren =
+  AuthenticatedAppSettingsRoute._addFileChildren(
+    AuthenticatedAppSettingsRouteChildren,
+  )
+
+interface AuthenticatedAppAdminHelpArticlesRouteChildren {
+  AuthenticatedAppAdminHelpArticlesIdRoute: typeof AuthenticatedAppAdminHelpArticlesIdRoute
+}
+
+const AuthenticatedAppAdminHelpArticlesRouteChildren: AuthenticatedAppAdminHelpArticlesRouteChildren =
+  {
+    AuthenticatedAppAdminHelpArticlesIdRoute:
+      AuthenticatedAppAdminHelpArticlesIdRoute,
+  }
+
+const AuthenticatedAppAdminHelpArticlesRouteWithChildren =
+  AuthenticatedAppAdminHelpArticlesRoute._addFileChildren(
+    AuthenticatedAppAdminHelpArticlesRouteChildren,
+  )
+
+interface AuthenticatedAppRouteChildren {
+  AuthenticatedAppAddonsRoute: typeof AuthenticatedAppAddonsRoute
+  AuthenticatedAppAffiliatesRoute: typeof AuthenticatedAppAffiliatesRouteWithChildren
+  AuthenticatedAppBillingRoute: typeof AuthenticatedAppBillingRoute
+  AuthenticatedAppCoachRoute: typeof AuthenticatedAppCoachRoute
+  AuthenticatedAppOnboardingRoute: typeof AuthenticatedAppOnboardingRoute
+  AuthenticatedAppOpportunitiesRoute: typeof AuthenticatedAppOpportunitiesRoute
+  AuthenticatedAppPagesRoute: typeof AuthenticatedAppPagesRouteWithChildren
+  AuthenticatedAppSeoCoachRoute: typeof AuthenticatedAppSeoCoachRoute
+  AuthenticatedAppSettingsRoute: typeof AuthenticatedAppSettingsRouteWithChildren
+  AuthenticatedAppIndexRoute: typeof AuthenticatedAppIndexRoute
+  AuthenticatedAppAdminEmailTemplatesRoute: typeof AuthenticatedAppAdminEmailTemplatesRoute
+  AuthenticatedAppAdminTemplateStoreRoute: typeof AuthenticatedAppAdminTemplateStoreRoute
+  AuthenticatedAppContentBlogRoute: typeof AuthenticatedAppContentBlogRoute
+  AuthenticatedAppContentBulkEditorRoute: typeof AuthenticatedAppContentBulkEditorRoute
+  AuthenticatedAppContentCityHeroesRoute: typeof AuthenticatedAppContentCityHeroesRoute
+  AuthenticatedAppContentDataExportRoute: typeof AuthenticatedAppContentDataExportRoute
+  AuthenticatedAppContentDataImportRoute: typeof AuthenticatedAppContentDataImportRoute
+  AuthenticatedAppContentGenerateRoute: typeof AuthenticatedAppContentGenerateRoute
+  AuthenticatedAppContentLearningRoute: typeof AuthenticatedAppContentLearningRoute
+  AuthenticatedAppContentMigrationRoute: typeof AuthenticatedAppContentMigrationRoute
+  AuthenticatedAppContentQuickPageBuilderRoute: typeof AuthenticatedAppContentQuickPageBuilderRoute
+  AuthenticatedAppOpsAdminTeamRoute: typeof AuthenticatedAppOpsAdminTeamRoute
+  AuthenticatedAppOpsDirectoryModerationRoute: typeof AuthenticatedAppOpsDirectoryModerationRoute
+  AuthenticatedAppOpsEmailBrandingRoute: typeof AuthenticatedAppOpsEmailBrandingRoute
+  AuthenticatedAppOpsEmailVerifyRoute: typeof AuthenticatedAppOpsEmailVerifyRoute
+  AuthenticatedAppOpsIgLeadHunterRoute: typeof AuthenticatedAppOpsIgLeadHunterRoute
+  AuthenticatedAppOpsLeadInboxRoute: typeof AuthenticatedAppOpsLeadInboxRoute
+  AuthenticatedAppOpsListingClaimsRoute: typeof AuthenticatedAppOpsListingClaimsRoute
+  AuthenticatedAppOpsPlanRequestsRoute: typeof AuthenticatedAppOpsPlanRequestsRoute
+  AuthenticatedAppOpsSiteFooterRoute: typeof AuthenticatedAppOpsSiteFooterRoute
+  AuthenticatedAppOpsSocialLeadHunterRoute: typeof AuthenticatedAppOpsSocialLeadHunterRoute
+  AuthenticatedAppSeoCanonicalAuditRoute: typeof AuthenticatedAppSeoCanonicalAuditRoute
+  AuthenticatedAppSeoClickReportRoute: typeof AuthenticatedAppSeoClickReportRoute
+  AuthenticatedAppSeoCompetitorRadarRoute: typeof AuthenticatedAppSeoCompetitorRadarRoute
+  AuthenticatedAppSeoCompetitorTrackerRoute: typeof AuthenticatedAppSeoCompetitorTrackerRoute
+  AuthenticatedAppSeoContentHealthRoute: typeof AuthenticatedAppSeoContentHealthRoute
+  AuthenticatedAppSeoGscImportRoute: typeof AuthenticatedAppSeoGscImportRoute
+  AuthenticatedAppSeoHealthRoute: typeof AuthenticatedAppSeoHealthRoute
+  AuthenticatedAppSeoInternalLinksRoute: typeof AuthenticatedAppSeoInternalLinksRoute
+  AuthenticatedAppSeoKeywordOpportunitiesRoute: typeof AuthenticatedAppSeoKeywordOpportunitiesRoute
+  AuthenticatedAppSeoLinkAuditRoute: typeof AuthenticatedAppSeoLinkAuditRoute
+  AuthenticatedAppSeoLinkCheckerRoute: typeof AuthenticatedAppSeoLinkCheckerRoute
+  AuthenticatedAppSeoListingAuditorRoute: typeof AuthenticatedAppSeoListingAuditorRoute
+  AuthenticatedAppSeoMissingPagesRoute: typeof AuthenticatedAppSeoMissingPagesRoute
+  AuthenticatedAppSeoPageAuditorRoute: typeof AuthenticatedAppSeoPageAuditorRoute
+  AuthenticatedAppSeoRankTrackerRoute: typeof AuthenticatedAppSeoRankTrackerRoute
+  AuthenticatedAppSeoScrapeImportRoute: typeof AuthenticatedAppSeoScrapeImportRoute
+  AuthenticatedAppSeoSitemapRoute: typeof AuthenticatedAppSeoSitemapRoute
+  AuthenticatedAppAdminHelpArticlesRoute: typeof AuthenticatedAppAdminHelpArticlesRouteWithChildren
+  AuthenticatedAppAdminHelpCategoriesRoute: typeof AuthenticatedAppAdminHelpCategoriesRoute
+  AuthenticatedAppAdminHelpFeedbackRoute: typeof AuthenticatedAppAdminHelpFeedbackRoute
+  AuthenticatedAppAdminHelpTicketsRoute: typeof AuthenticatedAppAdminHelpTicketsRoute
+}
+
+const AuthenticatedAppRouteChildren: AuthenticatedAppRouteChildren = {
+  AuthenticatedAppAddonsRoute: AuthenticatedAppAddonsRoute,
+  AuthenticatedAppAffiliatesRoute: AuthenticatedAppAffiliatesRouteWithChildren,
+  AuthenticatedAppBillingRoute: AuthenticatedAppBillingRoute,
+  AuthenticatedAppCoachRoute: AuthenticatedAppCoachRoute,
+  AuthenticatedAppOnboardingRoute: AuthenticatedAppOnboardingRoute,
+  AuthenticatedAppOpportunitiesRoute: AuthenticatedAppOpportunitiesRoute,
+  AuthenticatedAppPagesRoute: AuthenticatedAppPagesRouteWithChildren,
+  AuthenticatedAppSeoCoachRoute: AuthenticatedAppSeoCoachRoute,
+  AuthenticatedAppSettingsRoute: AuthenticatedAppSettingsRouteWithChildren,
+  AuthenticatedAppIndexRoute: AuthenticatedAppIndexRoute,
+  AuthenticatedAppAdminEmailTemplatesRoute:
+    AuthenticatedAppAdminEmailTemplatesRoute,
+  AuthenticatedAppAdminTemplateStoreRoute:
+    AuthenticatedAppAdminTemplateStoreRoute,
+  AuthenticatedAppContentBlogRoute: AuthenticatedAppContentBlogRoute,
+  AuthenticatedAppContentBulkEditorRoute:
+    AuthenticatedAppContentBulkEditorRoute,
+  AuthenticatedAppContentCityHeroesRoute:
+    AuthenticatedAppContentCityHeroesRoute,
+  AuthenticatedAppContentDataExportRoute:
+    AuthenticatedAppContentDataExportRoute,
+  AuthenticatedAppContentDataImportRoute:
+    AuthenticatedAppContentDataImportRoute,
+  AuthenticatedAppContentGenerateRoute: AuthenticatedAppContentGenerateRoute,
+  AuthenticatedAppContentLearningRoute: AuthenticatedAppContentLearningRoute,
+  AuthenticatedAppContentMigrationRoute: AuthenticatedAppContentMigrationRoute,
+  AuthenticatedAppContentQuickPageBuilderRoute:
+    AuthenticatedAppContentQuickPageBuilderRoute,
+  AuthenticatedAppOpsAdminTeamRoute: AuthenticatedAppOpsAdminTeamRoute,
+  AuthenticatedAppOpsDirectoryModerationRoute:
+    AuthenticatedAppOpsDirectoryModerationRoute,
+  AuthenticatedAppOpsEmailBrandingRoute: AuthenticatedAppOpsEmailBrandingRoute,
+  AuthenticatedAppOpsEmailVerifyRoute: AuthenticatedAppOpsEmailVerifyRoute,
+  AuthenticatedAppOpsIgLeadHunterRoute: AuthenticatedAppOpsIgLeadHunterRoute,
+  AuthenticatedAppOpsLeadInboxRoute: AuthenticatedAppOpsLeadInboxRoute,
+  AuthenticatedAppOpsListingClaimsRoute: AuthenticatedAppOpsListingClaimsRoute,
+  AuthenticatedAppOpsPlanRequestsRoute: AuthenticatedAppOpsPlanRequestsRoute,
+  AuthenticatedAppOpsSiteFooterRoute: AuthenticatedAppOpsSiteFooterRoute,
+  AuthenticatedAppOpsSocialLeadHunterRoute:
+    AuthenticatedAppOpsSocialLeadHunterRoute,
+  AuthenticatedAppSeoCanonicalAuditRoute:
+    AuthenticatedAppSeoCanonicalAuditRoute,
+  AuthenticatedAppSeoClickReportRoute: AuthenticatedAppSeoClickReportRoute,
+  AuthenticatedAppSeoCompetitorRadarRoute:
+    AuthenticatedAppSeoCompetitorRadarRoute,
+  AuthenticatedAppSeoCompetitorTrackerRoute:
+    AuthenticatedAppSeoCompetitorTrackerRoute,
+  AuthenticatedAppSeoContentHealthRoute: AuthenticatedAppSeoContentHealthRoute,
+  AuthenticatedAppSeoGscImportRoute: AuthenticatedAppSeoGscImportRoute,
+  AuthenticatedAppSeoHealthRoute: AuthenticatedAppSeoHealthRoute,
+  AuthenticatedAppSeoInternalLinksRoute: AuthenticatedAppSeoInternalLinksRoute,
+  AuthenticatedAppSeoKeywordOpportunitiesRoute:
+    AuthenticatedAppSeoKeywordOpportunitiesRoute,
+  AuthenticatedAppSeoLinkAuditRoute: AuthenticatedAppSeoLinkAuditRoute,
+  AuthenticatedAppSeoLinkCheckerRoute: AuthenticatedAppSeoLinkCheckerRoute,
+  AuthenticatedAppSeoListingAuditorRoute:
+    AuthenticatedAppSeoListingAuditorRoute,
+  AuthenticatedAppSeoMissingPagesRoute: AuthenticatedAppSeoMissingPagesRoute,
+  AuthenticatedAppSeoPageAuditorRoute: AuthenticatedAppSeoPageAuditorRoute,
+  AuthenticatedAppSeoRankTrackerRoute: AuthenticatedAppSeoRankTrackerRoute,
+  AuthenticatedAppSeoScrapeImportRoute: AuthenticatedAppSeoScrapeImportRoute,
+  AuthenticatedAppSeoSitemapRoute: AuthenticatedAppSeoSitemapRoute,
+  AuthenticatedAppAdminHelpArticlesRoute:
+    AuthenticatedAppAdminHelpArticlesRouteWithChildren,
+  AuthenticatedAppAdminHelpCategoriesRoute:
+    AuthenticatedAppAdminHelpCategoriesRoute,
+  AuthenticatedAppAdminHelpFeedbackRoute:
+    AuthenticatedAppAdminHelpFeedbackRoute,
+  AuthenticatedAppAdminHelpTicketsRoute: AuthenticatedAppAdminHelpTicketsRoute,
+}
+
+const AuthenticatedAppRouteWithChildren =
+  AuthenticatedAppRoute._addFileChildren(AuthenticatedAppRouteChildren)
+
+interface AuthenticatedRouteChildren {
+  AuthenticatedAppRoute: typeof AuthenticatedAppRouteWithChildren
+}
+
+const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
+  AuthenticatedAppRoute: AuthenticatedAppRouteWithChildren,
+}
+
+const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
+  AuthenticatedRouteChildren,
 )
 
-interface AdminRouteChildren {
-  AdminBlogRoute: typeof AdminBlogRoute
-  AdminCitiesHeroesRoute: typeof AdminCitiesHeroesRoute
-  AdminClaimsRoute: typeof AdminClaimsRoute
-  AdminClickReportRoute: typeof AdminClickReportRoute
-  AdminCompetitorRadarRoute: typeof AdminCompetitorRadarRoute
-  AdminCompetitorsRoute: typeof AdminCompetitorsRoute
-  AdminContentMigrationRoute: typeof AdminContentMigrationRoute
-  AdminContentPagesRoute: typeof AdminContentPagesRoute
-  AdminDashboardRoute: typeof AdminDashboardRoute
-  AdminDirectoryRoute: typeof AdminDirectoryRoute
-  AdminEmailBrandingRoute: typeof AdminEmailBrandingRoute
-  AdminGenerateContentRoute: typeof AdminGenerateContentRoute
-  AdminGscImportRoute: typeof AdminGscImportRoute
-  AdminIndexingRoute: typeof AdminIndexingRoute
-  AdminInternalLinksRoute: typeof AdminInternalLinksRoute
-  AdminKeywordOpportunitiesRoute: typeof AdminKeywordOpportunitiesRoute
-  AdminLeadsRoute: typeof AdminLeadsRoute
-  AdminLearningRoute: typeof AdminLearningRouteWithChildren
-  AdminLinkCheckerRoute: typeof AdminLinkCheckerRoute
-  AdminMissingPagesRoute: typeof AdminMissingPagesRoute
-  AdminNoAccessRoute: typeof AdminNoAccessRoute
-  AdminPageAuditorRoute: typeof AdminPageAuditorRoute
-  AdminPlanRequestsRoute: typeof AdminPlanRequestsRoute
-  AdminQuickPageRoute: typeof AdminQuickPageRoute
-  AdminRankTrackerRoute: typeof AdminRankTrackerRoute
-  AdminScrapeImportRoute: typeof AdminScrapeImportRoute
-  AdminSeoHealthRoute: typeof AdminSeoHealthRoute
-  AdminSiteFooterRoute: typeof AdminSiteFooterRoute
-  AdminTeamRoute: typeof AdminTeamRoute
+interface HelpRouteChildren {
+  HelpCategoryRoute: typeof HelpCategoryRoute
+  HelpContactRoute: typeof HelpContactRoute
+  HelpSearchRoute: typeof HelpSearchRoute
+  HelpSitemapDotxmlRoute: typeof HelpSitemapDotxmlRoute
+  HelpIndexRoute: typeof HelpIndexRoute
+  HelpCategoryArticleRoute: typeof HelpCategoryArticleRoute
 }
 
-const AdminRouteChildren: AdminRouteChildren = {
-  AdminBlogRoute: AdminBlogRoute,
-  AdminCitiesHeroesRoute: AdminCitiesHeroesRoute,
-  AdminClaimsRoute: AdminClaimsRoute,
-  AdminClickReportRoute: AdminClickReportRoute,
-  AdminCompetitorRadarRoute: AdminCompetitorRadarRoute,
-  AdminCompetitorsRoute: AdminCompetitorsRoute,
-  AdminContentMigrationRoute: AdminContentMigrationRoute,
-  AdminContentPagesRoute: AdminContentPagesRoute,
-  AdminDashboardRoute: AdminDashboardRoute,
-  AdminDirectoryRoute: AdminDirectoryRoute,
-  AdminEmailBrandingRoute: AdminEmailBrandingRoute,
-  AdminGenerateContentRoute: AdminGenerateContentRoute,
-  AdminGscImportRoute: AdminGscImportRoute,
-  AdminIndexingRoute: AdminIndexingRoute,
-  AdminInternalLinksRoute: AdminInternalLinksRoute,
-  AdminKeywordOpportunitiesRoute: AdminKeywordOpportunitiesRoute,
-  AdminLeadsRoute: AdminLeadsRoute,
-  AdminLearningRoute: AdminLearningRouteWithChildren,
-  AdminLinkCheckerRoute: AdminLinkCheckerRoute,
-  AdminMissingPagesRoute: AdminMissingPagesRoute,
-  AdminNoAccessRoute: AdminNoAccessRoute,
-  AdminPageAuditorRoute: AdminPageAuditorRoute,
-  AdminPlanRequestsRoute: AdminPlanRequestsRoute,
-  AdminQuickPageRoute: AdminQuickPageRoute,
-  AdminRankTrackerRoute: AdminRankTrackerRoute,
-  AdminScrapeImportRoute: AdminScrapeImportRoute,
-  AdminSeoHealthRoute: AdminSeoHealthRoute,
-  AdminSiteFooterRoute: AdminSiteFooterRoute,
-  AdminTeamRoute: AdminTeamRoute,
+const HelpRouteChildren: HelpRouteChildren = {
+  HelpCategoryRoute: HelpCategoryRoute,
+  HelpContactRoute: HelpContactRoute,
+  HelpSearchRoute: HelpSearchRoute,
+  HelpSitemapDotxmlRoute: HelpSitemapDotxmlRoute,
+  HelpIndexRoute: HelpIndexRoute,
+  HelpCategoryArticleRoute: HelpCategoryArticleRoute,
 }
 
-const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
-
-interface AppRouteChildren {
-  AppDashboardRoute: typeof AppDashboardRoute
-  AppPagesNewRoute: typeof AppPagesNewRoute
-  AppPagesIndexRoute: typeof AppPagesIndexRoute
-  AppPagesIdEditRoute: typeof AppPagesIdEditRoute
-}
-
-const AppRouteChildren: AppRouteChildren = {
-  AppDashboardRoute: AppDashboardRoute,
-  AppPagesNewRoute: AppPagesNewRoute,
-  AppPagesIndexRoute: AppPagesIndexRoute,
-  AppPagesIdEditRoute: AppPagesIdEditRoute,
-}
-
-const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
-
-interface AuthRouteChildren {
-  AuthResetPasswordRoute: typeof AuthResetPasswordRoute
-}
-
-const AuthRouteChildren: AuthRouteChildren = {
-  AuthResetPasswordRoute: AuthResetPasswordRoute,
-}
-
-const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
+const HelpRouteWithChildren = HelpRoute._addFileChildren(HelpRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AdminRoute: AdminRouteWithChildren,
-  AppRoute: AppRouteWithChildren,
-  AuthRoute: AuthRouteWithChildren,
-  OnboardingRoute: OnboardingRoute,
-  PrivacyPolicyRoute: PrivacyPolicyRoute,
-  ReferralRoute: ReferralRoute,
-  RobotsDottxtRoute: RobotsDottxtRoute,
-  SitemapDefaultDotxmlRoute: SitemapDefaultDotxmlRoute,
-  SitemapIndexDotxmlRoute: SitemapIndexDotxmlRoute,
-  SitemapStaticDotxmlRoute: SitemapStaticDotxmlRoute,
+  AuthenticatedRoute: AuthenticatedRouteWithChildren,
+  BetaRoute: BetaRoute,
+  HelpRoute: HelpRouteWithChildren,
+  LoginRoute: LoginRoute,
+  PrivacyRoute: PrivacyRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
+  SignupRoute: SignupRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
-  UnsubscribeRoute: UnsubscribeRoute,
-  AccountBillingRoute: AccountBillingRoute,
-  AccountLearningRoute: AccountLearningRoute,
-  EmailUnsubscribeRoute: EmailUnsubscribeRoute,
+  TermsRoute: TermsRoute,
+  ASlugRoute: ASlugRoute,
+  AFoundersDomainTestRoute: AFoundersDomainTestRoute,
+  ASitemapDotxmlRoute: ASitemapDotxmlRoute,
+  ApplySlugRoute: ApplySlugRoute,
   PSlugRoute: PSlugRoute,
-  TemplatesSlugRoute: TemplatesSlugRoute,
-  VerifyUidRoute: VerifyUidRoute,
-  HelpCenterIndexRoute: HelpCenterIndexRoute,
-  TemplatesIndexRoute: TemplatesIndexRoute,
-  ApiBillingWebhookRoute: ApiBillingWebhookRoute,
-  ApiPublicBackfillContentPagesRoute: ApiPublicBackfillContentPagesRoute,
-  ApiPublicTrackCityClickRoute: ApiPublicTrackCityClickRoute,
-  HelpCenterCategorySlugRoute: HelpCenterCategorySlugRoute,
-  LovableEmailSuppressionRoute: LovableEmailSuppressionRoute,
-  HelpCenterCategoryIndexRoute: HelpCenterCategoryIndexRoute,
-  ApiCertificatesUidPdfRoute: ApiCertificatesUidPdfRoute,
-  ApiPublicHooksCompetitorRadarScanRoute:
-    ApiPublicHooksCompetitorRadarScanRoute,
-  ApiPublicHooksDailySeoDigestRoute: ApiPublicHooksDailySeoDigestRoute,
-  ApiPublicHooksSeoFixWorkerRoute: ApiPublicHooksSeoFixWorkerRoute,
-  ApiPublicHooksSeoSelfTestRoute: ApiPublicHooksSeoSelfTestRoute,
-  ApiPublicHooksSyncListingsRoute: ApiPublicHooksSyncListingsRoute,
-  LovableEmailAuthWebhookRoute: LovableEmailAuthWebhookRoute,
-  LovableEmailQueueProcessRoute: LovableEmailQueueProcessRoute,
-  LovableEmailTransactionalSendRoute: LovableEmailTransactionalSendRoute,
+  SharetribeTemplatesSlugRoute: SharetribeTemplatesSlugRoute,
+  SharetribeTemplatesIndexRoute: SharetribeTemplatesIndexRoute,
+  ApiPublicDomainConfigRoute: ApiPublicDomainConfigRoute,
+  ApiPublicDomainTokenRoute: ApiPublicDomainTokenRoute,
+  ApiPublicEdgeHealthRoute: ApiPublicEdgeHealthRoute,
+  ApiPublicPageLookupRoute: ApiPublicPageLookupRoute,
+  ApiPublicSitemapByHostRoute: ApiPublicSitemapByHostRoute,
+  ApiPublicVersionRoute: ApiPublicVersionRoute,
+  SWsSlugRoute: SWsSlugRoute,
+  SharetribeTemplatesSlugDownloadRoute: SharetribeTemplatesSlugDownloadRoute,
+  ApiPublicHooksAuthSendEmailRoute: ApiPublicHooksAuthSendEmailRoute,
+  ApiPublicHooksCanonicalAuditRoute: ApiPublicHooksCanonicalAuditRoute,
+  ApiPublicHooksSyncSharetribeRoute: ApiPublicHooksSyncSharetribeRoute,
+  ApiPublicOpsEmailProbeRoute: ApiPublicOpsEmailProbeRoute,
+  ApiPublicOpsSyncHealthRoute: ApiPublicOpsSyncHealthRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

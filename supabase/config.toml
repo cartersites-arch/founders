@@ -1,13 +1,21 @@
-project_id = "ptfjspcphskifoseidut"
+project_id = "xbxhzinnfhosoztqaaao"
 
-[functions.seed-providers]
+[functions.stripe-webhook]
 verify_jwt = false
 
-[functions.seed-blog-posts]
+[functions.create-checkout]
+verify_jwt = true
+
+[functions.customer-portal]
+verify_jwt = true
+
+[functions.coach-briefing-cron]
 verify_jwt = false
 
-[functions.drive-content-generation]
+# Sharetribe template store. Public: buyers have no account. Each function
+# validates its own input (catalog slug / a paid Stripe session).
+[functions.template-checkout]
 verify_jwt = false
 
-[functions.generate-content-batch]
+[functions.template-download]
 verify_jwt = false
