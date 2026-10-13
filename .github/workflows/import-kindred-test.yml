@@ -1,0 +1,33 @@
+name: Import Kindred Ease test snapshot
+on:
+  push:
+    branches: [test/kindred-ease-20261012]
+    paths: [.github/workflows/import-kindred-test.yml]
+permissions:
+  contents: write
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: test/kindred-ease-20261012
+          fetch-depth: 1
+      - name: Copy pinned public source without deployments
+        env:
+          EXPECTED_SHA: a08c46df60f001d842fa62983a3f9f625d2cd583
+        run: |
+          set -eu
+          source_dir="$RUNNER_TEMP/kindred-test-source"
+          git clone --depth 1 https://github.com/derekbowen/kindred-ease-space.git "$source_dir"
+          test "$(git -C "$source_dir" rev-parse HEAD)" = "$EXPECTED_SHA"
+          rsync -a --delete --exclude=.git/ "$source_dir/" ./
+          for workflow in .github/workflows/*.yml .github/workflows/*.yaml; do
+            [ -f "$workflow" ] || continue
+            mv "$workflow" "$workflow.disabled"
+          done
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Import pinned Kindred Ease source; disable copied workflows for testing"
+          git push origin HEAD:refs/heads/test/kindred-ease-20261012
